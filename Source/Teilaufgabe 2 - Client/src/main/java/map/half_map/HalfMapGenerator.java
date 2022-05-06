@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import exceptions.InsufficientNumberOfGrassFieldsException;
-import exceptions.InsufficientNumberOfMountainFieldsException;
-import exceptions.InsufficientNumberOfWaterFieldsException;
+import exceptions.WrongNumberOfGrassFieldsException;
+import exceptions.WrongNumberOfMountainFieldsException;
+import exceptions.WrongNumberOfWaterFieldsException;
 import map.EnumTerrain;
+import map.MapNodeClass;
 import map.Position;
 
 import org.slf4j.Logger;
@@ -19,19 +20,17 @@ public class HalfMapGenerator {
 	private static final Logger logger = LoggerFactory.getLogger(HalfMapGenerator.class);
 	private HashMap<Position, EnumTerrain> nodes = new HashMap<>();
 	private Position fortPosition;
-	private int minWaterNumber = 4;
-	private int minMountainNumber = 3;
+	private int minWaterNumber;
+	private int minMountainNumber;
 
-	public HalfMapGenerator() {}
 
-//	TODO: island created
 	public HalfMapGenerator(int minWaterNumber, int minMountainNumber) {
-		if(minWaterNumber < 4)
-			throw new InsufficientNumberOfWaterFieldsException("Not enough water fields");
-		if(minMountainNumber < 3)
-			throw new InsufficientNumberOfMountainFieldsException("Not enough mountain fields");
+		if(minWaterNumber < 4 || minWaterNumber > 14)
+			throw new WrongNumberOfWaterFieldsException("Not enough or too many water fields");
+		if(minMountainNumber < 3 || minMountainNumber > 13)
+			throw new WrongNumberOfMountainFieldsException("Not enough or too many mountain fields");
 		if(minWaterNumber + minMountainNumber > 32 - 15)
-			throw new InsufficientNumberOfGrassFieldsException("Not enough grass fields");
+			throw new WrongNumberOfGrassFieldsException("Not enough or too many grass fields");
 
 		this.minWaterNumber = minWaterNumber;
 		this.minMountainNumber = minMountainNumber;
@@ -123,8 +122,8 @@ public class HalfMapGenerator {
 	}
 
 
-	public HalfMapClass generateHalfMap() throws Exception{
-		List<HalfMapNodeClass> nodeList = new ArrayList<>();
+	public HalfMapClass generateHalfMap() {
+		List<MapNodeClass> nodeList = new ArrayList<>();
 
 		placeMountain(minMountainNumber);
 		placeWater(minWaterNumber);
@@ -139,7 +138,7 @@ public class HalfMapGenerator {
 				EnumTerrain terrain = nodes.get(position);
 				logger.debug("The terrain at " + i + " " + j + " is " + terrain);
 
-				nodeList.add(new HalfMapNodeClass(i, j, fortPresent, terrain));
+				nodeList.add(new MapNodeClass(i, j, fortPresent, terrain));
 			}
 		}
 
