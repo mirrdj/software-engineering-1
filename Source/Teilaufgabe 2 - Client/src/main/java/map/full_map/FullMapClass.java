@@ -1,7 +1,6 @@
 package map.full_map;
 
 import map.*;
-import map.half_map.HalfMapNodeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,25 +8,25 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class FullMapClass {
-    private static Logger logger = LoggerFactory.getLogger(FullMapClass.class);
-    private Collection<FullMapNodeClass> nodes;
+    private static final Logger logger = LoggerFactory.getLogger(FullMapClass.class);
+    private Collection<MapNodeClass> nodes;
 
-    public FullMapClass(Collection<FullMapNodeClass> nodes){
+    public FullMapClass(Collection<MapNodeClass> nodes){
         this.nodes = nodes;
     }
-    public Collection<FullMapNodeClass> getNodes() {
+    public Collection<MapNodeClass> getNodes() {
         return nodes;
     }
 
-    public List<FullMapNodeClass> getNodesAsList(){
-        List<FullMapNodeClass> list = new ArrayList<>(getNodes());
+    public List<MapNodeClass> getNodesAsList(){
+        List<MapNodeClass> list = new ArrayList<>(getNodes());
         return list;
     }
 
     public int getHeight(){
         int height = getNodes()
                 .stream()
-                .max(Comparator.comparing(FullMapNodeClass::getY))
+                .max(Comparator.comparing(MapNodeClass::getY))
                 .get()
                 .getY();
         height += 1;
@@ -37,7 +36,7 @@ public class FullMapClass {
     public int getWidth(){
         int width = getNodes()
                 .stream()
-                .max(Comparator.comparing(FullMapNodeClass::getX))
+                .max(Comparator.comparing(MapNodeClass::getX))
                 .get()
                 .getX();
         width += 1;
@@ -66,8 +65,8 @@ public class FullMapClass {
     }
 
 
-    public FullMapNodeClass getNodeAtPosition(int x, int y){
-       FullMapNodeClass node = getNodes()
+    public MapNodeClass getNodeAtPosition(int x, int y){
+       MapNodeClass node = getNodes()
                 .stream()
                 .filter(n -> n.getX() == x)
                 .filter(n -> n.getY() == y)
@@ -98,7 +97,7 @@ public class FullMapClass {
     }
 
     public Position getMyPosition(){
-        FullMapNodeClass node = getNodes()
+        MapNodeClass node = getNodes()
                 .stream()
                 .filter(n -> n.getPlayerPosition() == EnumPlayerPositionState.MY_POSITION ||
                         n.getPlayerPosition() == EnumPlayerPositionState.BOTH_PLAYER_POSITION)
@@ -116,7 +115,7 @@ public class FullMapClass {
     }
 
     public Position getMyTreasurePosition(){
-        FullMapNodeClass node = getNodes()
+        MapNodeClass node = getNodes()
                 .stream()
                 .filter(n -> n.getTreasure().equals(EnumTreasureState.MY_TREASURE_IS_PRESENT))
                 .findFirst()
@@ -129,7 +128,7 @@ public class FullMapClass {
     }
 
     public Position getEnemyFortPosition(){
-        FullMapNodeClass node = getNodes()
+        MapNodeClass node = getNodes()
                 .stream()
                 .filter(n -> n.getFort() == EnumFortState.ENEMY_FORT_PRESENT)
                 .findFirst()
@@ -160,7 +159,6 @@ public class FullMapClass {
         logger.debug("width is " + width);
         for(int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-
                 string += getNodeAtPosition(x, y) + "   ";
             }
             string += '\n';

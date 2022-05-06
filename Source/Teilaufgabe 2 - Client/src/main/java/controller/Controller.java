@@ -80,13 +80,10 @@ public class Controller {
 //        return ownPlayerState.getState() == EnumPlayerGameState.MUST_WAIT;
 //    }
 
-    // TODO: add map validator
     private HalfMapClass generateHalfMap() throws Exception {
         HalfMapGenerator generator = new HalfMapGenerator(4, 3);
-        HalfMapClass halfMap = generator.generateHalfMap();
-
-        return halfMap;
-    }
+        return generator.generateHalfMap();
+   }
 
     public void sendHalfMap() throws Exception{
         boolean act;
@@ -102,7 +99,6 @@ public class Controller {
         HalfMapClass halfMap = generateHalfMap();
         HalfMapValidator halfMapValidator = new HalfMapValidator();
         while (!halfMapValidator.mapIsValid(halfMap)) {
-
             halfMap = generateHalfMap();
         }
         logger.info("Half map is valid");

@@ -1,6 +1,7 @@
 package map.half_map;
 
 import map.EnumTerrain;
+import map.MapNodeClass;
 import map.Position;
 
 import java.util.Collection;
@@ -9,18 +10,18 @@ import java.util.HashMap;
 import java.util.stream.Collectors;
 
 public class HalfMapClass {
-    private Collection<HalfMapNodeClass> nodes;
-    public Collection<HalfMapNodeClass> getNodes() {
+    private Collection<MapNodeClass> nodes;
+    public Collection<MapNodeClass> getNodes() {
         return nodes;
     }
-    public HalfMapClass(Collection<HalfMapNodeClass> nodes) {
+    public HalfMapClass(Collection<MapNodeClass> nodes) {
         this.nodes = nodes;
     }
 
     public int getHeight(){
         int height = nodes
                 .stream()
-                .max(Comparator.comparing(HalfMapNodeClass::getY))
+                .max(Comparator.comparing(MapNodeClass::getY))
                 .get()
                 .getY();
         height += 1;
@@ -30,7 +31,7 @@ public class HalfMapClass {
     public int getWidth(){
         int width = nodes
                 .stream()
-                .max(Comparator.comparing(HalfMapNodeClass::getX))
+                .max(Comparator.comparing(MapNodeClass::getX))
                 .get()
                 .getX();
         width += 1;

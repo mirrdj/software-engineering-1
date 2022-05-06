@@ -1,6 +1,5 @@
 package map.half_map;
 
-import MessagesBase.MessagesFromClient.HalfMap;
 import map.EnumTerrain;
 import map.Position;
 import org.slf4j.Logger;
@@ -92,16 +91,19 @@ public class HalfMapValidator {
         return true;
     }
 
-    private boolean checkNumberOfFields(HalfMapClass halfMap){
-        logger.info("Checking if there are enough fields of each type");
+    private boolean checkWaterFields(HalfMapClass halfMap){
+        int waterNumber = halfMap.getWaterNumber();
 
-        int grassNumber = halfMap.getGrassNumber();
-        if(grassNumber < minGrass){
-            logger.warn("The number of grass fields is " + grassNumber);
-            logger.warn("It should be at least " + minGrass);
+        if(waterNumber < minWater){
+            logger.warn("The number of water fields is " + waterNumber);
+            logger.warn("It should be at least " + minWater);
             return false;
         }
 
+        return true;
+    }
+
+    private boolean checkMountainFields(HalfMapClass halfMap){
         int mountainNumber = halfMap.getMountainNumber();
         if(mountainNumber < minMountains){
             logger.warn("The number of mountain fields is " + mountainNumber);
@@ -109,12 +111,31 @@ public class HalfMapValidator {
             return false;
         }
 
-        int waterNumber = halfMap.getWaterNumber();
-        if(waterNumber < minWater){
-            logger.warn("The number of water fields is " + waterNumber);
-            logger.warn("It should be at least " + minWater);
+        return true;
+    }
+
+    private boolean checkGrassFields(HalfMapClass halfMap){
+        int grassNumber = halfMap.getGrassNumber();
+        if(grassNumber < minGrass){
+            logger.warn("The number of grass fields is " + grassNumber);
+            logger.warn("It should be at least " + minGrass);
             return false;
         }
+
+        return true;
+    }
+
+    private boolean checkNumberOfFields(HalfMapClass halfMap){
+        logger.info("Checking if there are enough fields of each type");
+
+        if(!checkGrassFields(halfMap))
+            return false;
+
+        if(!checkMountainFields(halfMap))
+            return false;
+
+        if(!checkWaterFields(halfMap))
+            return false;
 
         logger.info("Fields checked succesfully");
         return true;
@@ -177,7 +198,14 @@ public class HalfMapValidator {
         HashMap<Position, EnumTerrain> terrainNodes = halfMap.getTerrainNodes();
         floodFill(0,0, terrainNodes);
 
-        return terrainNodes.size() <= halfMap.getWaterNumber() + 4;
+        if(terrainNodes.size() <= halfMap.getWaterNumber()) {
+            logger.warn("There is an island");
+            return true;
+        }
+        else {
+            logger.info("There is no island");
+            return false;
+        }
     }
 
 }
