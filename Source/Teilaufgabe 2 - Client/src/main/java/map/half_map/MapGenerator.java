@@ -10,21 +10,22 @@ import exceptions.WrongNumberOfGrassFieldsException;
 import exceptions.WrongNumberOfMountainFieldsException;
 import exceptions.WrongNumberOfWaterFieldsException;
 import map.EnumTerrain;
+import map.MapClass;
 import map.MapNodeClass;
 import map.Position;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HalfMapGenerator {
-	private static final Logger logger = LoggerFactory.getLogger(HalfMapGenerator.class);
+public class MapGenerator {
+	private static final Logger logger = LoggerFactory.getLogger(MapGenerator.class);
 	private HashMap<Position, EnumTerrain> nodes = new HashMap<>();
 	private Position fortPosition;
 	private int minWaterNumber;
 	private int minMountainNumber;
 
 
-	public HalfMapGenerator(int minWaterNumber, int minMountainNumber) {
+	public MapGenerator(int minWaterNumber, int minMountainNumber) {
 		if(minWaterNumber < 4 || minWaterNumber > 14)
 			throw new WrongNumberOfWaterFieldsException("Not enough or too many water fields");
 		if(minMountainNumber < 3 || minMountainNumber > 13)
@@ -122,7 +123,7 @@ public class HalfMapGenerator {
 	}
 
 
-	public HalfMapClass generateHalfMap() {
+	public MapClass generateHalfMap() {
 		List<MapNodeClass> nodeList = new ArrayList<>();
 
 		placeMountain(minMountainNumber);
@@ -142,7 +143,7 @@ public class HalfMapGenerator {
 			}
 		}
 
-		return new HalfMapClass(nodeList);
+		return new MapClass(nodeList);
 	}
 
 }

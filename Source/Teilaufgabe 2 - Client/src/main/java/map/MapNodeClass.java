@@ -1,16 +1,28 @@
-package map.full_map;
+package map;
 
-import map.EnumTerrain;
+import map.full_map.EnumFortState;
+import map.full_map.EnumPlayerPositionState;
+import map.full_map.EnumTreasureState;
 
-public class FullMapNodeClass {
+public class MapNodeClass {
     private final int x;
     private final int y;
     private final EnumTerrain terrain;
-    private final EnumPlayerPositionState playerPosition;
-    private final EnumTreasureState treasure;
+    private  EnumPlayerPositionState playerPosition;
+    private  EnumTreasureState treasure;
     private final EnumFortState fort;
 
-    public FullMapNodeClass(EnumTerrain terrain, EnumPlayerPositionState playerPosition, EnumTreasureState treasure, EnumFortState fort, int x, int y) {
+    public MapNodeClass(int x, int y, boolean fortPresent, EnumTerrain terrain) {
+        this.x = x;
+        this.y = y;
+        this.terrain = terrain;
+        if(fortPresent)
+            this.fort = EnumFortState.MY_FORT_PRESENT;
+        else
+            this.fort = EnumFortState.NO_OR_UNKNOWN_FORT_STATE;
+    }
+
+    public MapNodeClass(EnumTerrain terrain, EnumPlayerPositionState playerPosition, EnumTreasureState treasure, EnumFortState fort, int x, int y) {
         this.x = x;
         this.y = y;
         this.terrain = terrain;
@@ -38,13 +50,11 @@ public class FullMapNodeClass {
         return fort;
     }
 
+    public boolean isFortPresent(){return fort == EnumFortState.MY_FORT_PRESENT;}
 
     @Override
     public String toString() {
         String string = "";
-
-//        string += String.valueOf(getX()) + '|';
-//        string += String.valueOf(getY()) + '|';
 
         if(getTerrain() == EnumTerrain.GRASS)
             string += "G" + '|';

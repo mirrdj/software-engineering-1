@@ -1,6 +1,7 @@
 package map.half_map;
 
 import map.EnumTerrain;
+import map.MapClass;
 import map.MapNodeClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,14 +18,14 @@ class HalfMapValidatorTest {
         validator = new HalfMapValidator();
     }
 
-    public HalfMapClass createHalfMap(char[][] nodes) {
-        boolean fortressPlaced = false, fortPresent = false;
+    public MapClass createHalfMap(char[][] nodes) {
+        boolean fortressPlaced = false;
         List<MapNodeClass> nodeList = new ArrayList<>();
 
         for(int i = 0; i < nodes.length; i++) {
             for (int j = 0; j < nodes[i].length; j++) {
                 EnumTerrain terrain;
-                fortPresent = false;
+                boolean fortPresent = false;
 
                 switch (nodes[i][j]) {
                     case 'W' -> terrain = EnumTerrain.WATER;
@@ -43,7 +44,7 @@ class HalfMapValidatorTest {
             }
         }
 
-        return new HalfMapClass(nodeList);
+        return new MapClass(nodeList);
     }
     @Test
     public void mapIsValid_validMap_returnTrue(){
@@ -58,7 +59,7 @@ class HalfMapValidatorTest {
                 {'G', 'G', 'G', 'G'},
         };
 
-        HalfMapClass halfMap = createHalfMap(nodes);
+        MapClass halfMap = createHalfMap(nodes);
         boolean valid = validator.mapIsValid(halfMap);
         Assertions.assertTrue(valid);
     }
@@ -75,7 +76,7 @@ class HalfMapValidatorTest {
                 {'G', 'G', 'G', 'G'},
         };
 
-        HalfMapClass halfMap = createHalfMap(nodes);
+        MapClass halfMap = createHalfMap(nodes);
         boolean valid = validator.mapIsValid(halfMap);
         Assertions.assertFalse(valid);
     }
@@ -90,12 +91,12 @@ class HalfMapValidatorTest {
                 {'G', 'G', 'G', 'G'}
         };
 
-        HalfMapClass halfMap = createHalfMap(nodes);
+        MapClass halfMap = createHalfMap(nodes);
         boolean valid = validator.mapIsValid(halfMap);
         Assertions.assertFalse(valid);
     }
 
-    @Test void mapIsValid_exceededWaterFieldShortShide_returnFalse(){
+    @Test void mapIsValid_exceededWaterFieldShortSide_returnFalse(){
         char[][] nodes = {
                 {'G', 'W', 'W', 'M'},
                 {'G', 'G', 'G', 'M'},
@@ -108,12 +109,12 @@ class HalfMapValidatorTest {
 
         };
 
-        HalfMapClass halfMap = createHalfMap(nodes);
+        MapClass halfMap = createHalfMap(nodes);
         boolean valid = validator.mapIsValid(halfMap);
         Assertions.assertFalse(valid);
     }
 
-    @Test void mapIsValid_exceededWaterFieldLongShide_returnFalse(){
+    @Test void mapIsValid_exceededWaterFieldLongSide_returnFalse(){
         char[][] nodes = {
                 {'G', 'G', 'G', 'M'},
                 {'W', 'G', 'G', 'M'},
@@ -126,7 +127,7 @@ class HalfMapValidatorTest {
 
         };
 
-        HalfMapClass halfMap = createHalfMap(nodes);
+        MapClass halfMap = createHalfMap(nodes);
         boolean valid = validator.mapIsValid(halfMap);
         Assertions.assertFalse(valid);
     }
@@ -145,7 +146,7 @@ class HalfMapValidatorTest {
 
         };
 
-        HalfMapClass halfMap = createHalfMap(nodes);
+        MapClass halfMap = createHalfMap(nodes);
         boolean valid = validator.mapIsValid(halfMap);
         Assertions.assertFalse(valid);
     }
@@ -164,7 +165,7 @@ class HalfMapValidatorTest {
 
         };
 
-        HalfMapClass halfMap = createHalfMap(nodes);
+        MapClass halfMap = createHalfMap(nodes);
         boolean valid = validator.mapIsValid(halfMap);
         Assertions.assertFalse(valid);
     }

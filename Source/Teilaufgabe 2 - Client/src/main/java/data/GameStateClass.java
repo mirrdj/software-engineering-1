@@ -4,7 +4,7 @@ package data;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-import map.full_map.FullMapClass;
+import map.MapClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +15,7 @@ public class GameStateClass {
     private static final Logger logger = LoggerFactory.getLogger(GameStateClass.class);
     private final PropertyChangeSupport changes = new PropertyChangeSupport(this);
     private String gameStateID;
-    private FullMapClass fullMap;
+    private MapClass fullMap;
     private Set<PlayerStateClass> players;
     private EnumPlayerGameState enumPlayerGameState;
 
@@ -25,7 +25,7 @@ public class GameStateClass {
         this.gameStateID = gameStateID;
     }
 
-    public GameStateClass(String gameStateID, FullMapClass fullMap, Set<PlayerStateClass> players) {
+    public GameStateClass(String gameStateID, MapClass fullMap, Set<PlayerStateClass> players) {
         this.gameStateID = gameStateID;
         this.fullMap = fullMap;
         this.players = players;
@@ -36,7 +36,7 @@ public class GameStateClass {
         this.players = players;
     }
 
-    public FullMapClass getFullMap() {
+    public MapClass getFullMap() {
         return fullMap;
     }
     public Set<PlayerStateClass> getPlayers() {
@@ -61,8 +61,8 @@ public class GameStateClass {
         return players.size() == 2;
     }
 
-    public void setFullMap(FullMapClass fullMap) {
-        FullMapClass mapBeforeChange = this.fullMap;
+    public void setFullMap(MapClass fullMap) {
+        MapClass mapBeforeChange = this.fullMap;
         this.fullMap = fullMap;
 
         changes.firePropertyChange("fullMap", mapBeforeChange, fullMap);

@@ -3,7 +3,7 @@ package path;
 import controller.EnumGamePhase;
 import exceptions.InvalidTargetException;
 import map.Position;
-import map.full_map.FullMapClass;
+import map.MapClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,31 +24,31 @@ public class AIClass {
     public void setTargetChooser(TargetChooser targetChooser) {
         this.targetChooser = targetChooser;
     }
-    public List<EnumMove> collectTreasure(FullMapClass fullMap) throws Exception {
+    public List<EnumMove> collectTreasure(MapClass fullMap) throws Exception {
         DijkstraResult result = dijkstraCalculator.dijkstraAlgorithm(fullMap.getMyPosition());
         List<Position> path = ShortestPathCalculator.getShortestPath(result, fullMap.getMyTreasurePosition());
 
         return moveCalculator.getMoves(path);
     }
 
-    public List<EnumMove> reachFortres(FullMapClass fullMap) throws Exception {
+    public List<EnumMove> reachFortres(MapClass fullMap) throws Exception {
         DijkstraResult result = dijkstraCalculator.dijkstraAlgorithm(fullMap.getMyPosition());
         List<Position> path = ShortestPathCalculator.getShortestPath(result, fullMap.getMyTreasurePosition());
 
         return moveCalculator.getMoves(path);
     }
 
-    public List<EnumMove> findTreasure(FullMapClass fullMap) throws Exception {
+    public List<EnumMove> findTreasure(MapClass fullMap) throws Exception {
         targetChooser.setGamePhase(EnumGamePhase.FIND_TREASURE);
         return findGameObject(fullMap);
     }
 
-    public List<EnumMove> findFortress(FullMapClass fullMap) throws Exception {
+    public List<EnumMove> findFortress(MapClass fullMap) throws Exception {
         targetChooser.setGamePhase(EnumGamePhase.FIND_ENEMY_FORTRESS);
         return findGameObject(fullMap);
     }
 
-    private List<EnumMove> findGameObject (FullMapClass fullMap) throws Exception {
+    private List<EnumMove> findGameObject (MapClass fullMap) throws Exception {
         Position myPosition = fullMap.getMyPosition();
 
         DijkstraResult result = dijkstraCalculator.dijkstraAlgorithm(myPosition);

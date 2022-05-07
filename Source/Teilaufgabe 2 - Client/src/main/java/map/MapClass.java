@@ -1,30 +1,28 @@
-package map.full_map;
+package map;
 
-import map.*;
+import map.full_map.EnumFortState;
+import map.full_map.EnumLayout;
+import map.full_map.EnumPlayerPositionState;
+import map.full_map.EnumTreasureState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class FullMapClass {
-    private static final Logger logger = LoggerFactory.getLogger(FullMapClass.class);
+public class MapClass {
+    private static final Logger logger = LoggerFactory.getLogger(MapClass.class);
     private Collection<MapNodeClass> nodes;
 
-    public FullMapClass(Collection<MapNodeClass> nodes){
+    public MapClass(Collection<MapNodeClass> nodes){
         this.nodes = nodes;
     }
     public Collection<MapNodeClass> getNodes() {
         return nodes;
     }
 
-    public List<MapNodeClass> getNodesAsList(){
-        List<MapNodeClass> list = new ArrayList<>(getNodes());
-        return list;
-    }
-
     public int getHeight(){
-        int height = getNodes()
+        int height = nodes
                 .stream()
                 .max(Comparator.comparing(MapNodeClass::getY))
                 .get()
@@ -34,7 +32,7 @@ public class FullMapClass {
         return height;
     }
     public int getWidth(){
-        int width = getNodes()
+        int width = nodes
                 .stream()
                 .max(Comparator.comparing(MapNodeClass::getX))
                 .get()
@@ -54,14 +52,14 @@ public class FullMapClass {
     }
 
     public HashMap<Position, EnumTerrain> getTerrainNodes(){
-        HashMap<Position, EnumTerrain> map = new HashMap<>();
+        HashMap<Position, EnumTerrain> terrainNodes = new HashMap<>();
         getNodes()
                 .stream()
-                .forEach(n -> map.put(
+                .forEach(n -> terrainNodes.put(
                         new Position(n.getX(), n.getY()), n.getTerrain()
                 ));
 
-        return map;
+        return terrainNodes;
     }
 
 
@@ -108,7 +106,7 @@ public class FullMapClass {
     }
 
     public List<Position> getPositionList(){
-        return getNodesAsList()
+        return nodes
                 .stream()
                 .map(n -> new Position(n.getX(), n.getY()))
                 .collect(Collectors.toList());
@@ -125,6 +123,33 @@ public class FullMapClass {
             return new Position(node.getX(), node.getY());
 
         return null;
+    }
+
+    public int getMountainNumber(){
+        int mountainNumber = nodes
+                .stream()
+                .filter(n -> n.getTerrain() == EnumTerrain.MOUNTAIN)
+                .collect(Collectors.toList())
+                .size();
+        return mountainNumber;
+    }
+
+    public int getWaterNumber(){
+        int waterNumber = nodes
+                .stream()
+                .filter(n -> n.getTerrain() == EnumTerrain.WATER)
+                .collect(Collectors.toList())
+                .size();
+        return waterNumber;
+    }
+
+    public int getGrassNumber(){
+        int grassNumber = nodes
+                .stream()
+                .filter(n -> n.getTerrain() == EnumTerrain.GRASS)
+                .collect(Collectors.toList())
+                .size();
+        return grassNumber;
     }
 
     public Position getEnemyFortPosition(){

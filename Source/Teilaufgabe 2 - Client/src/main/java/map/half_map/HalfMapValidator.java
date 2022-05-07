@@ -1,6 +1,7 @@
 package map.half_map;
 
 import map.EnumTerrain;
+import map.MapClass;
 import map.Position;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,7 @@ public class HalfMapValidator {
     private final int maxLSide = 3;        // maximum number of water fields on the long sides of the half map
     private final int maxSShortSide = 1;  // maximum number of water fields on the short sides of the half map
 
-    public boolean mapIsValid(HalfMapClass halfMap){
+    public boolean mapIsValid(MapClass halfMap){
         if(!checkNumberOfFields(halfMap))
             return false;
 
@@ -39,7 +40,7 @@ public class HalfMapValidator {
 
     }
 
-    private boolean checkSize(HalfMapClass halfMap){
+    private boolean checkSize(MapClass halfMap){
         logger.info("Checking the size of the map");
         if(halfMap.getHeight() != height) {
             logger.warn("Height is " + halfMap.getHeight());
@@ -56,7 +57,7 @@ public class HalfMapValidator {
         return true;
     }
 
-    private boolean checkFortress(HalfMapClass halfMap){
+    private boolean checkFortress(MapClass halfMap){
         logger.info("Checking the fortress");
         long fortressNumber = halfMap
                 .getNodes()
@@ -75,7 +76,7 @@ public class HalfMapValidator {
         return true;
     }
 
-    private boolean checkSides(HalfMapClass halfMap){
+    private boolean checkSides(MapClass halfMap){
         logger.info("Checking the number of water fields on the sides");
 
         if(!longLineCheck(halfMap,0))
@@ -91,7 +92,7 @@ public class HalfMapValidator {
         return true;
     }
 
-    private boolean checkWaterFields(HalfMapClass halfMap){
+    private boolean checkWaterFields(MapClass halfMap){
         int waterNumber = halfMap.getWaterNumber();
 
         if(waterNumber < minWater){
@@ -103,7 +104,7 @@ public class HalfMapValidator {
         return true;
     }
 
-    private boolean checkMountainFields(HalfMapClass halfMap){
+    private boolean checkMountainFields(MapClass halfMap){
         int mountainNumber = halfMap.getMountainNumber();
         if(mountainNumber < minMountains){
             logger.warn("The number of mountain fields is " + mountainNumber);
@@ -114,7 +115,7 @@ public class HalfMapValidator {
         return true;
     }
 
-    private boolean checkGrassFields(HalfMapClass halfMap){
+    private boolean checkGrassFields(MapClass halfMap){
         int grassNumber = halfMap.getGrassNumber();
         if(grassNumber < minGrass){
             logger.warn("The number of grass fields is " + grassNumber);
@@ -125,7 +126,7 @@ public class HalfMapValidator {
         return true;
     }
 
-    private boolean checkNumberOfFields(HalfMapClass halfMap){
+    private boolean checkNumberOfFields(MapClass halfMap){
         logger.info("Checking if there are enough fields of each type");
 
         if(!checkGrassFields(halfMap))
@@ -141,7 +142,7 @@ public class HalfMapValidator {
         return true;
     }
 
-    private boolean shortLineCheck(HalfMapClass halfMap, int x){
+    private boolean shortLineCheck(MapClass halfMap, int x){
         long waterNumber = halfMap
                 .getNodes()
                 .stream()
@@ -157,7 +158,7 @@ public class HalfMapValidator {
         return true;
     }
 
-    private boolean longLineCheck(HalfMapClass halfMap, int y){
+    private boolean longLineCheck(MapClass halfMap, int y){
         long waterNumber = halfMap
                 .getNodes()
                 .stream()
@@ -194,7 +195,7 @@ public class HalfMapValidator {
 
     }
 
-    private boolean checkIsland(HalfMapClass halfMap){
+    private boolean checkIsland(MapClass halfMap){
         HashMap<Position, EnumTerrain> terrainNodes = halfMap.getTerrainNodes();
         floodFill(0,0, terrainNodes);
 

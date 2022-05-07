@@ -1,6 +1,6 @@
 package path.adjacency_list;
 
-import map.full_map.FullMapClass;
+import map.MapClass;
 import map.Position;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,10 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class AdjancecyListGenerator {
-    private FullMapClass fullMap;
+    private MapClass fullMap;
     private static Logger logger = LoggerFactory.getLogger(AdjancecyListGenerator.class);
 
-    public AdjancecyListGenerator(FullMapClass fullMap) {
+    public AdjancecyListGenerator(MapClass fullMap) {
         this.fullMap = fullMap;
     }
 

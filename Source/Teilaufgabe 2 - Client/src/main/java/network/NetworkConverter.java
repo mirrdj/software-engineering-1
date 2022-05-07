@@ -5,10 +5,13 @@ import MessagesBase.MessagesFromClient.ETerrain;
 import MessagesBase.MessagesFromClient.HalfMap;
 import MessagesBase.MessagesFromClient.HalfMapNode;
 import MessagesBase.MessagesFromServer.*;
-import data.*;
-import map.*;
+import data.EnumPlayerGameState;
+import data.GameStateClass;
+import data.PlayerStateClass;
+import map.EnumTerrain;
+import map.MapClass;
+import map.MapNodeClass;
 import map.full_map.*;
-import map.half_map.HalfMapClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import path.EnumMove;
@@ -108,8 +111,8 @@ public class NetworkConverter {
         return new HalfMapNode(x, y, fortPresent, terrain);
     }
 
-    // convert from my own HalfMapClass to network HalfMap
-    private HalfMap convertHalfMapClass(HalfMapClass halfMapClass, String uniquePlayerID) {
+    // convert from my own MapClass to network HalfMap
+    private HalfMap convertMapClass(MapClass halfMapClass, String uniquePlayerID) {
         logger.debug("unique player id is " + uniquePlayerID);
         List<MapNodeClass> classNodes = new ArrayList<>(halfMapClass.getNodes());
         List<HalfMapNode> networkNodes = new ArrayList<>();
@@ -137,14 +140,14 @@ public class NetworkConverter {
 
 
     // convert the network FullMap class to my own FullMapClass
-    private FullMapClass convertFullMap(FullMap fullMap) {
+    private MapClass convertFullMap(FullMap fullMap) {
         List<FullMapNode> networkNodes = new ArrayList<>(fullMap.getMapNodes());
         List<MapNodeClass> classNodes = new ArrayList<>();
 
         for(FullMapNode fmNode : networkNodes)
             classNodes.add(convertFullMapNode(fmNode));
 
-        return new FullMapClass(classNodes);
+        return new MapClass(classNodes);
     }
 
     // convert the network PlayerState class to my own PlayerStateClass
@@ -168,8 +171,8 @@ public class NetworkConverter {
         }
 
         if(fullMap.isPresent()) {
-            FullMapClass fullMapClass = convertFullMap(fullMap.get());
-            return new GameStateClass(gameStateID, fullMapClass, players);
+            MapClass mapClass = convertFullMap(fullMap.get());
+            return new GameStateClass(gameStateID, mapClass, players);
         }
 
         return new GameStateClass(gameStateID, players);
@@ -180,9 +183,9 @@ public class NetworkConverter {
         return networkMessenger.postPlayerRegistration();
     }
 
-    public void postHalfMap(HalfMapClass halfMapClass, String uniquePlayerID) throws Exception {
+    public void postHalfMap(MapClass halfMapClass, String uniquePlayerID) throws Exception {
         logger.info("Sending the map");
-        HalfMap halfMap = convertHalfMapClass(halfMapClass, uniquePlayerID);
+        HalfMap halfMap = convertMapClass(halfMapClass, uniquePlayerID);
         logger.info(halfMap.toString());
         networkMessenger.postHalfMap(halfMap);
     }

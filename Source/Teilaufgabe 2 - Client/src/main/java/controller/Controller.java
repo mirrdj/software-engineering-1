@@ -8,9 +8,8 @@ import map.EnumTerrain;
 import map.Position;
 import map.full_map.EnumLayout;
 import data.EnumPlayerGameState;
-import map.full_map.FullMapClass;
-import map.half_map.HalfMapClass;
-import map.half_map.HalfMapGenerator;
+import map.MapClass;
+import map.half_map.MapGenerator;
 import network.NetworkConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +29,7 @@ public class Controller {
     private GameStateClass gameState;
     private AIClass aiObject = new AIClass();
     private String ownPlayerID;
-    private FullMapClass fullMap; // TODO: remove this
+    private MapClass fullMap; // TODO: remove this
     private PlayerStateClass ownPlayerState; // TODO: remove this
     private EnumGamePhase gamePhase;
     private EnumLayout mapLayout; // TODO: remove this
@@ -80,13 +79,21 @@ public class Controller {
 //        return ownPlayerState.getState() == EnumPlayerGameState.MUST_WAIT;
 //    }
 
-    private HalfMapClass generateHalfMap() throws Exception {
-        HalfMapGenerator generator = new HalfMapGenerator(4, 3);
+    private MapClass generateHalfMap() throws Exception {
+        MapGenerator generator = new MapGenerator(4, 3);
         return generator.generateHalfMap();
    }
 
     public void sendHalfMap() throws Exception{
         boolean act;
+        logger.info("Generate half map");
+        MapClass halfMap = generateHalfMap();
+        HalfMapValidator halfMapValidator = new HalfMapValidator();
+        while (!halfMapValidator.mapIsValid(halfMap)) {
+            halfMap = generateHalfMap();
+        }
+        logger.info("Half map is valid");
+
         do {
             act = mustAct();
             logger.debug("wait for my turn");
@@ -95,13 +102,6 @@ public class Controller {
 
         logger.info("My turn to send the half map");
 
-        logger.info("Generate half map");
-        HalfMapClass halfMap = generateHalfMap();
-        HalfMapValidator halfMapValidator = new HalfMapValidator();
-        while (!halfMapValidator.mapIsValid(halfMap)) {
-            halfMap = generateHalfMap();
-        }
-        logger.info("Half map is valid");
 
         networkConverter.postHalfMap(halfMap, ownPlayerID);
         logger.info("Half map sent");
