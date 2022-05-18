@@ -1,0 +1,15 @@
+\22:57:00.266 [Test worker] WARN  map.HalfMapValidator - The number of mountain fields is 2
+Q22:57:00.268 [Test worker] WARN  map.HalfMapValidator - It should be at least 3
+L22:57:00.284 [Test worker] WARN  map.HalfMapValidator - There is no island
+[22:57:00.288 [Test worker] WARN  map.HalfMapValidator - Too many water fields 4 on side 0
+placing treasure at 1 1
+
+[22:57:00.296 [Test worker] WARN  map.HalfMapValidator - Too many water fields 2 on side 0
+Y22:57:00.297 [Test worker] WARN  map.HalfMapValidator - The number of water fields is 3
+Q22:57:00.297 [Test worker] WARN  map.HalfMapValidator - It should be at least 4
+D22:57:00.297 [Test worker] WARN  map.HalfMapValidator - Width is 6
+E22:57:00.297 [Test worker] WARN  map.HalfMapValidator - should be 8
+$-Z22:57:00.440 [Test worker] WARN  map.MapGenerator - The fortress tried to be place on5 2
+$.Z22:57:00.447 [Test worker] WARN  map.MapGenerator - The fortress tried to be place on0 0
+$/Z22:57:00.449 [Test worker] WARN  map.MapGenerator - The fortress tried to be place on1 1
+$0Z22:57:00.450 [Test worker] WARN  map.MapGenerator - The fortress tried to be place on0 0
