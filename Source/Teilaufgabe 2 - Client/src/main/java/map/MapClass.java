@@ -1,9 +1,6 @@
 package map;
 
-import map.full_map.EnumFortState;
-import map.full_map.EnumLayout;
-import map.full_map.EnumPlayerPositionState;
-import map.full_map.EnumTreasureState;
+import exceptions.NotFullMapException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class MapClass {
     private static final Logger logger = LoggerFactory.getLogger(MapClass.class);
-    private Collection<MapNodeClass> nodes;
+    private final Collection<MapNodeClass> nodes;
 
     public MapClass(Collection<MapNodeClass> nodes){
         this.nodes = nodes;
@@ -22,33 +19,83 @@ public class MapClass {
     }
 
     public int getHeight(){
-        int height = nodes
+        MapNodeClass node = nodes
                 .stream()
                 .max(Comparator.comparing(MapNodeClass::getY))
-                .get()
-                .getY();
-        height += 1;
+                .orElse(null);
 
-        return height;
+        if(node != null)
+            return node.getY() + 1;
+
+        return -1;
     }
+
     public int getWidth(){
-        int width = nodes
+        MapNodeClass node = nodes
                 .stream()
                 .max(Comparator.comparing(MapNodeClass::getX))
-                .get()
-                .getX();
-        width += 1;
+                .orElse(null);
 
-        return width;
+        if(node != null)
+            return node.getX() + 1;
+
+        return -1;
     }
 
     public EnumLayout getLayout(){
+        if(!(getHeight() == 8 && getWidth() == 8) && !(getHeight() == 4 && getWidth() == 16))
+            throw new NotFullMapException("The map is not a full map so there is no defined layout");
+
         if(getHeight() == 8 && getWidth() == 8)
             return EnumLayout.VERTICAL;
-        if(getHeight() == 4 && getWidth() == 16)
+        else
             return EnumLayout.HORIZONTAL;
+    }
 
-        return null;
+    public MapClass getFirstHalf() {
+        if(!(getHeight() == 8 && getWidth() == 8) && !(getHeight() == 4 && getWidth() == 16))
+            throw new NotFullMapException("The map is not a full map so there is no first half map");
+
+        List<MapNodeClass> firstHalf = new ArrayList<>();
+        if (getHeight() == 8 && getWidth() == 8) {
+            for (MapNodeClass node : nodes) {
+                if (node.getX() < 4) {
+                    firstHalf.add(node);
+                }
+            }
+
+        } else if (getHeight() == 4 && getWidth() == 16) {
+            for (MapNodeClass node : nodes) {
+                if (node.getY() < 4) {
+                    firstHalf.add(node);
+                }
+            }
+        }
+
+        return new MapClass(firstHalf);
+    }
+
+    public MapClass  getSecondHalf(){
+        if(!(getHeight() == 8 && getWidth() == 8) && !(getHeight() == 4 && getWidth() == 16))
+            throw new NotFullMapException("The map is not a full map so there is no first half map");
+
+        List<MapNodeClass> secondHalf = new ArrayList<>();
+        if (getHeight() == 8 && getWidth() == 8) {
+            for (MapNodeClass node : nodes) {
+                if (node.getX() >= 8) {
+                    secondHalf.add(node);
+                }
+            }
+
+        } else {
+            for (MapNodeClass node : nodes) {
+                if (node.getY() >= 4) {
+                    secondHalf.add(node);
+                }
+            }
+        }
+
+        return new MapClass(secondHalf);
     }
 
     public HashMap<Position, EnumTerrain> getTerrainNodes(){
@@ -64,34 +111,12 @@ public class MapClass {
 
 
     public MapNodeClass getNodeAtPosition(int x, int y){
-       MapNodeClass node = getNodes()
-                .stream()
-                .filter(n -> n.getX() == x)
-                .filter(n -> n.getY() == y)
-                .findFirst()
-                .get();
-
-        return node;
-    }
-
-    public int getNeededMoves(int x, int y){
-        int number = getNodes()
-                .stream()
-                .filter(n -> n.getX() == x)
-                .filter(n -> n.getY() == y)
-                .findFirst()
-                .get()
-                .getTerrain()
-                .getNeededMoves();
-
-        return number;
-    }
-
-    public int getMovesBetweenPositions(Position pos1, Position pos2){
-        int movesNeeded1 = getNeededMoves(pos1.getX(), pos1.getY());
-        int movesNeeded2 = getNeededMoves(pos2.getX(), pos2.getY());
-
-        return movesNeeded1 + movesNeeded2;
+        return getNodes()
+                 .stream()
+                 .filter(n -> n.getX() == x)
+                 .filter(n -> n.getY() == y)
+                 .findFirst()
+                 .orElse(null);
     }
 
     public Position getMyPosition(){
@@ -100,11 +125,13 @@ public class MapClass {
                 .filter(n -> n.getPlayerPosition() == EnumPlayerPositionState.MY_POSITION ||
                         n.getPlayerPosition() == EnumPlayerPositionState.BOTH_PLAYER_POSITION)
                 .findFirst()
-                .get();
+                .orElse(null);
 
-        return new Position(node.getX(), node.getY());
+        if(node != null)
+            return new Position(node.getX(), node.getY());
+
+        return null;
     }
-
     public List<Position> getPositionList(){
         return nodes
                 .stream()
@@ -126,34 +153,28 @@ public class MapClass {
     }
 
     public int getMountainNumber(){
-        int mountainNumber = nodes
+        return (int) nodes
                 .stream()
                 .filter(n -> n.getTerrain() == EnumTerrain.MOUNTAIN)
-                .collect(Collectors.toList())
-                .size();
-        return mountainNumber;
+                .count();
     }
 
     public int getWaterNumber(){
-        int waterNumber = nodes
+        return (int) nodes
                 .stream()
                 .filter(n -> n.getTerrain() == EnumTerrain.WATER)
-                .collect(Collectors.toList())
-                .size();
-        return waterNumber;
+                .count();
     }
 
     public int getGrassNumber(){
-        int grassNumber = nodes
+        return (int) nodes
                 .stream()
                 .filter(n -> n.getTerrain() == EnumTerrain.GRASS)
-                .collect(Collectors.toList())
-                .size();
-        return grassNumber;
+                .count();
     }
 
     public Position getEnemyFortPosition(){
-        MapNodeClass node = getNodes()
+        MapNodeClass node = nodes
                 .stream()
                 .filter(n -> n.getFort() == EnumFortState.ENEMY_FORT_PRESENT)
                 .findFirst()
@@ -164,14 +185,6 @@ public class MapClass {
         return null;
     }
 
-    public List<Position> getMountainPositions(){
-        List<Position> list = getNodes()
-                .stream()
-                .filter(n -> n.getTerrain() == EnumTerrain.MOUNTAIN)
-                .map(n -> new Position(n.getX(), n.getY()))
-                .collect(Collectors.toList());
-        return list;
-    }
 
     @Override
     public String toString() {

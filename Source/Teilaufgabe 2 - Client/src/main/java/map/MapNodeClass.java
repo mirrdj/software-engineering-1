@@ -1,8 +1,8 @@
 package map;
 
-import map.full_map.EnumFortState;
-import map.full_map.EnumPlayerPositionState;
-import map.full_map.EnumTreasureState;
+import exceptions.PlacedOnWrongFieldException;
+
+import java.util.Objects;
 
 public class MapNodeClass {
     private final int x;
@@ -12,22 +12,35 @@ public class MapNodeClass {
     private  EnumTreasureState treasure;
     private final EnumFortState fort;
 
-    public MapNodeClass(int x, int y, boolean fortPresent, EnumTerrain terrain) {
+    public MapNodeClass(int x, int y, EnumTerrain terrain, boolean fortPresent) {
         this.x = x;
         this.y = y;
         this.terrain = terrain;
+
+        if(terrain != EnumTerrain.GRASS && fortPresent)
+            throw new PlacedOnWrongFieldException("Treasure cannot be placed on this type of field " + terrain);
+
         if(fortPresent)
             this.fort = EnumFortState.MY_FORT_PRESENT;
         else
             this.fort = EnumFortState.NO_OR_UNKNOWN_FORT_STATE;
     }
 
-    public MapNodeClass(EnumTerrain terrain, EnumPlayerPositionState playerPosition, EnumTreasureState treasure, EnumFortState fort, int x, int y) {
+    public MapNodeClass(int x, int y, EnumTerrain terrain, EnumFortState fort, EnumPlayerPositionState playerPosition, EnumTreasureState treasure) {
         this.x = x;
         this.y = y;
         this.terrain = terrain;
+
+        if(terrain == EnumTerrain.WATER && playerPosition != EnumPlayerPositionState.NO_PLAYER_PRESENT)
+            throw new PlacedOnWrongFieldException("Player cannot be placed on this type of field: " + terrain);
         this.playerPosition = playerPosition;
+
+        if(terrain != EnumTerrain.GRASS && treasure != EnumTreasureState.NO_OR_UNKNOWN_TREASURE_STATE)
+            throw new PlacedOnWrongFieldException("Treasure cannot be placed on this type of field " + terrain);
         this.treasure = treasure;
+
+        if(terrain != EnumTerrain.GRASS && fort != EnumFortState.NO_OR_UNKNOWN_FORT_STATE)
+            throw new PlacedOnWrongFieldException("Treasure cannot be placed on this type of field " + terrain);
         this.fort = fort;
     }
 
@@ -51,6 +64,21 @@ public class MapNodeClass {
     }
 
     public boolean isFortPresent(){return fort == EnumFortState.MY_FORT_PRESENT;}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MapNodeClass)) return false;
+        MapNodeClass that = (MapNodeClass) o;
+        return x == that.x && y == that.y && terrain == that.terrain
+                && playerPosition == that.playerPosition
+                && treasure == that.treasure && fort == that.fort;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, terrain, playerPosition, treasure, fort);
+    }
 
     @Override
     public String toString() {

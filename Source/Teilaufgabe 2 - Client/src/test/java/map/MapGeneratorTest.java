@@ -1,9 +1,10 @@
-package map.half_map;
+package map;
 
 import exceptions.WrongNumberOfGrassFieldsException;
 import exceptions.WrongNumberOfMountainFieldsException;
 import exceptions.WrongNumberOfWaterFieldsException;
 import map.MapClass;
+import map.MapGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -1,4 +1,4 @@
-package map.half_map;
+package map;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,20 +9,14 @@ import java.util.stream.Collectors;
 import exceptions.WrongNumberOfGrassFieldsException;
 import exceptions.WrongNumberOfMountainFieldsException;
 import exceptions.WrongNumberOfWaterFieldsException;
-import map.EnumTerrain;
-import map.MapClass;
-import map.MapNodeClass;
-import map.Position;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MapGenerator {
 	private static final Logger logger = LoggerFactory.getLogger(MapGenerator.class);
-	private HashMap<Position, EnumTerrain> nodes = new HashMap<>();
-	private Position fortPosition;
-	private int minWaterNumber;
-	private int minMountainNumber;
+	private final int minWaterNumber;
+	private final int minMountainNumber;
 
 
 	public MapGenerator(int minWaterNumber, int minMountainNumber) {
@@ -37,37 +31,40 @@ public class MapGenerator {
 		this.minMountainNumber = minMountainNumber;
 	}
 
-	private void placeFortress(int x, int y) {
+	private Position findFortressPosition( int x, int y, HashMap<Position, EnumTerrain> nodes) {
 		logger.warn("The fortress tried to be place on" + x + " " + y);
 
 		if(x > 0 && nodes.get(new Position(x - 1, y)) == EnumTerrain.GRASS)
-			fortPosition = new Position(x - 1, y);
+			return new Position(x - 1, y);
 
 		else if(x < 7 && nodes.get(new Position(x + 1, y)) == EnumTerrain.GRASS)
-			fortPosition = new Position(x + 1, y);
+			return new Position(x + 1, y);
 
 		else if(y > 0 && nodes.get(new Position(x, y - 1)) == EnumTerrain.GRASS)
-			fortPosition = new Position(x, y - 1);
+			return new Position(x, y - 1);
 
-		else if(y < 2 && nodes.get(new Position(x, y + 1)) == EnumTerrain.GRASS)
-			fortPosition = new Position(x, y + 1);
+		else if(y < 3 && nodes.get(new Position(x, y + 1)) == EnumTerrain.GRASS)
+			return new Position(x, y + 1);
 
 		else if(x < 7)
-			placeFortress(x + 1, y);
+			findFortressPosition(x + 1, y, nodes);
 		
 		else if(y > 0)
-			placeFortress(x, y - 1);
+			findFortressPosition(x, y - 1, nodes);
 		
 		else if(x > 0)
-			placeFortress(x - 1, y);
+			findFortressPosition(x - 1, y, nodes);
 		
-		else if(y < 2)
-			placeFortress(x, y + 1);
+		else if(y < 3)
+			findFortressPosition(x, y + 1, nodes);
 
 		logger.info("The fortress was actually placed at" + x + " " + y);
+
+		return null;
 	}
 
-	private void placeMountain(int mountainNumberNeeded) {
+	private void placeMountain(int mountainNumberNeeded, HashMap<Position, EnumTerrain> nodes) {
+		logger.debug("Placing mountain");
 		int index = 0;
 
 		while(index < mountainNumberNeeded) {
@@ -82,7 +79,8 @@ public class MapGenerator {
 		}
 	}
 
-	private void placeWater(int waterNumberNeeded) {
+	private void placeWater(int waterNumberNeeded, HashMap<Position, EnumTerrain> nodes) {
+		logger.debug("Placing water");
 		int index = 0;
 		while(index < waterNumberNeeded) {
 			int randomX = (int) (Math.random() * 8);
@@ -96,7 +94,8 @@ public class MapGenerator {
 		}
 	}
 
-	private void placeGrass(){
+	private void placeGrass(HashMap<Position, EnumTerrain> nodes){
+		logger.debug("Placing grass");
 		for(int i = 0; i < 8; i++) {
 			for (int j = 0; j < 4; j++) {
 				Position position = new Position(i, j);
@@ -105,7 +104,7 @@ public class MapGenerator {
 		}
 	}
 
-	private List<Position> getMountainPosition () {
+	private List<Position> getMountainPosition (HashMap<Position, EnumTerrain> nodes) {
 		return nodes
 				.entrySet()
 				.stream()
@@ -114,8 +113,8 @@ public class MapGenerator {
 				.collect(Collectors.toList());
 	}
 
-	private Position getRandomMountain() {
-		List<Position> positionList = getMountainPosition();
+	private Position getRandomMountain(HashMap<Position, EnumTerrain> nodes) {
+		List<Position> positionList = getMountainPosition(nodes);
 		logger.debug("Mountains are at " + positionList);
 		int randomIndex = (int) (Math.random() * positionList.size());
 		logger.debug("Random position is " + randomIndex);
@@ -124,13 +123,20 @@ public class MapGenerator {
 
 
 	public MapClass generateHalfMap() {
+		HashMap<Position, EnumTerrain> nodes = new HashMap<>();
 		List<MapNodeClass> nodeList = new ArrayList<>();
 
-		placeMountain(minMountainNumber);
-		placeWater(minWaterNumber);
-		placeGrass();
-		Position mountain = getRandomMountain();
-		placeFortress(mountain.getX(), mountain.getY());
+		placeMountain(minMountainNumber, nodes);
+		placeWater(minWaterNumber, nodes);
+		placeGrass(nodes);
+
+		Position mountain = getRandomMountain(nodes);
+		Position fortPosition = findFortressPosition(mountain.getX(), mountain.getY(), nodes);
+
+		while (fortPosition == null){
+			mountain = getRandomMountain(nodes);
+			fortPosition = findFortressPosition(mountain.getX(), mountain.getY(), nodes);
+		}
 
 		for(int i = 0; i < 8; i++) {
 			for (int j = 0; j < 4; j++) {
@@ -139,7 +145,7 @@ public class MapGenerator {
 				EnumTerrain terrain = nodes.get(position);
 				logger.debug("The terrain at " + i + " " + j + " is " + terrain);
 
-				nodeList.add(new MapNodeClass(i, j, fortPresent, terrain));
+				nodeList.add(new MapNodeClass(i, j, terrain, fortPresent));
 			}
 		}
 
