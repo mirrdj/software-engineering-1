@@ -1,5 +1,7 @@
 package path;
 
+import exceptions.PlacedOnWrongFieldException;
+import map.EnumTerrain;
 import map.MapClass;
 import map.Position;
 
@@ -10,7 +12,6 @@ import java.util.*;
 
 public class DijkstraCalculator {
     private static final Logger logger = LoggerFactory.getLogger(DijkstraCalculator.class);
-    private final List<Position> positionList;
     private final MapClass mapClass;
 
     public static class Node {
@@ -30,6 +31,23 @@ public class DijkstraCalculator {
         }
     }
 
+    public DijkstraCalculator(MapClass mapClass) {
+        this.mapClass = mapClass;
+    }
+
+    private int getNeededMoves(int x, int y){
+        return mapClass
+                .getTerrainNodes()
+                .get(new Position(x, y))
+                .getNeededMoves();
+    }
+
+    private int getMovesBetweenPositions(Position pos1, Position pos2){
+        int movesNeeded1 = getNeededMoves(pos1.getX(), pos1.getY());
+        int movesNeeded2 = getNeededMoves(pos2.getX(), pos2.getY());
+
+        return movesNeeded1 + movesNeeded2;
+    }
 
     private void addEdge(HashMap<Position, List<Node>> map, Position pos1, Position pos2){
         // If there is no list containing any List<Node> at index yet
@@ -41,7 +59,7 @@ public class DijkstraCalculator {
         }
 
         // Number of moves needed to move from pos1 to pos2
-        int movesNeeded = mapClass.getMovesBetweenPositions(pos1, pos2);
+        int movesNeeded = getMovesBetweenPositions(pos1, pos2);
 
         // Create node list from pos2 and add it to the list of pos1
         Node node = new Node(pos2, movesNeeded);
@@ -49,7 +67,7 @@ public class DijkstraCalculator {
         logger.debug("added " + node + " at " + pos1);
     }
 
-    public HashMap<Position, List<Node>> createAdjancecyList(){
+    private HashMap<Position, List<Node>> createAdjacencyList(){
         HashMap<Position, List<Node>> adjacencyList = new HashMap<>();
         int height = mapClass.getHeight();
         int width = mapClass.getWidth();
@@ -87,22 +105,21 @@ public class DijkstraCalculator {
         return adjacencyList;
     }
 
-    public DijkstraCalculator(MapClass mapClass, List<Position> positionList) {
-        this.mapClass = mapClass;
-        this.positionList = positionList;
-    }
 
 
-    private HashMap<Position, Integer> createDistanceList(List<Position> positionList, Position from){
+
+    private HashMap<Position, Integer> createDistanceList(Position from){
         HashMap<Position, Integer> distance = new HashMap<>();
-        positionList.forEach(pos -> distance.put(pos, Integer.MAX_VALUE));
+        mapClass.getPositionList().forEach(pos -> distance.put(pos, Integer.MAX_VALUE));
         distance.put(from, 0);
+
         return distance;
     }
 
-    private HashMap<Position, Position> createPreviousList(List<Position> positionList){
+    private HashMap<Position, Position> createPreviousList(){
         HashMap<Position, Position> previous = new HashMap<>();
-        positionList.forEach(pos -> previous.put(pos, null));
+        mapClass.getPositionList().forEach(pos -> previous.put(pos, null));
+
         return previous;
     }
 
@@ -119,16 +136,19 @@ public class DijkstraCalculator {
     }
 
     public DijkstraResult dijkstraAlgorithm(Position from){
-        List<Position> unvisited = new ArrayList<>(positionList);
-        HashMap<Position, Integer> distance = createDistanceList(unvisited, from);
-        HashMap<Position, Position> previous = createPreviousList(unvisited);
-        HashMap<Position, List<Node>> adjancecyList = createAdjancecyList();
+        if(mapClass.getTerrainNodes().get(from) == EnumTerrain.WATER)
+            throw new PlacedOnWrongFieldException("Player initial position is water");
+
+        List<Position> unvisited = mapClass.getPositionList();
+        HashMap<Position, Integer> distance = createDistanceList(from);
+        HashMap<Position, Position> previous = createPreviousList();
+        HashMap<Position, List<Node>> adjacencyList = createAdjacencyList();
 
         while(!unvisited.isEmpty()){
             Position current = getPositionOfMinimumDistance(distance, unvisited);
             unvisited.remove(current);
 
-            List<Node> neighbourNodes = adjancecyList.get(current);
+            List<Node> neighbourNodes = adjacencyList.get(current);
             for(Node node : neighbourNodes){
                 Position neighbourPosition = node.getPosition();
                 Integer weight = node.getWeight();
@@ -142,7 +162,7 @@ public class DijkstraCalculator {
 
         }
 
-        return new DijkstraResult(from, distance, previous);
+        return new DijkstraResult(distance, previous);
     }
 
 }

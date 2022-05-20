@@ -15,6 +15,9 @@ public class TargetChooser {
     // Finds the closest position from a list positions
     // to the starting position
     public Position chooseTarget(Position from, List<Position> positions, HashMap<Position, Integer> distanceMap) {
+        if(!distanceMap.containsKey(from))
+            throw new IllegalArgumentException("The starting position is not among the calculated positions");
+
         Position target =  positions
                 .stream()
                 .filter(p -> !p.equals(from))

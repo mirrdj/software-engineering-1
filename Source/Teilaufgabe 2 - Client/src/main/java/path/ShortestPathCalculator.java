@@ -1,5 +1,6 @@
 package path;
 
+import exceptions.PositionInaccessibleException;
 import map.Position;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,16 +10,17 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public final class ShortestPathCalculator {
+public class ShortestPathCalculator {
     private static final Logger logger = LoggerFactory.getLogger(ShortestPathCalculator.class);
 
-    private ShortestPathCalculator(){}
+    public List<Position> getShortestPath(Position from, Position target,  HashMap<Position, Position> previous){
+        if(!previous.containsValue(from))
+            throw new PositionInaccessibleException("The starting position is not among the calculated positions");
 
-    public static List<Position> getShortestPath(DijkstraResult result, Position target) throws Exception{
-        HashMap<Position, Position> previous = result.getPreviousMap();
+        if(!previous.containsKey(target))
+            throw new PositionInaccessibleException("The target position is not among the calculated positions");
+
         List<Position> positionList = new ArrayList<>();
-        Position from = result.getFrom();
-
         positionList.add(target);
 
         Position current = previous.get(target);
@@ -29,7 +31,7 @@ public final class ShortestPathCalculator {
         positionList.add(from);
 
         Collections.reverse(positionList);
-        logger.debug(positionList.toString());
+        logger.debug("Shortest path is: ", positionList.toString());
         return positionList;
     }
 }
