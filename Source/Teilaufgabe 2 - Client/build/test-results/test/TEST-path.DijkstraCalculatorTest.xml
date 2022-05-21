@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="path.DijkstraCalculatorTest" tests="31" skipped="0" failures="0" errors="0" timestamp="2022-05-21T12:59:16" hostname="DESKTOP-LV4HIIH" time="0.065">
+  <properties/>
+  <testcase name="dijkstraAlgorithm_startFromWaterField_throwPlacedOnWrongFieldException()" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="[1] x=0, y=0" classname="path.DijkstraCalculatorTest" time="0.006"/>
+  <testcase name="[2] x=0, y=3" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="[3] x=2, y=2" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="[4] x=3, y=0" classname="path.DijkstraCalculatorTest" time="0.002"/>
+  <testcase name="[5] x=3, y=2" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="dijkstraAlgorithm_fromUpperLeftToLowerRight_distanceEqual13()" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="[1] x=0, y=1" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="[2] x=0, y=2" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="[3] x=0, y=3" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="[4] x=1, y=1" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="[5] x=1, y=0" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="[6] x=2, y=1" classname="path.DijkstraCalculatorTest" time="0.002"/>
+  <testcase name="[7] x=3, y=0" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="[8] x=3, y=1" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="[9] x=0, y=0" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="[10] x=2, y=0" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="dijkstraAlgorithm_fromGrassToGrass_distanceEqual2()" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="[1] prevX=2, prevY=3, targetX=3, targetY=3" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="[2] prevX=2, prevY=2, targetX=2, targetY=3" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="[3] prevX=1, prevY=0, targetX=2, targetY=0" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="[4] prevX=0, prevY=2, targetX=0, targetY=3" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="[5] prevX=2, prevY=2, targetX=3, targetY=2" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="dijkstraAlgorithm_fromGrassToMountain_distanceEqual3()" classname="path.DijkstraCalculatorTest" time="0.0"/>
+  <testcase name="[1] prevX=1, prevY=3, targetX=2, targetY=3" classname="path.DijkstraCalculatorTest" time="0.0"/>
+  <testcase name="[2] prevX=2, prevY=0, targetX=1, targetY=0" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="[3] prevX=0, prevY=0, targetX=0, targetY=1" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="[4] prevX=2, prevY=2, targetX=3, targetY=2" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="[5] prevX=2, prevY=0, targetX=3, targetY=0" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="dijkstraAlgorithm_fromGrassToWater_distanceEqual5001()" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <testcase name="dijkstraAlgorithm_fromMountainToMountain_distanceEqual4()" classname="path.DijkstraCalculatorTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
