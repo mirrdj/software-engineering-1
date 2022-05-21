@@ -3,7 +3,6 @@ package client.main;
 
 import controller.Controller;
 import data.GameStateClass;
-import exceptions.NetworkCommunicationArgumentException;
 import network.NetworkConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,20 +15,30 @@ public class MainClient {
 		String serverBaseUrl = args[1];
 		String gameId = args[2];
 
+		NetworkConverter networkConverter = new NetworkConverter(serverBaseUrl, gameId);
+
+		GameStateClass gameState = new GameStateClass();
+		Controller controller = new Controller(networkConverter, gameState);
+		GameStateVisualization view = new GameStateVisualization(gameState, controller);
+
+		// Register player
 		try {
-			NetworkConverter networkConverter = new NetworkConverter(serverBaseUrl, gameId);
-
-			GameStateClass gameState = new GameStateClass();
-			Controller controller = new Controller(networkConverter, gameState);
-			GameStateVisualization view = new GameStateVisualization(gameState, controller);
-
-			// Register player
 			controller.registerPlayer();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 
-			// Send own half of the map
+		// Send own half of the map
+		try{
 			controller.sendHalfMap();
+		} catch(Exception e){
+			e.printStackTrace();
+		}
 
-			//Checking if both half maps have been sent
+
+		//Checking if both half maps have been sent
+		try{
 			logger.info("Checking if both halfs were sent");
 			boolean bothHalfMapsSent = false;
 			boolean gameEnded = false;
@@ -45,10 +54,17 @@ public class MainClient {
 				logger.info("Both half maps sent");
 				controller.setUpAI();
 			}
+		} catch (Exception e){
+			e.printStackTrace();
+		}
 
-			controller.setUpAI();
-			controller.performAction();
-
+		// Do stuff, get crazy wOoOoOooooooo
+		try {
+			boolean gameEnded = false;
+			do {
+				controller.performAction();
+				gameEnded = controller.gameEnded();
+			} while (!gameEnded);
 		} catch (Exception e){
 			e.printStackTrace();
 		}

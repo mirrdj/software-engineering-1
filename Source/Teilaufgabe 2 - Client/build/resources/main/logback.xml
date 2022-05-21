@@ -9,12 +9,13 @@
     </appender>
 
    <!-- Configure the general logging behaviour for all subpackages of "client" -->
-   <logger name="data" level="DEBUG"/>
+<!--   <logger name="data" level="DEBUG"/>-->
    <logger name="controller" level="DEBUG"/>
-   <logger name="client" level="DEBUG"/>
+<!--   <logger name="client" level="DEBUG"/>-->
 <!--   <logger name="map" level="DEBUG"/>-->
 <!--   <logger name="path" level="DEBUG"/>-->
-    <logger name="network" level="DEBUG"/>
+<!--    <logger name="network" level="DEBUG"/>-->
+<!--    <logger name="path" level="DEBUG"/>-->
 
    <!-- The logger configurations below significantly reduce the very chatty output of webflux -->
    <logger name="reactor" level="ERROR"/>

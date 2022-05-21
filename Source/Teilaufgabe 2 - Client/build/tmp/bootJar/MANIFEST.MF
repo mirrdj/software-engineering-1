@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
-Built-By: esad
-Build-Timestamp: 2021-10-29T09:49:47.960+0200
-Created-By: Gradle 7.2
-Build-Jdk: 16.0.2 (Oracle Corporation 16.0.2+7-67)
-Build-OS: Linux amd64 5.10.0-8-amd64
+Build-Timestamp: 2022-05-21T18:02:26.612+0200
+Created-By: Gradle 7.3
+Build-Jdk: 17.0.3 (Amazon.com Inc. 17.0.3+6-LTS)
+Built-By: mirun
+Build-OS: Windows 10 amd64 10.0
 Main-Class: org.springframework.boot.loader.JarLauncher
 Start-Class: client.main.MainClient
 Spring-Boot-Version: 2.5.5

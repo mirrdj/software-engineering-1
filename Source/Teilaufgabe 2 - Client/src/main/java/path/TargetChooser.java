@@ -1,5 +1,6 @@
 package path;
 
+import exceptions.PositionInaccessibleException;
 import map.Position;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,7 @@ public class TargetChooser {
     // to the starting position
     public Position chooseTarget(Position from, List<Position> positions, HashMap<Position, Integer> distanceMap) {
         if(!distanceMap.containsKey(from))
-            throw new IllegalArgumentException("The starting position is not among the calculated positions");
+            throw new PositionInaccessibleException("The starting position is not among the calculated positions");
 
         Position target =  positions
                 .stream()

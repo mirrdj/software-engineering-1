@@ -17,8 +17,12 @@ public class ShortestPathCalculator {
         if(!previous.containsValue(from))
             throw new PositionInaccessibleException("The starting position is not among the calculated positions");
 
-        if(!previous.containsKey(target))
+        if(!previous.containsKey(target)) {
+            logger.debug("Target is ", target);
+            logger.debug("Previous is ", previous);
             throw new PositionInaccessibleException("The target position is not among the calculated positions");
+
+        }
 
         List<Position> positionList = new ArrayList<>();
         positionList.add(target);

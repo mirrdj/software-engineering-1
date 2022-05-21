@@ -19,27 +19,37 @@ public class MapClass {
     }
 
     public int getHeight(){
-        MapNodeClass node = nodes
+        MapNodeClass nodeMin = nodes
+                .stream()
+                .min(Comparator.comparing(MapNodeClass::getY))
+                .orElse(null);
+
+        MapNodeClass nodeMax = nodes
                 .stream()
                 .max(Comparator.comparing(MapNodeClass::getY))
                 .orElse(null);
 
-        if(node != null)
-            return node.getY() + 1;
-
-        return -1;
+        if(nodeMin == null || nodeMax == null)
+            return -1;
+        else
+            return nodeMax.getY() - nodeMin.getY() + 1;
     }
 
     public int getWidth(){
-        MapNodeClass node = nodes
+        MapNodeClass nodeMin = nodes
+                .stream()
+                .min(Comparator.comparing(MapNodeClass::getX))
+                .orElse(null);
+
+        MapNodeClass nodeMax = nodes
                 .stream()
                 .max(Comparator.comparing(MapNodeClass::getX))
                 .orElse(null);
 
-        if(node != null)
-            return node.getX() + 1;
-
-        return -1;
+        if(nodeMin == null || nodeMax == null)
+            return -1;
+        else
+            return nodeMax.getX() - nodeMin.getX() + 1;
     }
 
     public MapClass getMyHalf(){

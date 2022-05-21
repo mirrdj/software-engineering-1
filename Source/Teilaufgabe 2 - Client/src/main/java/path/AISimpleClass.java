@@ -23,16 +23,21 @@ public class AISimpleClass implements AIInterface{
     MapClass enemyHalf;
 
     public AISimpleClass(MapClass fullMap){
+
+
         dijkstraCalculator = new DijkstraCalculator(fullMap);
         moveCalculator = new MoveCalculator(fullMap.getTerrainNodes());
 
         myHalf = fullMap.getMyHalf();
         relevantPositionsMyHalf =  myHalf.getPositionList();
         relevantPositionsMyHalf.removeIf(position -> fullMap.getTerrainNodes().get(position) == EnumTerrain.WATER);
+        relevantPositionsMyHalf.removeIf(position -> fullMap.getTerrainNodes().get(position) == EnumTerrain.MOUNTAIN);
+
 
         enemyHalf = fullMap.getEnemyHalf();
         relevantPositionsEnemyHalf = enemyHalf.getPositionList();
         relevantPositionsEnemyHalf.removeIf(position -> fullMap.getTerrainNodes().get(position) == EnumTerrain.WATER);
+        relevantPositionsEnemyHalf.removeIf(position -> fullMap.getTerrainNodes().get(position) == EnumTerrain.MOUNTAIN);
     }
 
     private Queue<EnumMove> generateAction(boolean treasureCollected, Position myPosition){
@@ -51,6 +56,7 @@ public class AISimpleClass implements AIInterface{
 
         // Choose target from the second half
         else {
+            logger.debug("Relevant positions enemy ", relevantPositionsEnemyHalf);
             DijkstraResult result = dijkstraCalculator.dijkstraAlgorithm(myPosition);
             Position target = targetChooser.chooseTarget(myPosition, relevantPositionsEnemyHalf, result.getDistanceMap());
             relevantPositionsEnemyHalf.remove(target);

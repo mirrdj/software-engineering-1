@@ -93,7 +93,7 @@ class MapClassTest {
     }
 
     @Test
-    public void getHeight_widthEqualValue_returnCorrectWidth_3() {
+    public void getWidth_widthEqualValue_returnCorrectWidth_3() {
         char[][] nodes = {
                 {'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'},
                 {'G', 'G', 'M', 'M', 'G', 'G', 'G', 'G'},

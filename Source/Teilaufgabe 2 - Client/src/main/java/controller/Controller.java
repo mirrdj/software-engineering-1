@@ -24,32 +24,37 @@ public class Controller {
     private AIInterface aiObject;
     private String ownPlayerID;
 
+    boolean treasureFound = false;
+    boolean treasureCollected = false;
+    boolean fortFound = false;
+    boolean fortReached = false;
+
     public Controller(NetworkConverter networkConverter, GameStateClass gameState) {
         this.networkConverter = networkConverter;
         this.gameState = gameState;
     }
 
-    private void updatePlayerState() throws Exception{
+    private void updatePlayerState() {
         GameStateClass temp = networkConverter.getGameState(ownPlayerID);
 
         if(temp.getPlayers() != null)
             this.gameState.setPlayers(temp.getPlayers());
     }
 
-    private void updateHalfMap() throws Exception{
+    private void updateMap() {
         GameStateClass temp = networkConverter.getGameState(ownPlayerID);
 
         if(temp.getMapClass() != null)
             this.gameState.setMapClass(temp.getMapClass());
     }
 
-    private boolean mustAct() throws Exception {
+    private boolean mustWait() {
         updatePlayerState();
 
         PlayerStateClass ownPlayerState = gameState.getPlayerWithID(ownPlayerID);
         logger.debug("In hasToWait(), the state is " + ownPlayerState.getPlayerGS());
 
-        return ownPlayerState.getPlayerGS() == EnumPlayerGameState.MUST_ACT;
+        return ownPlayerState.getPlayerGS() == EnumPlayerGameState.MUST_WAIT;
     }
 
     public void registerPlayer() {
@@ -79,8 +84,8 @@ public class Controller {
         return halfMap;
     }
 
-    public boolean checkBothHalfMapsSent() throws Exception {
-        updateHalfMap();
+    public boolean checkBothHalfMapsSent() {
+        updateMap();
         MapClass fullMap = gameState.getMapClass();
 
         return (fullMap.getHeight() == 8 && fullMap.getWidth() == 8) ||
@@ -90,12 +95,12 @@ public class Controller {
     public void sendHalfMap() throws Exception{
         MapClass halfMap = generateHalfMap();
 
-        boolean act;
+        boolean wait;
         do {
-            act = mustAct();
+            wait = mustWait();
             logger.debug("wait for my turn");
             Thread.sleep(400);
-        } while (!act);
+        } while (wait);
 
         logger.info("My turn to send the half map");
         networkConverter.postHalfMap(halfMap, ownPlayerID);
@@ -103,12 +108,11 @@ public class Controller {
     }
 
 
-    public void setUpAI() throws Exception {
-        updateHalfMap();
+    public void setUpAI() {
         aiObject = new AISimpleClass(gameState.getMapClass());
     }
 
-    private boolean treasureCollected() throws Exception {
+    private boolean treasureCollected() {
         updatePlayerState();
 
         PlayerStateClass ownPlayerState = gameState.getPlayerWithID(ownPlayerID);
@@ -120,46 +124,41 @@ public class Controller {
         return false;
     }
 
-    public void performAction() throws Exception {
-        boolean treasureFound = false, treasureCollected = false;
-        boolean fortFound = false, fortReached = false;
+    public void performAction() throws InterruptedException {
+        Position myPosition = gameState.getMapClass().getMyPosition();
+        Queue<EnumMove> moves = aiObject.generateAction(
+                treasureFound,
+                treasureCollected,
+                fortFound,
+                myPosition);
 
-        while(!gameEnded()) {
-            Position myPosition = gameState.getMapClass().getMyPosition();
-            Queue<EnumMove> moves = aiObject.generateAction(
-                    treasureFound,
-                    treasureCollected,
-                    fortFound,
-                    myPosition);
+        while (!moves.isEmpty()){
+            if(treasureCollected)
+                logger.debug("Treasure already collected");
 
-            while (!moves.isEmpty()){
-                if(treasureCollected)
-                    logger.debug("Treasure already collected");
+            boolean wait;
+            do {
+                wait = mustWait();
+                logger.debug("wait for my turn");
+                Thread.sleep(400);
+            } while (wait);
 
-                boolean act;
-                do {
-                    act = mustAct();
-                    logger.debug("wait for my turn");
-                    Thread.sleep(400);
-                } while (!act);
+            if(gameEnded())
+                break;
 
-                networkConverter.postMove(ownPlayerID, moves.poll());
-                updateHalfMap();
-                updatePlayerState();
+            networkConverter.postMove(ownPlayerID, moves.poll());
+            updateMap();
+            updatePlayerState();
 
-                if(gameEnded())
-                    break;
-
-                // If treasure just collected, do not continue to target if not already reached
-                if(!treasureCollected && treasureCollected()){
-                   treasureCollected = treasureCollected();
-                   break;
-                }
+            // If treasure just collected, do not continue to target if not already reached
+            if(!treasureCollected && treasureCollected()){
+               treasureCollected = treasureCollected();
+               break;
             }
         }
    }
 
-    public boolean gameEnded() throws Exception {
+    public boolean gameEnded() {
         PlayerStateClass ownPlayerState = gameState.getPlayerWithID(ownPlayerID);
 
         if(ownPlayerState.hasWon()){
