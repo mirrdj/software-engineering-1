@@ -15,8 +15,10 @@ import java.util.Set;
 public class GameStateClass {
     private static final Logger logger = LoggerFactory.getLogger(GameStateClass.class);
     private final PropertyChangeSupport changes = new PropertyChangeSupport(this);
-    private MapClass mapClass;
     private List<PlayerStateClass> players;
+    private PlayerStateClass myPlayer;
+    private PlayerStateClass enemyPlayer;
+    private MapClass mapClass;
 
     public GameStateClass() {}
     public GameStateClass(MapClass mapClass, List<PlayerStateClass> players) {
@@ -36,17 +38,15 @@ public class GameStateClass {
     }
 
     public PlayerStateClass getPlayerWithID(String uniqueID) {
-        Optional<PlayerStateClass> player = players
-                .stream()
-                .filter(ps -> ps.equals(new PlayerStateClass(uniqueID)))
-                .findFirst();
+        if(players.get(0).getUniquePlayerID().equals(uniqueID))
+            return players.get(0);
 
-        return player.orElse(null);
+        if(players.get(1).getUniquePlayerID().equals(uniqueID))
+            return players.get(1);
+
+        return null;
     }
 
-    public boolean bothPlayersRegistered(){
-        return players.size() == 2;
-    }
 
     public void setMapClass(MapClass mapClass) {
         MapClass mapBeforeChange = this.mapClass;

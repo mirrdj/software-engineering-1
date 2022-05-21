@@ -241,8 +241,6 @@ public class MapClass {
         int height = getHeight();
         int width = getWidth();
 
-        logger.debug("height is " + height);
-        logger.debug("width is " + width);
         for(int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 if(getNodeAtPosition(x, y) != null)

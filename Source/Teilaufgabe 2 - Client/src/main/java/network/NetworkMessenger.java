@@ -20,8 +20,6 @@ public class NetworkMessenger {
     private static final Logger logger = LoggerFactory.getLogger(NetworkMessenger.class);
     private final WebClient baseWebClient;
     private final String gameID;
-    private String uniquePlayerID;
-
 
     public NetworkMessenger(String serverBaseUrl, String gameId) {
         this.gameID = gameId;
@@ -52,8 +50,7 @@ public class NetworkMessenger {
             UniquePlayerIdentifier uniqueID = resultReg.getData().get();
             logger.info("My Player ID: " + uniqueID.getUniquePlayerID());
 
-            uniquePlayerID = uniqueID.getUniquePlayerID();
-            return uniquePlayerID;
+            return uniqueID.getUniquePlayerID();
         }
 
         return null;
@@ -75,7 +72,7 @@ public class NetworkMessenger {
         }
     }
 
-    public void postMove(EMove move)  {
+    public void postMove(String uniquePlayerID, EMove move)  {
         Mono<ResponseEnvelope> webAccess = this.baseWebClient.method(HttpMethod.POST)
                 .uri("/" + this.gameID + "/moves")
                 .header("accept = application/xml")
@@ -92,7 +89,7 @@ public class NetworkMessenger {
     }
 
 
-    public GameState getGameState() {
+    public GameState getGameState(String uniquePlayerID) {
         Mono<ResponseEnvelope> webAccess = this.baseWebClient.method(HttpMethod.GET)
                 .uri("/" + this.gameID + "/states/" + uniquePlayerID)
                 .header("accept = application/xml")

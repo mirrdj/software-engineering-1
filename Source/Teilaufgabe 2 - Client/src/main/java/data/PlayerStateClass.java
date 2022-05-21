@@ -1,15 +1,9 @@
 package data;
 
-import java.util.Objects;
-
 public class PlayerStateClass {
     String uniquePlayerID;
     EnumPlayerGameState playerGS;
     boolean treasureCollected;
-
-    public PlayerStateClass(String uniquePlayerID) {
-        this.uniquePlayerID = uniquePlayerID;
-    }
 
     public PlayerStateClass(String uniquePlayerID, EnumPlayerGameState playerGameState, boolean treasureCollected) {
         this.uniquePlayerID = uniquePlayerID;
@@ -17,21 +11,6 @@ public class PlayerStateClass {
         this.treasureCollected = treasureCollected;
     }
 
-    public void setPlayerStateClass(PlayerStateClass updatedPlayerState){
-        EnumPlayerGameState newPlayerGS = updatedPlayerState.getPlayerGS();
-        boolean collected = updatedPlayerState.hasCollectedTreasure();
-
-        this.setPlayerGS(newPlayerGS);
-        this.setTreasureCollected(collected);
-    }
-
-    public void setPlayerGS(EnumPlayerGameState playerGS) {
-        this.playerGS = playerGS;
-    }
-
-    public void setTreasureCollected(boolean treasureCollected) {
-        this.treasureCollected = treasureCollected;
-    }
     public String getUniquePlayerID() {
         return uniquePlayerID;
     }
@@ -51,24 +30,11 @@ public class PlayerStateClass {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PlayerStateClass that = (PlayerStateClass) o;
-        return Objects.equals(uniquePlayerID, that.uniquePlayerID);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(uniquePlayerID);
-    }
-
-    @Override
     public String toString() {
-        String string = "";
-        string += "Player game state: " + playerGS + '\n';
-        string += "Treasure collected: " + treasureCollected + '\n';
-
-        return string;
+        StringBuilder string = new StringBuilder("\n");
+        string.append("Player ID: ").append(uniquePlayerID).append('\n');
+        string.append("Player game state: ").append(playerGS).append('\n');
+        string.append("Treasure collected: ").append(treasureCollected).append('\n');
+        return string.toString();
     }
 }

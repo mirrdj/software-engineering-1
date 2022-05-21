@@ -19,6 +19,7 @@ public class NetworkConverter {
     private static final Logger logger = LoggerFactory.getLogger(NetworkConverter.class);
 
     private final NetworkMessenger networkMessenger;
+    private String uniquePlayerID;
 
 
     public NetworkConverter(String serverBaseUrl, String gameId) {
@@ -176,10 +177,11 @@ public class NetworkConverter {
 
     public String postPlayerRegistration() {
         logger.info("Registering the player");
-        return networkMessenger.postPlayerRegistration();
+        uniquePlayerID = networkMessenger.postPlayerRegistration();
+        return uniquePlayerID;
     }
 
-    public void postHalfMap(MapClass halfMapClass, String uniquePlayerID) {
+    public void postHalfMap(MapClass halfMapClass) {
         logger.info("Sending the map");
         HalfMap halfMap = convertMapClass(halfMapClass, uniquePlayerID);
         logger.info(halfMap.toString());
@@ -188,11 +190,11 @@ public class NetworkConverter {
 
     public void postMove(EnumMove move) {
         EMove eMove = covertEnumMove(move);
-        networkMessenger.postMove(eMove);
+        networkMessenger.postMove(uniquePlayerID, eMove);
     }
 
     public GameStateClass getGameState()  {
-        GameState gameState = networkMessenger.getGameState();
+        GameState gameState = networkMessenger.getGameState(uniquePlayerID);
         return convertGameState(gameState);
     }
 

@@ -102,7 +102,7 @@ public class Controller {
         } while (wait);
 
         logger.info("My turn to send the half map");
-        networkConverter.postHalfMap(halfMap, ownPlayerID);
+        networkConverter.postHalfMap(halfMap);
         logger.info("Half map sent");
     }
 
