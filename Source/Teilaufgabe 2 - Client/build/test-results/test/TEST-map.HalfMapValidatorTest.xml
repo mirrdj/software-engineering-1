@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="map.HalfMapValidatorTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2022-05-21T18:14:41" hostname="DESKTOP-LV4HIIH" time="0.042">
+  <properties/>
+  <testcase name="mapIsValid_notEnoughMountainFields_returnFalse()" classname="map.HalfMapValidatorTest" time="0.019"/>
+  <testcase name="mapIsValid_validMap_returnTrue()" classname="map.HalfMapValidatorTest" time="0.007"/>
+  <testcase name="mapIsValid_exceededWaterFieldLongSide_returnFalse()" classname="map.HalfMapValidatorTest" time="0.005"/>
+  <testcase name="mapIsValid_islandExists_returnFalse_1()" classname="map.HalfMapValidatorTest" time="0.001"/>
+  <testcase name="mapIsValid_islandExists_returnFalse_2()" classname="map.HalfMapValidatorTest" time="0.001"/>
+  <testcase name="mapIsValid_islandExists_returnFalse_3()" classname="map.HalfMapValidatorTest" time="0.001"/>
+  <testcase name="mapIsValid_islandExists_returnFalse_4()" classname="map.HalfMapValidatorTest" time="0.001"/>
+  <testcase name="mapIsValid_exceededWaterFieldShortSide_returnFalse()" classname="map.HalfMapValidatorTest" time="0.001"/>
+  <testcase name="mapIsValid_notEnoughWaterFields_returnFalse()" classname="map.HalfMapValidatorTest" time="0.001"/>
+  <testcase name="mapIsValid_wrongSize_returnTrue()" classname="map.HalfMapValidatorTest" time="0.001"/>
+  <system-out><![CDATA[20:14:41.450 [Test worker] WARN  map.HalfMapValidator - The number of mountain fields is 2
+20:14:41.454 [Test worker] WARN  map.HalfMapValidator - It should be at least 3
+20:14:41.468 [Test worker] WARN  map.HalfMapValidator - There is no island
+20:14:41.474 [Test worker] WARN  map.HalfMapValidator - Too many water fields 4 on side 0
+20:14:41.477 [Test worker] WARN  map.HalfMapValidator - The number of mountain fields is 2
+20:14:41.478 [Test worker] WARN  map.HalfMapValidator - It should be at least 3
+20:14:41.482 [Test worker] WARN  map.HalfMapValidator - Too many water fields 2 on side 0
+20:14:41.483 [Test worker] WARN  map.HalfMapValidator - The number of water fields is 3
+20:14:41.484 [Test worker] WARN  map.HalfMapValidator - It should be at least 4
+20:14:41.485 [Test worker] WARN  map.HalfMapValidator - Width is 6
+20:14:41.485 [Test worker] WARN  map.HalfMapValidator - should be 8
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

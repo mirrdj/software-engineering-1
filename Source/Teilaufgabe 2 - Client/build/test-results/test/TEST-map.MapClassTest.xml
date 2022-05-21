@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="map.MapClassTest" tests="23" skipped="0" failures="0" errors="0" timestamp="2022-05-21T18:14:41" hostname="DESKTOP-LV4HIIH" time="0.027">
+  <properties/>
+  <testcase name="getWidth_widthEqualValue_returnCorrectWidth_1()" classname="map.MapClassTest" time="0.002"/>
+  <testcase name="getWidth_widthEqualValue_returnCorrectWidth_2()" classname="map.MapClassTest" time="0.001"/>
+  <testcase name="getWidth_widthEqualValue_returnCorrectWidth_3()" classname="map.MapClassTest" time="0.001"/>
+  <testcase name="getMountainNumber_noMountains_assertToZero()" classname="map.MapClassTest" time="0.001"/>
+  <testcase name="getMyHalf_4by16MapMyFortInFirstHalf_returnFirstHalf()" classname="map.MapClassTest" time="0.005"/>
+  <testcase name="getEnemyHalf_8by8MapMyFortInFirstHalf_returnSecondHalf()" classname="map.MapClassTest" time="0.0"/>
+  <testcase name="getEnemyHalf_4by16MapMyFortInFirstHalf_returnSecondHalf()" classname="map.MapClassTest" time="0.0"/>
+  <testcase name="getMyHalf_8by8MapMyFortInSecondHalf_returnSecondHalf()" classname="map.MapClassTest" time="0.0"/>
+  <testcase name="getGrassNumber_multipleGrassFields_returnExpectedNumberOfGrass()" classname="map.MapClassTest" time="0.001"/>
+  <testcase name="getMountainNumber_multipleMountainFields_returnExpectedNumberOfMountains()" classname="map.MapClassTest" time="0.0"/>
+  <testcase name="getWaterNumber_multipleWaterFields_returnExpectedNumberOfWater()" classname="map.MapClassTest" time="0.001"/>
+  <testcase name="getWaterNumber_noWater_assertToZero()" classname="map.MapClassTest" time="0.0"/>
+  <testcase name="getHeight_heightEqualValue_returnCorrectHeight_1()" classname="map.MapClassTest" time="0.001"/>
+  <testcase name="getHeight_heightEqualValue_returnCorrectHeight_2()" classname="map.MapClassTest" time="0.0"/>
+  <testcase name="getHeight_heightEqualValue_returnCorrectHeight_3()" classname="map.MapClassTest" time="0.001"/>
+  <testcase name="getGrassNumber_noGrasss_assertToZero()" classname="map.MapClassTest" time="0.001"/>
+  <testcase name="getMyTreasurePosition_treasureAtCertainPos_returnsTreasureAtThatPos()" classname="map.MapClassTest" time="0.001"/>
+  <testcase name="getMyHalf_4by16MapMyFortInSecondHalf_returnSecondHalf()" classname="map.MapClassTest" time="0.001"/>
+  <testcase name="getMyHalf_8by8MapMyFortInFirstHalf_returnFirstHalf()" classname="map.MapClassTest" time="0.001"/>
+  <testcase name="getEnemyHalf_8by8MapMyFortInSecondHalf_returnFirstHalf()" classname="map.MapClassTest" time="0.0"/>
+  <testcase name="getEnemyFortPosition_fortAtCertainPos_returnsFortAtThatPos()" classname="map.MapClassTest" time="0.001"/>
+  <testcase name="getMyPosition_myPlayerAtCertainPos_returnsMyPlayerAtThatPos()" classname="map.MapClassTest" time="0.001"/>
+  <testcase name="getEnemyHalf_4by16MapMyFortInSecondHalf_returnFirstHalf()" classname="map.MapClassTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

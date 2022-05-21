@@ -160,7 +160,7 @@ public class NetworkConverter {
     private GameStateClass convertGameState(GameState gameState) {
         Optional<FullMap> fullMap = gameState.getMap();
 
-        Set<PlayerStateClass> players = new HashSet<>();
+        List<PlayerStateClass> players = new ArrayList<>();
         for(PlayerState p : gameState.getPlayers()){
             PlayerStateClass playerStateClass = convertPlayerState(p);
             players.add(playerStateClass);

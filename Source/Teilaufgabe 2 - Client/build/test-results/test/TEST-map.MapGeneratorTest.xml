@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="map.MapGeneratorTest" tests="19" skipped="0" failures="0" errors="0" timestamp="2022-05-21T18:14:41" hostname="DESKTOP-LV4HIIH" time="0.07">
+  <properties/>
+  <testcase name="[1] wantedWater=9, wantedMountain=9" classname="map.MapGeneratorTest" time="0.029"/>
+  <testcase name="[2] wantedWater=10, wantedMountain=8" classname="map.MapGeneratorTest" time="0.0"/>
+  <testcase name="[3] wantedWater=10, wantedMountain=10" classname="map.MapGeneratorTest" time="0.0"/>
+  <testcase name="[4] wantedWater=14, wantedMountain=8" classname="map.MapGeneratorTest" time="0.0"/>
+  <testcase name="[5] wantedWater=8, wantedMountain=13" classname="map.MapGeneratorTest" time="0.001"/>
+  <testcase name="[1] wantedWater=4, wantedMountain=0" classname="map.MapGeneratorTest" time="0.002"/>
+  <testcase name="[2] wantedWater=4, wantedMountain=1" classname="map.MapGeneratorTest" time="0.001"/>
+  <testcase name="[3] wantedWater=4, wantedMountain=2" classname="map.MapGeneratorTest" time="0.0"/>
+  <testcase name="[4] wantedWater=4, wantedMountain=14" classname="map.MapGeneratorTest" time="0.0"/>
+  <testcase name="[1] wantedWater=6, wantedMountain=5" classname="map.MapGeneratorTest" time="0.006"/>
+  <testcase name="[2] wantedWater=7, wantedMountain=4" classname="map.MapGeneratorTest" time="0.001"/>
+  <testcase name="[3] wantedWater=5, wantedMountain=4" classname="map.MapGeneratorTest" time="0.001"/>
+  <testcase name="[4] wantedWater=4, wantedMountain=3" classname="map.MapGeneratorTest" time="0.002"/>
+  <testcase name="[1] wantedWater=1, wantedMountain=3" classname="map.MapGeneratorTest" time="0.001"/>
+  <testcase name="[2] wantedWater=2, wantedMountain=3" classname="map.MapGeneratorTest" time="0.0"/>
+  <testcase name="[3] wantedWater=3, wantedMountain=3" classname="map.MapGeneratorTest" time="0.001"/>
+  <testcase name="[4] wantedWater=0, wantedMountain=3" classname="map.MapGeneratorTest" time="0.0"/>
+  <testcase name="[5] wantedWater=15, wantedMountain=3" classname="map.MapGeneratorTest" time="0.0"/>
+  <testcase name="[6] wantedWater=20, wantedMountain=3" classname="map.MapGeneratorTest" time="0.001"/>
+  <system-out><![CDATA[20:14:41.637 [Test worker] WARN  map.MapGenerator - The fortress tried to be place on5 1
+20:14:41.643 [Test worker] WARN  map.MapGenerator - The fortress tried to be place on7 1
+20:14:41.645 [Test worker] WARN  map.MapGenerator - The fortress tried to be place on3 0
+20:14:41.646 [Test worker] WARN  map.MapGenerator - The fortress tried to be place on7 1
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

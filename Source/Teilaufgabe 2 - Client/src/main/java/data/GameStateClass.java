@@ -8,6 +8,7 @@ import map.MapClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -15,22 +16,22 @@ public class GameStateClass {
     private static final Logger logger = LoggerFactory.getLogger(GameStateClass.class);
     private final PropertyChangeSupport changes = new PropertyChangeSupport(this);
     private MapClass mapClass;
-    private Set<PlayerStateClass> players;
+    private List<PlayerStateClass> players;
 
     public GameStateClass() {}
-    public GameStateClass(MapClass mapClass, Set<PlayerStateClass> players) {
+    public GameStateClass(MapClass mapClass, List<PlayerStateClass> players) {
         this.mapClass = mapClass;
         this.players = players;
     }
 
-    public GameStateClass(Set<PlayerStateClass> players) {
+    public GameStateClass(List<PlayerStateClass> players) {
         this.players = players;
     }
 
     public MapClass getMapClass() {
         return mapClass;
     }
-    public Set<PlayerStateClass> getPlayers() {
+    public List<PlayerStateClass> getPlayers() {
         return players;
     }
 
@@ -54,8 +55,8 @@ public class GameStateClass {
         changes.firePropertyChange("map", mapBeforeChange, mapClass);
     }
 
-    public void setPlayers(Set<PlayerStateClass> updatedPlayers) {
-        Set<PlayerStateClass> playersBeforeChange = this.players;
+    public void setPlayers(List<PlayerStateClass> updatedPlayers) {
+        List<PlayerStateClass> playersBeforeChange = this.players;
         this.players = updatedPlayers;
 
         changes.firePropertyChange("players", playersBeforeChange, updatedPlayers);
