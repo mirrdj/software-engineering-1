@@ -1,5 +1,6 @@
 package controller;
 
+import exceptions.WrongIdentificationDetailsException;
 import map.HalfMapValidator;
 import data.GameStateClass;
 import data.PlayerStateClass;
@@ -56,9 +57,12 @@ public class Controller {
         return ownPlayerState.getPlayerGS() == EnumPlayerGameState.MUST_WAIT;
     }
 
-    public void registerPlayer() {
+    public void registerPlayer(String firstName, String lastName, String uaccount) throws WrongIdentificationDetailsException {
+        if(uaccount.isBlank())
+            throw new WrongIdentificationDetailsException("uaccount cannot be blank");
+
         logger.info("Registering the player");
-        ownPlayerID = networkConverter.postPlayerRegistration();
+        ownPlayerID = networkConverter.postPlayerRegistration(firstName, lastName, uaccount);
         logger.debug("ownPlayerID is " + ownPlayerID);
     }
 
@@ -111,7 +115,7 @@ public class Controller {
         aiObject = new AISimpleClass(gameState.getMapClass());
     }
 
-    private boolean treasureCollected() {
+    public boolean treasureCollected() {
         updatePlayerState();
 
         PlayerStateClass ownPlayerState = gameState.getMyPlayer();

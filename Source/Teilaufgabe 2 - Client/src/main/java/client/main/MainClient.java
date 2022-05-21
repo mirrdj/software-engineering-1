@@ -12,6 +12,11 @@ public class MainClient {
 	private static final Logger logger = LoggerFactory.getLogger(MainClient.class);
 
 	public static void main(String[] args)  {
+		String firstName = "Miruna-Diana";
+		String lastName = "Jarda";
+		String uaccount = "jardam99";
+
+
 		String serverBaseUrl = args[1];
 		String gameId = args[2];
 
@@ -23,7 +28,7 @@ public class MainClient {
 
 		// Register player
 		try {
-			controller.registerPlayer();
+			controller.registerPlayer(firstName, lastName, uaccount);
 		}
 		catch(Exception e) {
 			e.printStackTrace();

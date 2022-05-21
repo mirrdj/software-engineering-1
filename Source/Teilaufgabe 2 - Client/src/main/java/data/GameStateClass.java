@@ -3,12 +3,9 @@ package data;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-
 import map.MapClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 public class GameStateClass {
     private static final Logger logger = LoggerFactory.getLogger(GameStateClass.class);
@@ -37,7 +34,6 @@ public class GameStateClass {
     public MapClass getMapClass() {
         return mapClass;
     }
-
 
     public void setMapClass(MapClass mapClass) {
         MapClass mapBeforeChange = this.mapClass;

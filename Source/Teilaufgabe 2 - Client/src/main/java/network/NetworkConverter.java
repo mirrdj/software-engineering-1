@@ -179,16 +179,15 @@ public class NetworkConverter {
         return new GameStateClass(myPlayer, enemyPlayer);
     }
 
-    public String postPlayerRegistration() {
+    public String postPlayerRegistration(String firstName, String lastName, String uaccount) {
         logger.info("Registering the player");
-        uniquePlayerID = networkMessenger.postPlayerRegistration();
+        uniquePlayerID = networkMessenger.postPlayerRegistration(firstName, lastName, uaccount);
         return uniquePlayerID;
     }
 
     public void postHalfMap(MapClass halfMapClass) {
         logger.info("Sending the map");
         HalfMap halfMap = convertMapClass(halfMapClass, uniquePlayerID);
-        logger.info(halfMap.toString());
         networkMessenger.postHalfMap(halfMap);
     }
 

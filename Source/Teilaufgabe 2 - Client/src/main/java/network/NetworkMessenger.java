@@ -28,11 +28,7 @@ public class NetworkMessenger {
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML_VALUE).build();
     }
 
-    public String postPlayerRegistration() {
-        String firstName = "Miruna-Diana";
-        String lastName = "Jarda";
-        String uaccount = "jardam99";
-
+    public String postPlayerRegistration(String firstName, String lastName, String uaccount) {
         logger.info("Registering the player");
         PlayerRegistration playerRegistration = new PlayerRegistration(firstName, lastName, uaccount);
         Mono<ResponseEnvelope> webAccess = this.baseWebClient.method(HttpMethod.POST)
