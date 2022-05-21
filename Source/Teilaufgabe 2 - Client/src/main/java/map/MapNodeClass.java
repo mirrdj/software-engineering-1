@@ -18,7 +18,7 @@ public class MapNodeClass {
         this.terrain = terrain;
 
         if(terrain != EnumTerrain.GRASS && fortPresent)
-            throw new PlacedOnWrongFieldException("Treasure cannot be placed on this type of field " + terrain);
+            throw new PlacedOnWrongFieldException("Fort cannot be placed on this type of field " + terrain);
 
         if(fortPresent)
             this.fort = EnumFortState.MY_FORT_PRESENT;
@@ -40,7 +40,7 @@ public class MapNodeClass {
         this.treasure = treasure;
 
         if(terrain != EnumTerrain.GRASS && fort != EnumFortState.NO_OR_UNKNOWN_FORT_STATE)
-            throw new PlacedOnWrongFieldException("Treasure cannot be placed on this type of field " + terrain);
+            throw new PlacedOnWrongFieldException("Fort cannot be placed on this type of field " + terrain);
         this.fort = fort;
     }
 
@@ -66,23 +66,11 @@ public class MapNodeClass {
     public boolean isFortPresent(){return fort == EnumFortState.MY_FORT_PRESENT;}
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof MapNodeClass)) return false;
-        MapNodeClass that = (MapNodeClass) o;
-        return x == that.x && y == that.y && terrain == that.terrain
-                && playerPosition == that.playerPosition
-                && treasure == that.treasure && fort == that.fort;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(x, y, terrain, playerPosition, treasure, fort);
-    }
-
-    @Override
     public String toString() {
         String string = "";
+
+        string += Integer.toString(getX()) + ' ';
+        string += Integer.toString(getY()) + ' ';
 
         if(getTerrain() == EnumTerrain.GRASS)
             string += "G" + '|';

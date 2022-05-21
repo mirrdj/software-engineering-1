@@ -1,6 +1,6 @@
 package exceptions;
 
-public class WrongNumberOfMountainFieldsException extends IncorrectNumberOfFieldsException {
+public class WrongNumberOfMountainFieldsException extends WrongNumberOfFieldsException {
     public WrongNumberOfMountainFieldsException(String message) {
         super(message);
     }

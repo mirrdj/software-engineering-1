@@ -42,31 +42,59 @@ public class MapClass {
         return -1;
     }
 
-    public EnumLayout getLayout(){
+    public MapClass getMyHalf(){
         if(!(getHeight() == 8 && getWidth() == 8) && !(getHeight() == 4 && getWidth() == 16))
-            throw new NotFullMapException("The map is not a full map so there is no defined layout");
+            throw new NotFullMapException("The map is not a full map so one of the half maps is probably missing");
 
-        if(getHeight() == 8 && getWidth() == 8)
-            return EnumLayout.VERTICAL;
-        else
-            return EnumLayout.HORIZONTAL;
+        Position myFort = getMyFortPosition();
+        if(getHeight() == 8 && getWidth() == 8) {
+            if (myFort.getY() < 4)
+                return getFirstHalf();
+            else
+                return getSecondHalf();
+        }
+
+        else {
+            if (myFort.getX() < 8)
+                return getFirstHalf();
+            else
+                return getSecondHalf();
+        }
     }
 
-    public MapClass getFirstHalf() {
+    public MapClass getEnemyHalf(){
         if(!(getHeight() == 8 && getWidth() == 8) && !(getHeight() == 4 && getWidth() == 16))
-            throw new NotFullMapException("The map is not a full map so there is no first half map");
+            throw new NotFullMapException("The map is not a full map so one of the half maps is probably missing");
 
+        Position myFort = getMyFortPosition();
+        if(getHeight() == 8 && getWidth() == 8) {
+            if (myFort.getY() >= 4) {
+                return getFirstHalf();
+            }
+            else
+                return getSecondHalf();
+        }
+
+        else {
+            if (myFort.getX() >= 8)
+                return getFirstHalf();
+            else
+                return getSecondHalf();
+        }
+
+    }
+
+    private MapClass getFirstHalf() {
         List<MapNodeClass> firstHalf = new ArrayList<>();
         if (getHeight() == 8 && getWidth() == 8) {
             for (MapNodeClass node : nodes) {
-                if (node.getX() < 4) {
+                if (node.getY() < 4) {
                     firstHalf.add(node);
                 }
             }
-
-        } else if (getHeight() == 4 && getWidth() == 16) {
+        } else {
             for (MapNodeClass node : nodes) {
-                if (node.getY() < 4) {
+                if (node.getX() < 8) {
                     firstHalf.add(node);
                 }
             }
@@ -75,21 +103,19 @@ public class MapClass {
         return new MapClass(firstHalf);
     }
 
-    public MapClass  getSecondHalf(){
-        if(!(getHeight() == 8 && getWidth() == 8) && !(getHeight() == 4 && getWidth() == 16))
-            throw new NotFullMapException("The map is not a full map so there is no first half map");
+    private MapClass  getSecondHalf(){
 
         List<MapNodeClass> secondHalf = new ArrayList<>();
         if (getHeight() == 8 && getWidth() == 8) {
             for (MapNodeClass node : nodes) {
-                if (node.getX() >= 8) {
+                if (node.getY() >= 4) {
                     secondHalf.add(node);
                 }
             }
 
         } else {
             for (MapNodeClass node : nodes) {
-                if (node.getY() >= 4) {
+                if (node.getX() >= 8) {
                     secondHalf.add(node);
                 }
             }
@@ -173,6 +199,18 @@ public class MapClass {
                 .count();
     }
 
+    public Position getMyFortPosition(){
+        MapNodeClass node = nodes
+                .stream()
+                .filter(n -> n.getFort() == EnumFortState.MY_FORT_PRESENT)
+                .findFirst()
+                .orElse(null);
+
+        if(node != null)
+            return new Position(node.getX(), node.getY());
+        return null;
+    }
+
     public Position getEnemyFortPosition(){
         MapNodeClass node = nodes
                 .stream()
@@ -188,7 +226,7 @@ public class MapClass {
 
     @Override
     public String toString() {
-        String string = "\n";
+        StringBuilder string = new StringBuilder("\n");
 
         int height = getHeight();
         int width = getWidth();
@@ -197,11 +235,12 @@ public class MapClass {
         logger.debug("width is " + width);
         for(int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                string += getNodeAtPosition(x, y) + "   ";
+                if(getNodeAtPosition(x, y) != null)
+                    string.append(getNodeAtPosition(x, y)).append("   ");
             }
-            string += '\n';
+            string.append('\n');
         }
 
-        return string;
+        return string.toString();
     }
 }

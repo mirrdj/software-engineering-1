@@ -1,8 +1,5 @@
-package map.half_map;
+package map;
 
-import map.EnumTerrain;
-import map.MapClass;
-import map.Position;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -200,11 +197,11 @@ public class HalfMapValidator {
         floodFill(0,0, terrainNodes);
 
         if(terrainNodes.size() <= halfMap.getWaterNumber()) {
-            logger.warn("There is an island");
+            logger.warn("There is no island");
             return true;
         }
         else {
-            logger.info("There is no island");
+            logger.info("There is an island");
             return false;
         }
     }

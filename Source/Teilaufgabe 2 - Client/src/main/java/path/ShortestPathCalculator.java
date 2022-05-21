@@ -31,7 +31,7 @@ public class ShortestPathCalculator {
         positionList.add(from);
 
         Collections.reverse(positionList);
-        logger.debug("Shortest path is: ", positionList.toString());
+        logger.debug("Shortest path is: ", positionList);
         return positionList;
     }
 }

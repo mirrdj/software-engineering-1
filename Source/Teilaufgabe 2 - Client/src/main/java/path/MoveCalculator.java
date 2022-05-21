@@ -5,9 +5,7 @@ import map.Position;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class MoveCalculator {
     private static final Logger logger = LoggerFactory.getLogger(MoveCalculator.class);
@@ -37,11 +35,6 @@ public class MoveCalculator {
         return null;
     }
 
-    // TODO remove getNeededMoves, make sure it still works without - it used to be ingetMovesBetweenPositions
-    private int getNeededMoves(Position pos){
-        return terrainNodes.get(pos).getNeededMoves();
-    }
-
     // Calculates the number of moves it takes to get from one position to a neighbouring positions
     private int getNumberOfMoves(Position pos1, Position pos2){
         int pos1Value = terrainNodes.get(pos1).getNeededMoves();
@@ -50,15 +43,15 @@ public class MoveCalculator {
         return pos1Value + pos2Value;
     }
 
-    public List<EnumMove> getMoves(List<Position> path){
-        List<EnumMove> moves = new ArrayList<>();
+    public Queue<EnumMove> getMoves(List<Position> shortestPath){
+        Queue<EnumMove> moves = new ArrayDeque<>();
 
         int index = 0;
-        Position current = path.get(index);
-        Position last = path.get(path.size() - 1);
+        Position current = shortestPath.get(index);
+        Position last = shortestPath.get(shortestPath.size() - 1);
 
         while(!current.equals(last)){
-           Position next = path.get(index + 1);
+           Position next = shortestPath.get(index + 1);
 
            int movesNeeded = getNumberOfMoves(current, next);
            int moveIndex = 0;
@@ -71,7 +64,7 @@ public class MoveCalculator {
            index++;
         }
 
-        logger.debug("The path is " + path);
+        logger.debug("The path is " + shortestPath);
         logger.debug("The moves are " + moves);
         return moves;
     }

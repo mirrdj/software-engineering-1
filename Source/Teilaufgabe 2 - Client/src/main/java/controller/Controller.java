@@ -52,7 +52,7 @@ public class Controller {
         return ownPlayerState.getPlayerGS() == EnumPlayerGameState.MUST_ACT;
     }
 
-    public void registerPlayer() throws Exception{
+    public void registerPlayer() {
         logger.info("Registering the player");
         ownPlayerID = networkConverter.postPlayerRegistration();
         logger.debug("ownPlayerID is " + ownPlayerID);

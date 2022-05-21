@@ -1,6 +1,6 @@
 package exceptions;
 
-public class WrongNumberOfWaterFieldsException extends IncorrectNumberOfFieldsException{
+public class WrongNumberOfWaterFieldsException extends WrongNumberOfFieldsException {
     public WrongNumberOfWaterFieldsException(String message) {
         super(message);
     }

@@ -14,24 +14,21 @@ public class GameStateVisualization implements PropertyChangeListener {
 
     public GameStateVisualization(GameStateClass gameState, Controller controller) {
         this.controller = controller;
-        gameState.addPropertyChangeListener(this::propertyChange);
+        gameState.addListener(this);
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent event){
-        Object object = event.getSource();
         Object newValue = event.getNewValue();
-        if(event.getPropertyName() == "players"){
-            System.out.println("In property change players are " + newValue.toString());
-        }
-        else if(event.getPropertyName() == "fullMap"){
-            System.out.println("In property change fullMap is " + newValue.toString());
+
+        switch (event.getPropertyName()){
+            case "players":
+                System.out.println(newValue.toString());
+                break;
+            case "map":
+                System.out.println(newValue.toString());
+                break;
         }
     }
-
-    public void handleUserButtonPress() throws Exception{
-        this.controller.updateGameState();
-    }
-
 
 }

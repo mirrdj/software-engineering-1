@@ -1,6 +1,7 @@
 package path;
 
 import exceptions.PlacedOnWrongFieldException;
+import helper.MapCreator;
 import map.EnumTerrain;
 import map.MapClass;
 import map.MapNodeClass;
@@ -20,35 +21,7 @@ import java.util.Random;
 
 class DijkstraCalculatorTest {
     private DijkstraCalculator calculator = null;
-
-    private MapClass createMapHalfMapStyle(char[][] nodes) {
-        boolean fortressPlaced = false;
-        List<MapNodeClass> nodeList = new ArrayList<>();
-
-        for(int y = 0; y < nodes.length; y++) {
-            for (int x = 0; x < nodes[0].length; x++) {
-                EnumTerrain terrain;
-                boolean fortPresent = false;
-
-                switch (nodes[y][x]) {
-                    case 'W' -> terrain = EnumTerrain.WATER;
-                    case 'M' -> terrain = EnumTerrain.MOUNTAIN;
-                    default -> {
-                        terrain = EnumTerrain.GRASS;
-                        if (!fortressPlaced) {
-                            fortressPlaced = true;
-                            fortPresent = true;
-                        }
-                    }
-                }
-
-                nodeList.add(new MapNodeClass(x, y, terrain, fortPresent));
-
-            }
-        }
-
-        return new MapClass(nodeList);
-    }
+    private MapCreator mapCreator = new MapCreator();
 
     @Test
     public void dijkstraAlgorithm_startFromWaterField_throwPlacedOnWrongFieldException() {
@@ -59,7 +32,7 @@ class DijkstraCalculatorTest {
                 {'G', 'W', 'G', 'M'}
         };
 
-        MapClass halfMap = createMapHalfMapStyle(nodes);
+        MapClass halfMap = mapCreator.createMapHalfMapStyle(nodes);
         calculator = new DijkstraCalculator(halfMap);
 
         Position from = new Position(1, 1);
@@ -76,7 +49,7 @@ class DijkstraCalculatorTest {
                 {'G', 'W', 'G', 'M'}
         };
 
-        MapClass halfMap = createMapHalfMapStyle(nodes);
+        MapClass halfMap = mapCreator.createMapHalfMapStyle(nodes);
         calculator = new DijkstraCalculator(halfMap);
 
         Position from = new Position(0, 0);
@@ -98,7 +71,7 @@ class DijkstraCalculatorTest {
                 {'G', 'W', 'G', 'M'}
         };
 
-        MapClass halfMap = createMapHalfMapStyle(nodes);
+        MapClass halfMap = mapCreator.createMapHalfMapStyle(nodes);
         calculator = new DijkstraCalculator(halfMap);
 
         Position from = new Position(0, 0);
@@ -120,7 +93,7 @@ class DijkstraCalculatorTest {
                 {'G', 'W', 'G', 'M'}
         };
 
-        MapClass halfMap = createMapHalfMapStyle(nodes);
+        MapClass halfMap = mapCreator.createMapHalfMapStyle(nodes);
         calculator = new DijkstraCalculator(halfMap);
 
         Position from = new Position(0, 1);
@@ -142,7 +115,7 @@ class DijkstraCalculatorTest {
                 {'G', 'W', 'G', 'M'}
         };
 
-        MapClass halfMap = createMapHalfMapStyle(nodes);
+        MapClass halfMap = mapCreator.createMapHalfMapStyle(nodes);
         calculator = new DijkstraCalculator(halfMap);
 
         Position from = new Position(3, 0);
@@ -171,7 +144,7 @@ class DijkstraCalculatorTest {
                 {7,    9,   11,   13}
         };
 
-        MapClass halfMap = createMapHalfMapStyle(nodes);
+        MapClass halfMap = mapCreator.createMapHalfMapStyle(nodes);
         calculator = new DijkstraCalculator(halfMap);
 
         Position from = new Position(0, 0);
@@ -201,7 +174,7 @@ class DijkstraCalculatorTest {
                 {6, 5006,   10,   13}
         };
 
-        MapClass halfMap = createMapHalfMapStyle(nodes);
+        MapClass halfMap = mapCreator.createMapHalfMapStyle(nodes);
         calculator = new DijkstraCalculator(halfMap);
 
         Position from = new Position(0, 0);
@@ -232,7 +205,7 @@ class DijkstraCalculatorTest {
         };
 
 
-        MapClass halfMap = createMapHalfMapStyle(nodes);
+        MapClass halfMap = mapCreator.createMapHalfMapStyle(nodes);
         calculator = new DijkstraCalculator(halfMap);
 
         Position from = new Position(0, 3);
@@ -256,7 +229,7 @@ class DijkstraCalculatorTest {
         };
 
 
-        MapClass halfMap = createMapHalfMapStyle(nodes);
+        MapClass halfMap = mapCreator.createMapHalfMapStyle(nodes);
         calculator = new DijkstraCalculator(halfMap);
 
         Position from = new Position(0, 3);
@@ -281,7 +254,7 @@ class DijkstraCalculatorTest {
                 {'G', 'W', 'G', 'M'}
         };
 
-        MapClass halfMap = createMapHalfMapStyle(nodes);
+        MapClass halfMap = mapCreator.createMapHalfMapStyle(nodes);
         calculator = new DijkstraCalculator(halfMap);
 
         Position from = new Position(0, 0);

@@ -29,7 +29,7 @@ public class NetworkMessenger {
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML_VALUE).build();
     }
 
-    public String postPlayerRegistration() throws Exception {
+    public String postPlayerRegistration() {
         String firstName = "Miruna-Diana";
         String lastName = "Jarda";
         String uaccount = "jardam99";
@@ -57,7 +57,7 @@ public class NetworkMessenger {
         return null;
     }
 
-    public void postHalfMap(HalfMap halfMap) throws Exception {
+    public void postHalfMap(HalfMap halfMap) {
         Mono<ResponseEnvelope> webAccess = this.baseWebClient.method(HttpMethod.POST)
                 .uri("/" + this.gameID + "/halfmaps")
                 .body(BodyInserters.fromValue(halfMap))
@@ -73,7 +73,7 @@ public class NetworkMessenger {
         }
     }
 
-    public void postMove(String uniquePlayerID, EMove move) throws Exception {
+    public void postMove(String uniquePlayerID, EMove move)  {
         Mono<ResponseEnvelope> webAccess = this.baseWebClient.method(HttpMethod.POST)
                 .uri("/" + this.gameID + "/moves")
                 .header("accept = application/xml")
@@ -90,7 +90,7 @@ public class NetworkMessenger {
     }
 
 
-    public GameState getGameState(String uniquePlayerID) throws Exception	{
+    public GameState getGameState(String uniquePlayerID) {
         Mono<ResponseEnvelope> webAccess = this.baseWebClient.method(HttpMethod.GET)
                 .uri("/" + this.gameID + "/states/" + uniquePlayerID)
                 .header("accept = application/xml")

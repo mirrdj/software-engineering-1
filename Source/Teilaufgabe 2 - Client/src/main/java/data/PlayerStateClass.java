@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class PlayerStateClass {
     String uniquePlayerID;
-    EnumPlayerGameState playerGameState;
+    EnumPlayerGameState playerGS;
     boolean treasureCollected;
 
     public PlayerStateClass(String uniquePlayerID) {
@@ -13,8 +13,41 @@ public class PlayerStateClass {
 
     public PlayerStateClass(String uniquePlayerID, EnumPlayerGameState playerGameState, boolean treasureCollected) {
         this.uniquePlayerID = uniquePlayerID;
-        this.playerGameState = playerGameState;
+        this.playerGS = playerGameState;
         this.treasureCollected = treasureCollected;
+    }
+
+    public void setPlayerStateClass(PlayerStateClass updatedPlayerState){
+        EnumPlayerGameState newPlayerGS = updatedPlayerState.getPlayerGS();
+        boolean collected = updatedPlayerState.hasCollectedTreasure();
+
+        this.setPlayerGS(newPlayerGS);
+        this.setTreasureCollected(collected);
+    }
+
+    public void setPlayerGS(EnumPlayerGameState playerGS) {
+        this.playerGS = playerGS;
+    }
+
+    public void setTreasureCollected(boolean treasureCollected) {
+        this.treasureCollected = treasureCollected;
+    }
+    public String getUniquePlayerID() {
+        return uniquePlayerID;
+    }
+    public EnumPlayerGameState getPlayerGS() {
+        return playerGS;
+    }
+    public boolean hasCollectedTreasure() {
+        return treasureCollected;
+    }
+
+    public boolean hasWon(){
+        return playerGS.equals(EnumPlayerGameState.WON);
+    }
+
+    public boolean hasLost(){
+        return playerGS.equals(EnumPlayerGameState.LOST);
     }
 
     @Override
@@ -33,16 +66,9 @@ public class PlayerStateClass {
     @Override
     public String toString() {
         String string = "";
-        string += "Player game state: " + playerGameState;
-        string += "Treasure collected: " + treasureCollected;
+        string += "Player game state: " + playerGS + '\n';
+        string += "Treasure collected: " + treasureCollected + '\n';
 
         return string;
-    }
-
-    public EnumPlayerGameState getState() {
-        return  playerGameState;
-    }
-    public boolean hasCollectedTreasure() {
-        return treasureCollected;
     }
 }

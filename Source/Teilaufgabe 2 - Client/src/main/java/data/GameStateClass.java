@@ -14,30 +14,21 @@ import java.util.Set;
 public class GameStateClass {
     private static final Logger logger = LoggerFactory.getLogger(GameStateClass.class);
     private final PropertyChangeSupport changes = new PropertyChangeSupport(this);
-    private String gameStateID;
-    private MapClass fullMap;
+    private MapClass mapClass;
     private Set<PlayerStateClass> players;
-    private EnumPlayerGameState enumPlayerGameState;
 
     public GameStateClass() {}
-
-    public GameStateClass(String gameStateID) {
-        this.gameStateID = gameStateID;
-    }
-
-    public GameStateClass(String gameStateID, MapClass fullMap, Set<PlayerStateClass> players) {
-        this.gameStateID = gameStateID;
-        this.fullMap = fullMap;
+    public GameStateClass(MapClass mapClass, Set<PlayerStateClass> players) {
+        this.mapClass = mapClass;
         this.players = players;
     }
 
-    public GameStateClass(String gameStateID, Set<PlayerStateClass> players) {
-        this.gameStateID = gameStateID;
+    public GameStateClass(Set<PlayerStateClass> players) {
         this.players = players;
     }
 
-    public MapClass getFullMap() {
-        return fullMap;
+    public MapClass getMapClass() {
+        return mapClass;
     }
     public Set<PlayerStateClass> getPlayers() {
         return players;
@@ -49,50 +40,28 @@ public class GameStateClass {
                 .filter(ps -> ps.equals(new PlayerStateClass(uniqueID)))
                 .findFirst();
 
-        if(player.isEmpty()) {
-            logger.error("No player found");
-            return null;
-        }
-        else
-            return player.get();
+        return player.orElse(null);
     }
 
     public boolean bothPlayersRegistered(){
         return players.size() == 2;
     }
 
-    public void setFullMap(MapClass fullMap) {
-        MapClass mapBeforeChange = this.fullMap;
-        this.fullMap = fullMap;
+    public void setMapClass(MapClass mapClass) {
+        MapClass mapBeforeChange = this.mapClass;
+        this.mapClass = mapClass;
 
-        changes.firePropertyChange("fullMap", mapBeforeChange, fullMap);
+        changes.firePropertyChange("map", mapBeforeChange, mapClass);
     }
 
-    public void setPlayers(Set<PlayerStateClass> players) {
+    public void setPlayers(Set<PlayerStateClass> updatedPlayers) {
         Set<PlayerStateClass> playersBeforeChange = this.players;
-        this.players = players;
+        this.players = updatedPlayers;
 
-        changes.firePropertyChange("players", playersBeforeChange, players);
+        changes.firePropertyChange("players", playersBeforeChange, updatedPlayers);
     }
 
-    @Override
-    public String toString() {
-        String string = "";
-        string += fullMap.toString();
-        string += '\n';
-        string += players.toString();
-        string += '\n';
-        string += "Game status: ";
-
-        if(enumPlayerGameState.equals(EnumPlayerGameState.WON))
-            string += "won";
-        else if (enumPlayerGameState.equals(EnumPlayerGameState.LOST))
-            string += "lost";
-
-        return string;
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener l) {
-        changes.addPropertyChangeListener(l);
+    public void addListener(PropertyChangeListener view) {
+        changes.addPropertyChangeListener(view);
     }
 }

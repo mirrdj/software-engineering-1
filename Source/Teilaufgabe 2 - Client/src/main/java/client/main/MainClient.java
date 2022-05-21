@@ -3,6 +3,7 @@ package client.main;
 
 import controller.Controller;
 import data.GameStateClass;
+import exceptions.NetworkCommunicationArgumentException;
 import network.NetworkConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,52 +16,26 @@ public class MainClient {
 		String serverBaseUrl = args[1];
 		String gameId = args[2];
 
-		NetworkConverter networkConverter = new NetworkConverter(serverBaseUrl, gameId);
-
-		GameStateClass gameState = new GameStateClass();
-		Controller controller = new Controller(networkConverter, gameState);
-		GameStateVisualization view = new GameStateVisualization(gameState, controller);
-
-		// Register player
 		try {
+			NetworkConverter networkConverter = new NetworkConverter(serverBaseUrl, gameId);
+
+			GameStateClass gameState = new GameStateClass();
+			Controller controller = new Controller(networkConverter, gameState);
+			GameStateVisualization view = new GameStateVisualization(gameState, controller);
+
+			// Register player
 			controller.registerPlayer();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
 
-		// Checking if both players have registered
-		try{
-			logger.info("Checking if both players have registered");
-			boolean bothPlayersRegistered;
-			do {
-				bothPlayersRegistered = controller.bothPlayersRegistered();
-				Thread.sleep(400);
-			} while(!bothPlayersRegistered);
-
-			logger.info("Both players have registered - registration ended");
-
-		} catch (Exception e){
-			e.printStackTrace();
-		}
-
-		// Send own half of the map
-		try{
+			// Send own half of the map
 			controller.sendHalfMap();
-		} catch(Exception e){
-			e.printStackTrace();
-		}
 
-
-		//Checking if both half maps have been sent
-		try{
+			//Checking if both half maps have been sent
 			logger.info("Checking if both halfs were sent");
 			boolean bothHalfMapsSent = false;
 			boolean gameEnded = false;
 			do {
 				bothHalfMapsSent = controller.checkBothHalfMapsSent();
 				gameEnded = controller.gameEnded();
-				Thread.sleep(400);
 			} while(!bothHalfMapsSent && !gameEnded);
 
 			logger.debug("Both sent: " + bothHalfMapsSent);
@@ -70,45 +45,12 @@ public class MainClient {
 				logger.info("Both half maps sent");
 				controller.setUpAI();
 			}
+
+			controller.setUpAI();
+			controller.performAction();
+
 		} catch (Exception e){
 			e.printStackTrace();
 		}
-
-		// Find and collect treasure
-//		try{
-//			boolean gameEnded = controller.gameEnded();
-//			boolean treasureFound = false;
-//
-//			while(!treasureFound && !gameEnded) {
-//				treasureFound = controller.findTreasure();
-//				gameEnded = controller.gameEnded();
-//				Thread.sleep(400);
-//			}
-//
-//			if(!gameEnded)
-//				logger.info("Treasure found");
-//		} catch (Exception e){
-//			e.printStackTrace();
-//		}
-//
-//
-//		// Find and go to enemy fortress
-//		try{
-//			boolean fortressFound;
-//			boolean gameEnded;
-//			do{
-//				fortressFound = controller.findEnemyFort();
-//				gameEnded = controller.gameEnded();
-//				Thread.sleep(400);
-//			}
-//			while (!fortressFound && !gameEnded);
-//			if(controller.playerWon())
-//				logger.info("Fortress found; Player won");
-//			else if(controller.playerLost())
-//				logger.info("Player lost");
-//		} catch (Exception e){
-//			e.printStackTrace();
-//		}
-
 	}
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="map.MapNodeClassTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-05-20T22:48:10" hostname="DESKTOP-LV4HIIH" time="0.006">
+<testsuite name="map.MapNodeClassTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-05-21T12:59:16" hostname="DESKTOP-LV4HIIH" time="0.002">
   <properties/>
-  <testcase name="constructor_placeTreasureOnMountain_throwPlacedOnWrongFieldException()" classname="map.MapNodeClassTest" time="0.002"/>
-  <testcase name="constructor_placeMyPlayerOnWater_throwPlacedOnWrongFieldException()" classname="map.MapNodeClassTest" time="0.002"/>
-  <testcase name="constructor_placeFortOnWater_throwPlacedOnWrongFieldException()" classname="map.MapNodeClassTest" time="0.002"/>
+  <testcase name="constructor_placeTreasureOnMountain_throwPlacedOnWrongFieldException()" classname="map.MapNodeClassTest" time="0.0"/>
+  <testcase name="constructor_placeMyPlayerOnWater_throwPlacedOnWrongFieldException()" classname="map.MapNodeClassTest" time="0.0"/>
+  <testcase name="constructor_placeFortOnWater_throwPlacedOnWrongFieldException()" classname="map.MapNodeClassTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

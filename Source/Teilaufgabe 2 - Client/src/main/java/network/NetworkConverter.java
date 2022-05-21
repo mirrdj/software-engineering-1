@@ -8,10 +8,7 @@ import MessagesBase.MessagesFromServer.*;
 import data.EnumPlayerGameState;
 import data.GameStateClass;
 import data.PlayerStateClass;
-import map.EnumTerrain;
-import map.MapClass;
-import map.MapNodeClass;
-import map.full_map.*;
+import map.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import path.EnumMove;
@@ -135,11 +132,11 @@ public class NetworkConverter {
         EnumPlayerPositionState playerPos = convertEPlayerPositionState(fullMapNode.getPlayerPositionState());
         EnumTreasureState treasure = convertETreasureState(fullMapNode.getTreasureState());
 
-        return new MapNodeClass(terrain, playerPos, treasure, fort, x, y);
+        return new MapNodeClass(x, y, terrain, fort, playerPos, treasure);
     }
 
 
-    // convert the network FullMap class to my own FullMapClass
+    // convert the network FullMap class to my own MapClass
     private MapClass convertFullMap(FullMap fullMap) {
         List<FullMapNode> networkNodes = new ArrayList<>(fullMap.getMapNodes());
         List<MapNodeClass> classNodes = new ArrayList<>();
@@ -161,7 +158,6 @@ public class NetworkConverter {
 
     // convert the network GameState class to my own GameStateClass
     private GameStateClass convertGameState(GameState gameState) {
-        String gameStateID = gameState.getGameStateId();
         Optional<FullMap> fullMap = gameState.getMap();
 
         Set<PlayerStateClass> players = new HashSet<>();
@@ -172,30 +168,30 @@ public class NetworkConverter {
 
         if(fullMap.isPresent()) {
             MapClass mapClass = convertFullMap(fullMap.get());
-            return new GameStateClass(gameStateID, mapClass, players);
+            return new GameStateClass(mapClass, players);
         }
 
-        return new GameStateClass(gameStateID, players);
+        return new GameStateClass(players);
     }
 
-    public String postPlayerRegistration() throws Exception {
+    public String postPlayerRegistration() {
         logger.info("Registering the player");
         return networkMessenger.postPlayerRegistration();
     }
 
-    public void postHalfMap(MapClass halfMapClass, String uniquePlayerID) throws Exception {
+    public void postHalfMap(MapClass halfMapClass, String uniquePlayerID) {
         logger.info("Sending the map");
         HalfMap halfMap = convertMapClass(halfMapClass, uniquePlayerID);
         logger.info(halfMap.toString());
         networkMessenger.postHalfMap(halfMap);
     }
 
-    public void postMove(String uniquePlayerID, EnumMove move) throws Exception {
+    public void postMove(String uniquePlayerID, EnumMove move) {
         EMove eMove = covertEnumMove(move);
         networkMessenger.postMove(uniquePlayerID, eMove);
     }
 
-    public GameStateClass getGameState(String uniquePlayerID) throws Exception {
+    public GameStateClass getGameState(String uniquePlayerID)  {
         GameState gameState = networkMessenger.getGameState(uniquePlayerID);
         return convertGameState(gameState);
     }
