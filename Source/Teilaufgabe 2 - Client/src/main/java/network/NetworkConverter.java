@@ -161,18 +161,22 @@ public class NetworkConverter {
     private GameStateClass convertGameState(GameState gameState) {
         Optional<FullMap> fullMap = gameState.getMap();
 
-        List<PlayerStateClass> players = new ArrayList<>();
+        PlayerStateClass myPlayer = null;
+        PlayerStateClass enemyPlayer = null;
         for(PlayerState p : gameState.getPlayers()){
             PlayerStateClass playerStateClass = convertPlayerState(p);
-            players.add(playerStateClass);
+            if (playerStateClass.getUniquePlayerID().equals(uniquePlayerID))
+                myPlayer = playerStateClass;
+            else
+                enemyPlayer = playerStateClass;
         }
 
         if(fullMap.isPresent()) {
             MapClass mapClass = convertFullMap(fullMap.get());
-            return new GameStateClass(mapClass, players);
+            return new GameStateClass(mapClass, myPlayer, enemyPlayer);
         }
 
-        return new GameStateClass(players);
+        return new GameStateClass(myPlayer, enemyPlayer);
     }
 
     public String postPlayerRegistration() {

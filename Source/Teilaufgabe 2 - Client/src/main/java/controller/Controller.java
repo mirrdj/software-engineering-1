@@ -36,8 +36,8 @@ public class Controller {
     private void updatePlayerState() {
         GameStateClass temp = networkConverter.getGameState();
 
-        if(temp.getPlayers() != null)
-            this.gameState.setPlayers(temp.getPlayers());
+        if(temp.getMyPlayer() != null)
+            this.gameState.setMyPlayer(temp.getMyPlayer());
     }
 
     private void updateMap() {
@@ -50,7 +50,7 @@ public class Controller {
     private boolean mustWait() {
         updatePlayerState();
 
-        PlayerStateClass ownPlayerState = gameState.getPlayerWithID(ownPlayerID);
+        PlayerStateClass ownPlayerState = gameState.getMyPlayer();
         logger.debug("In hasToWait(), the state is " + ownPlayerState.getPlayerGS());
 
         return ownPlayerState.getPlayerGS() == EnumPlayerGameState.MUST_WAIT;
@@ -114,7 +114,7 @@ public class Controller {
     private boolean treasureCollected() {
         updatePlayerState();
 
-        PlayerStateClass ownPlayerState = gameState.getPlayerWithID(ownPlayerID);
+        PlayerStateClass ownPlayerState = gameState.getMyPlayer();
         if(ownPlayerState.hasCollectedTreasure()) {
             logger.debug("Treasure found");
             return true;
@@ -158,15 +158,17 @@ public class Controller {
    }
 
     public boolean gameEnded() {
-        PlayerStateClass ownPlayerState = gameState.getPlayerWithID(ownPlayerID);
+        PlayerStateClass ownPlayerState = gameState.getMyPlayer();
 
         if(ownPlayerState.hasWon()){
             logger.info("Player won");
+            updateMap();
             return true;
         }
 
         if(ownPlayerState.hasLost()){
             logger.info("Player lost");
+            updateMap();
             return true;
         }
 

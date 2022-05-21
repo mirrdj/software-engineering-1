@@ -9,42 +9,33 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 public class GameStateClass {
     private static final Logger logger = LoggerFactory.getLogger(GameStateClass.class);
     private final PropertyChangeSupport changes = new PropertyChangeSupport(this);
-    private List<PlayerStateClass> players;
+
     private PlayerStateClass myPlayer;
     private PlayerStateClass enemyPlayer;
     private MapClass mapClass;
 
     public GameStateClass() {}
-    public GameStateClass(MapClass mapClass, List<PlayerStateClass> players) {
+    public GameStateClass(MapClass mapClass, PlayerStateClass myPlayer, PlayerStateClass enemyPlayer) {
         this.mapClass = mapClass;
-        this.players = players;
+        this.myPlayer = myPlayer;
+        this.enemyPlayer = enemyPlayer;
     }
 
-    public GameStateClass(List<PlayerStateClass> players) {
-        this.players = players;
+    public GameStateClass(PlayerStateClass myPlayer, PlayerStateClass enemyPlayer) {
+        this.myPlayer = myPlayer;
+        this.enemyPlayer = enemyPlayer;
+    }
+
+    public PlayerStateClass getMyPlayer() {
+        return myPlayer;
     }
 
     public MapClass getMapClass() {
         return mapClass;
-    }
-    public List<PlayerStateClass> getPlayers() {
-        return players;
-    }
-
-    public PlayerStateClass getPlayerWithID(String uniqueID) {
-        if(players.get(0).getUniquePlayerID().equals(uniqueID))
-            return players.get(0);
-
-        if(players.get(1).getUniquePlayerID().equals(uniqueID))
-            return players.get(1);
-
-        return null;
     }
 
 
@@ -55,11 +46,11 @@ public class GameStateClass {
         changes.firePropertyChange("map", mapBeforeChange, mapClass);
     }
 
-    public void setPlayers(List<PlayerStateClass> updatedPlayers) {
-        List<PlayerStateClass> playersBeforeChange = this.players;
-        this.players = updatedPlayers;
+    public void setMyPlayer(PlayerStateClass updatedPlayer) {
+        PlayerStateClass playerBeforeChange = this.myPlayer;
+        this.myPlayer = updatedPlayer;
 
-        changes.firePropertyChange("players", playersBeforeChange, updatedPlayers);
+        changes.firePropertyChange("players", playerBeforeChange, updatedPlayer);
     }
 
     public void addListener(PropertyChangeListener view) {
