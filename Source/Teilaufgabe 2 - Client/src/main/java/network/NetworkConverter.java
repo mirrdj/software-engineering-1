@@ -186,13 +186,13 @@ public class NetworkConverter {
         networkMessenger.postHalfMap(halfMap);
     }
 
-    public void postMove(String uniquePlayerID, EnumMove move) {
+    public void postMove(EnumMove move) {
         EMove eMove = covertEnumMove(move);
-        networkMessenger.postMove(uniquePlayerID, eMove);
+        networkMessenger.postMove(eMove);
     }
 
-    public GameStateClass getGameState(String uniquePlayerID)  {
-        GameState gameState = networkMessenger.getGameState(uniquePlayerID);
+    public GameStateClass getGameState()  {
+        GameState gameState = networkMessenger.getGameState();
         return convertGameState(gameState);
     }
 

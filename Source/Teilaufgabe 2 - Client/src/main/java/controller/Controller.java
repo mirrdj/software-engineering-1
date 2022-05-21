@@ -27,7 +27,6 @@ public class Controller {
     boolean treasureFound = false;
     boolean treasureCollected = false;
     boolean fortFound = false;
-    boolean fortReached = false;
 
     public Controller(NetworkConverter networkConverter, GameStateClass gameState) {
         this.networkConverter = networkConverter;
@@ -35,14 +34,14 @@ public class Controller {
     }
 
     private void updatePlayerState() {
-        GameStateClass temp = networkConverter.getGameState(ownPlayerID);
+        GameStateClass temp = networkConverter.getGameState();
 
         if(temp.getPlayers() != null)
             this.gameState.setPlayers(temp.getPlayers());
     }
 
     private void updateMap() {
-        GameStateClass temp = networkConverter.getGameState(ownPlayerID);
+        GameStateClass temp = networkConverter.getGameState();
 
         if(temp.getMapClass() != null)
             this.gameState.setMapClass(temp.getMapClass());
@@ -146,7 +145,7 @@ public class Controller {
             if(gameEnded())
                 break;
 
-            networkConverter.postMove(ownPlayerID, moves.poll());
+            networkConverter.postMove(moves.poll());
             updateMap();
             updatePlayerState();
 

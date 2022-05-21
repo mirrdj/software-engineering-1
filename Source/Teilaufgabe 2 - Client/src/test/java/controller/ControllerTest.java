@@ -1,23 +1,29 @@
 package controller;
 
+import MessagesBase.MessagesFromServer.FullMap;
 import data.GameStateClass;
+import data.PlayerStateClass;
+import helper.MapCreator;
+import map.MapClass;
 import network.NetworkConverter;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.lang.reflect.Executable;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ControllerTest {
     private Controller controller;
-    private  GameStateClass gameState;
     private NetworkConverter networkConverter;
+    private GameStateClass gameState;
 
     @BeforeEach
-    void setUpController(){
+    void setUp(){
+        gameState = Mockito.mock(GameStateClass.class);
         networkConverter = Mockito.mock(NetworkConverter.class);
-        gameState = new GameStateClass();
         controller = new Controller(networkConverter, gameState);
     }
 
@@ -26,15 +32,35 @@ class ControllerTest {
     }
 
     @Test
-    void updateGameState() {
+    void checkBothHalfMapsSent_fullMap_returnTrue() {
+        char[][] nodes = {
+                {'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'},
+                {'G', 'G', 'M', 'M', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'},
+                {'G', 'G', 'G', 'G', 'G', 'W', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'},
+                {'G', 'W', 'G', 'G', 'M', 'W', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'},
+        };
+
+        MapCreator mapCreator = new MapCreator();
+        MapClass map = mapCreator.createMapHalfMapStyle(nodes);
+
+        Mockito.when(gameState.getMapClass()).thenReturn(map);
+        Assertions.assertTrue(controller.checkBothHalfMapsSent());
     }
 
     @Test
-    void mustAct() {
-    }
+    void checkBothHalfMapsSent_fullMap_returnFalse() {
+        char[][] nodes = {
+                {'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'},
+                {'G', 'G', 'M', 'M', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'},
+                {'G', 'G', 'G', 'G', 'G', 'W', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'},
+                {'G', 'W', 'G', 'G', 'M', 'W', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'},
+        };
 
-    @Test
-    void bothPlayersRegistered() {
+        MapCreator mapCreator = new MapCreator();
+        MapClass map = mapCreator.createMapHalfMapStyle(nodes);
+
+        Mockito.when(gameState.getMapClass()).thenReturn(map);
+        Assertions.assertTrue(controller.checkBothHalfMapsSent());
     }
 
     @Test
@@ -46,26 +72,18 @@ class ControllerTest {
     }
 
     @Test
-    void findTreasure() {
-    }
+    void performAction() {
 
-    @Test
-    void checkBothHalfMapsSent() {
-    }
-
-    @Test
-    void findEnemyFort() {
-    }
-
-    @Test
-    void playerLost() {
-    }
-
-    @Test
-    void playerWon() {
     }
 
     @Test
     void gameEnded() {
+        Mockito.when(networkConverter
+                .getGameState()
+                .getPlayerWithID("uniquePlayerID")
+                .hasWon())
+                .thenReturn(true);
+
+        Assertions.assertTrue(controller.gameEnded());
     }
 }
