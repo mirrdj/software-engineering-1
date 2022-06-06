@@ -1,7 +1,9 @@
 package server.game;
 
+import java.util.Objects;
+
 public class GameID {
-    String gameID;
+    private String gameID;
 
     public GameID(String gameID) {
         this.gameID = gameID;
@@ -15,4 +17,8 @@ public class GameID {
         this.gameID = gameID;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        return false;
+    }
 }
