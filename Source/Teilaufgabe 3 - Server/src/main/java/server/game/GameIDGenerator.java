@@ -1,6 +1,8 @@
 package server.game;
 
 public class GameIDGenerator {
-//    public GameID generateID() {}
+    public GameID generateID() {
+        return new GameID("");
+    }
 
 }

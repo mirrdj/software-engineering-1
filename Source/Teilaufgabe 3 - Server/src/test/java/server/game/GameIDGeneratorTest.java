@@ -1,14 +1,29 @@
 package server.game;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameIDGeneratorTest {
-    public List<GameID> generatedIDs;
-
+    public GameIDGenerator idGenerator;
+    @BeforeEach
+    private void initGeneratedIDs(){
+        idGenerator = new GameIDGenerator();
+    }
     @Test
-    public void generateID_generateMultipleIDs_eachIDdifferent(){}
-    public void generateID_checkIDlength_lengthEqual5(){}
+    public void generateID_generateMultipleIDs_eachIDdifferent(){
+        GameID id1 = idGenerator.generateID();
+        GameID id2 = idGenerator.generateID();
+
+        assertEquals(id1, id2);
+    }
+    @Test
+    public void generateID_checkIDlength_lengthEqual5(){
+        GameID id = idGenerator.generateID();
+        int expected = 5;
+        int actual = id.getGameID().length();
+
+        assertEquals(expected, actual);
+    }
 }
