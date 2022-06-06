@@ -1,25 +1,26 @@
 package server.game;
 
 public class GameIDGenerator {
-    private final String alphabet = "abcdefghijklmnopqrstuvwxyz";
-    private final  String digit = "0123456789";
-    private final int length = 5;
-
     private int getRandomInt(int maximum){
         return (int) (Math.random() * maximum);
     }
 
     private String generateString(){
+        String alphabet = "abcdefghijklmnopqrstuvwxyz";
+        String digit = "0123456789";
+        int length = 5;
+
         String completeString = alphabet.concat(digit);
-        String output = "";
+        StringBuilder stb = new StringBuilder();
 
         for(int i = 0; i < length; i++) {
             int randomIndex = getRandomInt(completeString.length());
             char randomChar = completeString.charAt(randomIndex);
-            output = output.concat(Character.toString(randomChar));
+
+            stb.append(Character.toString(randomChar));
         }
 
-        return output;
+        return stb.toString();
     }
 
     public GameID generateID() {
