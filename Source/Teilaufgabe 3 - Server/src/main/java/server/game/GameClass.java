@@ -1,20 +1,25 @@
 package server.game;
 
+import server.exceptions.MapAlreadySet;
+import server.exceptions.NoPlayerRegistered;
+import server.exceptions.PlayerRegistrationException;
+import server.exceptions.TwoPlayersAlreadyRegisteredExeception;
 import server.map.MapClass;
-import server.map.MapManager;
 import server.player.Player;
 import server.player.PlayerManager;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class GameClass {
     private final GameID gameID;
     private int round;
     private Set<PlayerManager> players;
-    private MapClass map;
+    private MapClass map = null;
 
     public GameClass(GameID gameID) {
         this.gameID = gameID;
+        this.players = new HashSet<>();
     }
     public GameID getGameID() {
         return gameID;
@@ -22,9 +27,36 @@ public class GameClass {
     public int getRound() {
         return round;
     }
-    public void updateRound(){}
-    public void registerPlayer(Player player){}
-    public PlayerManager getPlayerWithID(String ID){return null;}
-    public Set<PlayerManager> getPlayers(){return null;};
-    public void setFullMap(MapClass map){}
+    public void updateRound(){ round += 1;}
+    public void registerPlayer(Player player){
+        int maximumPlayerNumber = 2;
+
+        if(players.size() == maximumPlayerNumber)
+            throw new TwoPlayersAlreadyRegisteredExeception();
+
+        PlayerManager playerManager = new PlayerManager(player.getPlayerID());
+        players.add(playerManager);
+    }
+    public PlayerManager getPlayerWithID(String ID){
+        if(players.isEmpty())
+            throw new NoPlayerRegistered();
+
+        PlayerManager playerWithID = players
+                .stream()
+                .filter(p -> p.getPlayerID().equals(ID))
+                .findFirst()
+                .orElse(null);
+
+        if(playerWithID == null)
+            throw new PlayerRegistrationException("No such player registered");
+
+        return playerWithID;
+    }
+    public Set<PlayerManager> getPlayers(){return players;}
+    public void setFullMap(MapClass map){
+        if(this.map != null)
+            throw new MapAlreadySet("Full map has already been set");
+
+        this.map = map;
+    }
 }

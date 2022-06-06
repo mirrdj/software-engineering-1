@@ -1,5 +1,6 @@
 package server.game;
 
+import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,7 +47,6 @@ class GameClassTest {
         Executable registerPlayer = () -> game.registerPlayer(new Player());
         Assertions.assertThrows(TwoPlayersAlreadyRegisteredExeception.class, registerPlayer);
     }
-
     @Test
     public void getPlayerWithID_idOfPlayerNotRegistered_throwException(){
         Executable getPlayer = () -> game.getPlayerWithID("id");
