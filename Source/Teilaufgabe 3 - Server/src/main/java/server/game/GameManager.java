@@ -1,6 +1,7 @@
 package server.game;
 
 import server.exceptions.NoSuchGameException;
+import server.map.MapClass;
 import server.player.Player;
 import server.uniqueID.GameID;
 import server.exceptions.GameAlreadyExistsException;
@@ -51,7 +52,7 @@ public class GameManager {
         gameWithID.registerPlayer(player);
     }
 
-    public void addHalfMapToGame(){
+    public void addHalfMapToGame(MapClass halfMap, PlayerID playerID, GameID gameID){
         // TODO: check gameID
         // TODO: checkPlayerID
 

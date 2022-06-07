@@ -1,7 +1,5 @@
 package server.main;
 
-import java.util.UUID;
-
 import javax.servlet.http.HttpServletResponse;
 
 import MessagesBase.MessagesFromClient.HalfMap;
