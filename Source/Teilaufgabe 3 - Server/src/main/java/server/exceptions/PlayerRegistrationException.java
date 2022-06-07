@@ -1,7 +1,7 @@
 package server.exceptions;
 
-public class PlayerRegistrationException extends RuntimeException{
-    public PlayerRegistrationException(String message){
-        super(message);
+public class PlayerRegistrationException extends GenericExampleException{
+    public PlayerRegistrationException(String errorName, String message){
+        super(errorName, message);
     }
 }

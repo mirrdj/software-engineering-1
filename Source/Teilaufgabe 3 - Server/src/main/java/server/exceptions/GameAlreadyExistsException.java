@@ -1,7 +1,7 @@
 package server.exceptions;
 
-public class GameAlreadyExistsException extends RuntimeException{
+public class GameAlreadyExistsException extends GenericExampleException{
     public GameAlreadyExistsException(String message){
-        super(message);
+        super(GameAlreadyExistsException.class.getName(), message);
     }
 }

@@ -1,7 +1,7 @@
 package server.exceptions;
 
-public class NoSuchGameException extends RuntimeException {
+public class NoSuchGameException extends GenericExampleException {
     public NoSuchGameException(String message){
-        super(message);
+        super(NoSuchGameException.class.getName(), message);
     }
 }

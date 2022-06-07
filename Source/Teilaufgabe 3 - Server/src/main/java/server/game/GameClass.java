@@ -1,10 +1,7 @@
 package server.game;
 
+import server.exceptions.*;
 import server.uniqueID.GameID;
-import server.exceptions.MapAlreadySetException;
-import server.exceptions.NoPlayerRegisteredException;
-import server.exceptions.PlayerRegistrationException;
-import server.exceptions.TwoPlayersAlreadyRegisteredExeception;
 import server.map.MapClass;
 import server.player.Player;
 import server.player.PlayerManager;
@@ -51,7 +48,7 @@ public class GameClass {
                 .orElse(null);
 
         if(playerWithID == null)
-            throw new PlayerRegistrationException("No such player registered");
+            throw new NoSuchPlayerException("No such player registered");
 
         return playerWithID;
     }

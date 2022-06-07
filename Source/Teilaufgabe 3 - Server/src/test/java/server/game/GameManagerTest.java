@@ -31,4 +31,13 @@ class GameManagerTest {
         Executable addPlayerToGame = ()-> gameManager.addPlayerToGame(playerID, gameID);
         Assertions.assertThrows(NoSuchGameException.class, addPlayerToGame);
     }
+    @Test
+    public void addPlayerToGame_gameExists_noException(){
+        GameID gameID = new GameID("id123");
+        gameManager.addGame(gameID);
+        PlayerID playerID = new PlayerID("id0123456789");
+
+        Executable addPlayerToGame = ()-> gameManager.addPlayerToGame(playerID, gameID);
+        Assertions.assertDoesNotThrow(addPlayerToGame);
+    }
 }

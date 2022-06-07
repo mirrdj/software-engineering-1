@@ -24,6 +24,8 @@ import server.uniqueID.GameID;
 import server.uniqueID.GameIDGenerator;
 import server.game.GameManager;
 import server.network.NetworkConverter;
+import server.uniqueID.PlayerID;
+import server.uniqueID.PlayerIDGenerator;
 
 @RestController
 @RequestMapping(value = "/games")
@@ -37,10 +39,10 @@ public class ServerEndpoints {
 			@RequestParam(required = false, defaultValue = "false", value = "enableDummyCompetition") boolean enableDummyCompetition) {
 
 		GameIDGenerator generator = new GameIDGenerator();
-		GameID id = generator.generateID();
+		GameID gameID = generator.generateID();
 
-		gameManager.addGame(id);
-		return converter.convertGameID(id);
+		gameManager.addGame(gameID);
+		return converter.convertGameID(gameID);
 	}
 
 	// example for a POST endpoint based on games/{gameID}/players
@@ -48,13 +50,16 @@ public class ServerEndpoints {
 	public @ResponseBody ResponseEnvelope<UniquePlayerIdentifier> registerPlayer(
 			@Validated @PathVariable UniqueGameIdentifier gameID,
 			@Validated @RequestBody PlayerRegistration playerRegistration) {
-		UniquePlayerIdentifier newPlayerID = new UniquePlayerIdentifier(UUID.randomUUID().toString());
 
-		ResponseEnvelope<UniquePlayerIdentifier> playerIDMessage = new ResponseEnvelope<>(newPlayerID);
+		PlayerIDGenerator generator = new PlayerIDGenerator();
+		PlayerID playerID = generator.generateID();
+		GameID ownGameID = converter.convertUniqueGameIdentifier(gameID);
+
+		gameManager.addPlayerToGame(playerID, ownGameID);
+
+		UniquePlayerIdentifier playerIdentifier = converter.convertPlayerID(playerID);
+		ResponseEnvelope<UniquePlayerIdentifier> playerIDMessage = new ResponseEnvelope<>(playerIdentifier);
 		return playerIDMessage;
-
-		// you will need to include additional logic, e.g., additional classes
-		// which create, store, validate, etc. exchanged data
 	}
 
 	/*

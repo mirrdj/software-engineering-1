@@ -39,15 +39,15 @@ class GameClassTest {
 
     @Test
     public void registerPlayer_twoPlayersAlreadyRegistered_throwException(){
-        game.registerPlayer(new Player());
-        game.registerPlayer(new Player());
+        game.registerPlayer(new Player("id0123456789"));
+        game.registerPlayer(new Player("id0123456780"));
 
-        Executable registerPlayer = () -> game.registerPlayer(new Player());
+        Executable registerPlayer = () -> game.registerPlayer(new Player("id1123456789"));
         Assertions.assertThrows(TwoPlayersAlreadyRegisteredExeception.class, registerPlayer);
     }
     @Test
     public void getPlayerWithID_idOfPlayerNotRegistered_throwException(){
-        Executable getPlayer = () -> game.getPlayerWithID("id");
+        Executable getPlayer = () -> game.getPlayerWithID("id0123456789");
         Assertions.assertThrows(NoPlayerRegisteredException.class, getPlayer);
     }
 

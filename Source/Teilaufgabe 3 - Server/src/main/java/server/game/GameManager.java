@@ -1,6 +1,7 @@
 package server.game;
 
 import server.exceptions.NoSuchGameException;
+import server.player.Player;
 import server.uniqueID.GameID;
 import server.exceptions.GameAlreadyExistsException;
 import server.map.MapManager;
@@ -32,7 +33,7 @@ public class GameManager {
         games.add(game);
     };
 
-    private GameClass getGameWithID(GameID gameID){
+    private GameClass getGameWithID(GameID gameID) throws NoSuchGameException {
         GameClass gameWithID = games
                 .stream()
                 .filter(g -> g.getGameID().equals(gameID))
@@ -44,8 +45,10 @@ public class GameManager {
 
         return gameWithID;
     }
-    public void addPlayerToGame(PlayerID playerID, GameID gameID){
+    public void addPlayerToGame(PlayerID playerID, GameID gameID) throws NoSuchGameException {
         GameClass gameWithID = getGameWithID(gameID);
+        Player player = new Player(playerID.getID());
+        gameWithID.registerPlayer(player);
     }
     // getGameWithID
     // addHalfMapToGame

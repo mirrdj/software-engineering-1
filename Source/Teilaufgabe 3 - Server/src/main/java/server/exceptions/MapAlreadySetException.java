@@ -1,7 +1,7 @@
 package server.exceptions;
 
-public class MapAlreadySetException extends RuntimeException{
+public class MapAlreadySetException extends GenericExampleException{
     public MapAlreadySetException(String message){
-        super(message);
+        super(MapAlreadySetException.class.getName(), message);
     }
 }

@@ -1,7 +1,7 @@
 package server.exceptions;
 
-public class IDHasWrongLengthException extends RuntimeException{
+public class IDHasWrongLengthException extends GenericExampleException{
     public IDHasWrongLengthException(){
-        super("ID has wrong length");
+        super(IDHasWrongLengthException.class.getName(), "ID has wrong length");
     }
 }
