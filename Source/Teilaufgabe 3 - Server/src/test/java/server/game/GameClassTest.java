@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
-import server.UniqueID.GameID;
+import server.uniqueID.GameID;
 import server.exceptions.MapAlreadySetException;
 import server.exceptions.NoPlayerRegisteredException;
 import server.exceptions.TwoPlayersAlreadyRegisteredExeception;

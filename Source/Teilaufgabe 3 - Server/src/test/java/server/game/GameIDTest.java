@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import server.UniqueID.GameID;
+import server.uniqueID.GameID;
 import server.exceptions.IDHasWrongLengthException;
 
 class GameIDTest {

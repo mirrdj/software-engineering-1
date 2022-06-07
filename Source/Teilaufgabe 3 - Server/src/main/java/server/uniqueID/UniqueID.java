@@ -1,4 +1,4 @@
-package server.UniqueID;
+package server.uniqueID;
 
 public abstract class UniqueID {
     private final String id;

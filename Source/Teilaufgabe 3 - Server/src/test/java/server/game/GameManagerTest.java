@@ -4,8 +4,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
-import server.UniqueID.GameID;
+import server.exceptions.NoSuchGameException;
+import server.uniqueID.GameID;
 import server.exceptions.GameAlreadyExistsException;
+import server.uniqueID.PlayerID;
 
 class GameManagerTest {
     GameManager gameManager;
@@ -16,12 +18,17 @@ class GameManagerTest {
     @Test
     public void addGame_gameAlreadyExists_throwGameAlreadyExistsException() {
         GameID gameID = new GameID("id123");
-
         gameManager.addGame(gameID);
         Executable addGame = ()-> gameManager.addGame(gameID);
 
         Assertions.assertThrows(GameAlreadyExistsException.class, addGame);
     }
-    // test that the new game has an ID different from the other games
-    // test that only two players can be registered
+    @Test
+    public void addPlayerToGame_gameDoesNotExist_throwsNoSuchGameException(){
+        GameID gameID = new GameID("id123");
+        PlayerID playerID = new PlayerID("id0123456789");
+
+        Executable addPlayerToGame = ()-> gameManager.addPlayerToGame(playerID, gameID);
+        Assertions.assertThrows(NoSuchGameException.class, addPlayerToGame);
+    }
 }

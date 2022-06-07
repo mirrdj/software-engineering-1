@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="server.game.GameManagerTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-06-07T00:34:40" hostname="DESKTOP-LV4HIIH" time="0.001">
+<testsuite name="server.game.GameManagerTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2022-06-07T09:21:09" hostname="DESKTOP-LV4HIIH" time="0.007">
   <properties/>
-  <testcase name="addGame_gameAlreadyExists_throwGameAlreadyExistsException()" classname="server.game.GameManagerTest" time="0.001"/>
+  <testcase name="addPlayerToGame_gameDoesNotExist_throwsNoSuchGameException()" classname="server.game.GameManagerTest" time="0.005"/>
+  <testcase name="addGame_gameAlreadyExists_throwGameAlreadyExistsException()" classname="server.game.GameManagerTest" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

@@ -1,6 +1,6 @@
 package server.game;
 
-import server.UniqueID.GameID;
+import server.uniqueID.GameID;
 
 public class GameIDGenerator {
     private int getRandomInt(int maximum){

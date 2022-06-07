@@ -1,8 +1,5 @@
-package server.UniqueID;
-
+package server.uniqueID;
 import server.exceptions.IDHasWrongLengthException;
-
-import java.util.Objects;
 
 
 public class GameID extends UniqueID{
@@ -20,10 +17,5 @@ public class GameID extends UniqueID{
         if (!(o instanceof GameID)) return false;
         GameID gameID1 = (GameID) o;
         return super.getID().equals(gameID1.getID());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.getID());
     }
 }

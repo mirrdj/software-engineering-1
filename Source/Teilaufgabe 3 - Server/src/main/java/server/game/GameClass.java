@@ -1,6 +1,6 @@
 package server.game;
 
-import server.UniqueID.GameID;
+import server.uniqueID.GameID;
 import server.exceptions.MapAlreadySetException;
 import server.exceptions.NoPlayerRegisteredException;
 import server.exceptions.PlayerRegistrationException;
@@ -39,6 +39,7 @@ public class GameClass {
         players.add(playerManager);
     }
     //TODO: check this - add a test to see if it returns the right player
+    //TODO: do I really need the player.isEmpty()?
     public PlayerManager getPlayerWithID(String ID){
         if(players.isEmpty())
             throw new NoPlayerRegisteredException();

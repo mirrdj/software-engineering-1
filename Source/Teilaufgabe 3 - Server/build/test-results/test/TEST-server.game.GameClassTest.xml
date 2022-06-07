@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="server.game.GameClassTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2022-06-07T00:34:40" hostname="DESKTOP-LV4HIIH" time="0.022">
+<testsuite name="server.game.GameClassTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2022-06-07T09:21:09" hostname="DESKTOP-LV4HIIH" time="0.052">
   <properties/>
-  <testcase name="setFullMap_fullMapAlreadySet_throwException()" classname="server.game.GameClassTest" time="0.017"/>
-  <testcase name="updateRound_updateOnce_roundEqualInitValuePlusOne()" classname="server.game.GameClassTest" time="0.001"/>
-  <testcase name="registerPlayer_twoPlayersAlreadyRegistered_throwException()" classname="server.game.GameClassTest" time="0.001"/>
+  <testcase name="setFullMap_fullMapAlreadySet_throwException()" classname="server.game.GameClassTest" time="0.043"/>
+  <testcase name="updateRound_updateOnce_roundEqualInitValuePlusOne()" classname="server.game.GameClassTest" time="0.002"/>
+  <testcase name="registerPlayer_twoPlayersAlreadyRegistered_throwException()" classname="server.game.GameClassTest" time="0.002"/>
   <testcase name="getRound_updateRoundCalledOnce_roundEqualToOne()" classname="server.game.GameClassTest" time="0.001"/>
   <testcase name="getPlayerWithID_idOfPlayerNotRegistered_throwException()" classname="server.game.GameClassTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>

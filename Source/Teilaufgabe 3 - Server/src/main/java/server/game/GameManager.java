@@ -1,8 +1,10 @@
 package server.game;
 
-import server.UniqueID.GameID;
+import server.exceptions.NoSuchGameException;
+import server.uniqueID.GameID;
 import server.exceptions.GameAlreadyExistsException;
 import server.map.MapManager;
+import server.uniqueID.PlayerID;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,8 +31,21 @@ public class GameManager {
         GameClass game = new GameClass(gameID);
         games.add(game);
     };
-    public GameClass getGameWithID(){
-        return null;
+
+    private GameClass getGameWithID(GameID gameID){
+        GameClass gameWithID = games
+                .stream()
+                .filter(g -> g.getGameID().equals(gameID))
+                .findFirst()
+                .orElse(null);
+
+        if(gameWithID == null)
+            throw new NoSuchGameException("Game with given ID does not exist");
+
+        return gameWithID;
+    }
+    public void addPlayerToGame(PlayerID playerID, GameID gameID){
+        GameClass gameWithID = getGameWithID(gameID);
     }
     // getGameWithID
     // addHalfMapToGame
