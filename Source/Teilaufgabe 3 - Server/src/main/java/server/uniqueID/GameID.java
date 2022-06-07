@@ -2,7 +2,7 @@ package server.uniqueID;
 import server.exceptions.IDHasWrongLengthException;
 
 
-public class GameID extends UniqueID{
+public class GameID extends AbstractUniqueID {
     public GameID(String gameID) {
         super(gameID);
 

@@ -21,7 +21,7 @@ import MessagesBase.UniquePlayerIdentifier;
 import MessagesBase.MessagesFromClient.PlayerRegistration;
 import server.exceptions.GenericExampleException;
 import server.uniqueID.GameID;
-import server.game.GameIDGenerator;
+import server.uniqueID.GameIDGenerator;
 import server.game.GameManager;
 import server.network.NetworkConverter;
 

@@ -1,4 +1,4 @@
-package server.game;
+package server.uniqueID;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

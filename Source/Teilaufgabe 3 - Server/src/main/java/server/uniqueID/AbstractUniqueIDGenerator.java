@@ -1,16 +1,13 @@
-package server.game;
+package server.uniqueID;
 
-import server.uniqueID.GameID;
-
-public class GameIDGenerator {
+public abstract class AbstractUniqueIDGenerator<UniqueID> {
     private int getRandomInt(int maximum){
         return (int) (Math.random() * maximum);
     }
 
-    private String generateString(){
+    protected String generateString(int length){
         String alphabet = "abcdefghijklmnopqrstuvwxyz";
         String digit = "0123456789";
-        int length = 5;
 
         String completeString = alphabet.concat(digit);
         StringBuilder stb = new StringBuilder();
@@ -19,15 +16,10 @@ public class GameIDGenerator {
             int randomIndex = getRandomInt(completeString.length());
             char randomChar = completeString.charAt(randomIndex);
 
-            stb.append(Character.toString(randomChar));
+            stb.append(randomChar);
         }
 
         return stb.toString();
     }
-
-    public GameID generateID() {
-        String id = generateString();
-        return new GameID(id);
-    }
-
+    public abstract UniqueID generateID();
 }
