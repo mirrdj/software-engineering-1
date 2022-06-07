@@ -1,17 +1,14 @@
 package server.game;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
-import server.exceptions.MapAlreadySet;
-import server.exceptions.NoPlayerRegistered;
+import server.exceptions.MapAlreadySetException;
+import server.exceptions.NoPlayerRegisteredException;
 import server.exceptions.TwoPlayersAlreadyRegisteredExeception;
 import server.map.MapClass;
 import server.player.Player;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class GameClassTest {
     private GameClass game;
@@ -50,7 +47,7 @@ class GameClassTest {
     @Test
     public void getPlayerWithID_idOfPlayerNotRegistered_throwException(){
         Executable getPlayer = () -> game.getPlayerWithID("id");
-        Assertions.assertThrows(NoPlayerRegistered.class, getPlayer);
+        Assertions.assertThrows(NoPlayerRegisteredException.class, getPlayer);
     }
 
     @Test
@@ -58,6 +55,6 @@ class GameClassTest {
         game.setFullMap(new MapClass());
         Executable setMap = () -> game.setFullMap(new MapClass());
 
-        Assertions.assertThrows(MapAlreadySet.class, setMap);
+        Assertions.assertThrows(MapAlreadySetException.class, setMap);
     }
 }

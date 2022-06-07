@@ -1,7 +1,7 @@
 package server.game;
 
-import server.exceptions.MapAlreadySet;
-import server.exceptions.NoPlayerRegistered;
+import server.exceptions.MapAlreadySetException;
+import server.exceptions.NoPlayerRegisteredException;
 import server.exceptions.PlayerRegistrationException;
 import server.exceptions.TwoPlayersAlreadyRegisteredExeception;
 import server.map.MapClass;
@@ -37,9 +37,10 @@ public class GameClass {
         PlayerManager playerManager = new PlayerManager(player.getPlayerID());
         players.add(playerManager);
     }
+    //TODO: check this - add a test to see if it returns the right player
     public PlayerManager getPlayerWithID(String ID){
         if(players.isEmpty())
-            throw new NoPlayerRegistered();
+            throw new NoPlayerRegisteredException();
 
         PlayerManager playerWithID = players
                 .stream()
@@ -55,7 +56,7 @@ public class GameClass {
     public Set<PlayerManager> getPlayers(){return players;}
     public void setFullMap(MapClass map){
         if(this.map != null)
-            throw new MapAlreadySet("Full map has already been set");
+            throw new MapAlreadySetException("Full map has already been set");
 
         this.map = map;
     }
