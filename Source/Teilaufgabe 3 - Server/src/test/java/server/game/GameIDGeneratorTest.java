@@ -1,9 +1,10 @@
 package server.game;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import server.UniqueID.GameID;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameIDGeneratorTest {
@@ -23,7 +24,7 @@ class GameIDGeneratorTest {
     public void generateID_checkIDlength_lengthEqual5(){
         GameID id = idGenerator.generateID();
         int expected = 5;
-        int actual = id.getGameID().length();
+        int actual = id.getID().length();
 
         assertEquals(expected, actual);
     }

@@ -1,5 +1,6 @@
 package server.game;
 
+import server.UniqueID.GameID;
 import server.exceptions.MapAlreadySetException;
 import server.exceptions.NoPlayerRegisteredException;
 import server.exceptions.PlayerRegistrationException;

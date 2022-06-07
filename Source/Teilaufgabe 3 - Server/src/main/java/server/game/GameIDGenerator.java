@@ -1,5 +1,7 @@
 package server.game;
 
+import server.UniqueID.GameID;
+
 public class GameIDGenerator {
     private int getRandomInt(int maximum){
         return (int) (Math.random() * maximum);

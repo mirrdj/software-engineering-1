@@ -1,5 +1,6 @@
 package server.game;
 
+import server.UniqueID.GameID;
 import server.exceptions.GameAlreadyExistsException;
 import server.map.MapManager;
 

@@ -1,23 +1,17 @@
-package server.game;
+package server.UniqueID;
 
 import server.exceptions.IDHasWrongLengthException;
 
 import java.util.Objects;
 
 
-public class GameID {
-    private final String gameID;
-
+public class GameID extends UniqueID{
     public GameID(String gameID) {
+        super(gameID);
+
         int neededLength = 5;
         if(gameID.length() != neededLength)
             throw new IDHasWrongLengthException();
-
-        this.gameID = gameID;
-    }
-
-    public String getGameID() {
-        return gameID;
     }
 
     @Override
@@ -25,11 +19,11 @@ public class GameID {
         if (this == o) return true;
         if (!(o instanceof GameID)) return false;
         GameID gameID1 = (GameID) o;
-        return gameID.equals(gameID1.gameID);
+        return super.getID().equals(gameID1.getID());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(gameID);
+        return Objects.hash(super.getID());
     }
 }
