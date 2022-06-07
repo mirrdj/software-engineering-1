@@ -1,9 +1,11 @@
 package server.player;
 
+import server.uniqueID.PlayerID;
+
 public class Player {
     String playerID;
-    public Player(String playerID) {
-        this.playerID = playerID;
+    public Player(PlayerID playerID) {
+        this.playerID = playerID.getID();
     }
     public String getPlayerID() {
         return playerID;

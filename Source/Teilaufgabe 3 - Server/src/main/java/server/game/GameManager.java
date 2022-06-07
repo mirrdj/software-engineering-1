@@ -33,7 +33,7 @@ public class GameManager {
         games.add(game);
     };
 
-    private GameClass getGameWithID(GameID gameID) throws NoSuchGameException {
+    private GameClass getGameWithID(GameID gameID) {
         GameClass gameWithID = games
                 .stream()
                 .filter(g -> g.getGameID().equals(gameID))
@@ -45,12 +45,18 @@ public class GameManager {
 
         return gameWithID;
     }
-    public void addPlayerToGame(PlayerID playerID, GameID gameID) throws NoSuchGameException {
+    public void addPlayerToGame(PlayerID playerID, GameID gameID) {
         GameClass gameWithID = getGameWithID(gameID);
-        Player player = new Player(playerID.getID());
+        Player player = new Player(playerID);
         gameWithID.registerPlayer(player);
     }
-    // getGameWithID
+
+    public void addHalfMapToGame(){
+        // TODO: check gameID
+        // TODO: checkPlayerID
+
+        // TODO: add halfMap to MapManager
+    }
     // addHalfMapToGame
     // applyMoveToGame
     // setFullMaps

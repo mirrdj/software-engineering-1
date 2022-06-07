@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 
+import MessagesBase.MessagesFromClient.HalfMap;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -62,28 +63,22 @@ public class ServerEndpoints {
 		return playerIDMessage;
 	}
 
-	/*
-	 * Note, this is only the most basic way of handling exceptions in spring (but
-	 * sufficient for our task) it would, for example struggle if you use multiple
-	 * controllers. Add the exception types to the @ExceptionHandler which your
-	 * exception handling should support the superclass catches subclasses aspect
-	 * of try/catch also applies here. Hence, we recommend to simply extend your own
-	 * Exceptions from the GenericExampleException. For larger projects, one would
-	 * most likely want to use the HandlerExceptionResolver; see here
-	 * https://www.baeldung.com/exception-handling-for-rest-with-spring
-	 * 
-	 * Ask yourself: Why is handling the exceptions in a different method than the
-	 * endpoint methods a good solution?
-	 */
+
+
+	@RequestMapping(value = "/{gameID}/halfmaps", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
+	public @ResponseBody ResponseEnvelope<HalfMap> sendHalfMap(
+			@PathVariable String gameID,
+			@Validated @RequestBody HalfMap halfMap) {
+
+		ResponseEnvelope<HalfMap> response = new ResponseEnvelope();
+		return response;
+	}
+
+
 	@ExceptionHandler({ GenericExampleException.class })
 	public @ResponseBody ResponseEnvelope<?> handleException(GenericExampleException ex, HttpServletResponse response) {
 		ResponseEnvelope<?> result = new ResponseEnvelope<>(ex.getErrorName(), ex.getMessage());
 
-		// reply with 200 OK as defined in the network documentation
-		// Side note: We only do this here for simplicity reasons. For future projects,
-		// you should check out HTTP status codes and
-		// what they can be used for. Note, the WebClient used during the Client implementation can react
-		// to them using the .onStatus(...) method.
 		response.setStatus(HttpServletResponse.SC_OK);
 		return result;
 	}

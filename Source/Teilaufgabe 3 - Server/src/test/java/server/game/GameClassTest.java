@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.mockito.Mockito;
 import server.uniqueID.GameID;
 import server.exceptions.MapAlreadySetException;
 import server.exceptions.NoPlayerRegisteredException;
@@ -39,10 +40,14 @@ class GameClassTest {
 
     @Test
     public void registerPlayer_twoPlayersAlreadyRegistered_throwException(){
-        game.registerPlayer(new Player("id0123456789"));
-        game.registerPlayer(new Player("id0123456780"));
+        Player player1 = Mockito.mock(Player.class);
+        Player player2 = Mockito.mock(Player.class);
+        Player player3 = Mockito.mock(Player.class);
 
-        Executable registerPlayer = () -> game.registerPlayer(new Player("id1123456789"));
+        game.registerPlayer(player1);
+        game.registerPlayer(player2);
+
+        Executable registerPlayer = () -> game.registerPlayer(player3);
         Assertions.assertThrows(TwoPlayersAlreadyRegisteredExeception.class, registerPlayer);
     }
     @Test
@@ -53,8 +58,9 @@ class GameClassTest {
 
     @Test
     public void setFullMap_fullMapAlreadySet_throwException() {
-        game.setFullMap(new MapClass());
-        Executable setMap = () -> game.setFullMap(new MapClass());
+        MapClass map = Mockito.mock(MapClass.class);
+        game.setFullMap(map);
+        Executable setMap = () -> game.setFullMap(map);
 
         Assertions.assertThrows(MapAlreadySetException.class, setMap);
     }
