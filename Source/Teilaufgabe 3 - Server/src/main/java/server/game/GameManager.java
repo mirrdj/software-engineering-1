@@ -3,6 +3,7 @@ package server.game;
 import server.exceptions.NoSuchGameException;
 import server.map.MapClass;
 import server.player.Player;
+import server.player.PlayerManager;
 import server.uniqueID.GameID;
 import server.exceptions.GameAlreadyExistsException;
 import server.map.MapManager;
@@ -14,12 +15,12 @@ import java.util.Map;
 import java.util.Set;
 
 public class GameManager {
-    private Map<GameID, MapManager> gameManagers;
+    private Map<GameID, MapManager> mapManagers;
     private Set<GameClass> games;
 
     public GameManager(){
         games = new HashSet<>();
-        gameManagers = new HashMap<>();
+        mapManagers = new HashMap<>();
     }
 
     public void addGame(GameID gameID){
@@ -49,16 +50,19 @@ public class GameManager {
     public void addPlayerToGame(PlayerID playerID, GameID gameID) {
         GameClass gameWithID = getGameWithID(gameID);
         Player player = new Player(playerID);
+
         gameWithID.registerPlayer(player);
     }
-
     public void addHalfMapToGame(MapClass halfMap, PlayerID playerID, GameID gameID){
-        // TODO: check gameID
-        // TODO: checkPlayerID
+        GameClass gameWithID = getGameWithID(gameID);
 
-        // TODO: add halfMap to MapManager
+        //TODO: change this so that I dont get the playManager just to check that the player exists
+        Player playerWithID = gameWithID.getPlayerWithID(playerID.getID());
+
+        mapManagers.putIfAbsent(gameID, new MapManager());
+        mapManagers.get(gameID).addHalfMap(playerID, halfMap);
+
     }
-    // addHalfMapToGame
     // applyMoveToGame
     // setFullMaps
 }

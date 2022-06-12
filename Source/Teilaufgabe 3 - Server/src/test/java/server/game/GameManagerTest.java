@@ -8,7 +8,6 @@ import org.mockito.Mockito;
 import server.exceptions.NoSuchGameException;
 import server.exceptions.NoSuchPlayerException;
 import server.map.MapClass;
-import server.player.Player;
 import server.uniqueID.GameID;
 import server.exceptions.GameAlreadyExistsException;
 import server.uniqueID.PlayerID;
@@ -52,6 +51,7 @@ class GameManagerTest {
         PlayerID playerID = Mockito.mock(PlayerID.class);
         MapClass halfMap = Mockito.mock(MapClass.class);
 
+        gameManager.addGame(gameID1);
         gameManager.addPlayerToGame(playerID, gameID1);
 
         Executable addHalfMapToGame = ()-> gameManager.addHalfMapToGame(halfMap, playerID, gameID2);
@@ -61,13 +61,27 @@ class GameManagerTest {
     @Test
     void addHalfMapToGame_playerDoesNotExist_throwsNoSuchPlayerException() {
         GameID gameID = Mockito.mock(GameID.class);
-        PlayerID playerID1 = Mockito.mock(PlayerID.class);
-        PlayerID playerID2 = Mockito.mock(PlayerID.class);
+        PlayerID playerID1 = new PlayerID("id0123456789");
+        PlayerID playerID2 = new PlayerID("id1123456789");
         MapClass halfMap = Mockito.mock(MapClass.class);
 
+        gameManager.addGame(gameID);
         gameManager.addPlayerToGame(playerID1, gameID);
 
         Executable addHalfMapToGame = ()-> gameManager.addHalfMapToGame(halfMap, playerID2, gameID);
         Assertions.assertThrows(NoSuchPlayerException.class, addHalfMapToGame);
+    }
+
+    @Test
+    void addHalfMapToGame_bothPlayerAndGameExist_noThrow() {
+        GameID gameID = Mockito.mock(GameID.class);
+        PlayerID playerID = new PlayerID("id0123456789");
+        MapClass halfMap = Mockito.mock(MapClass.class);
+
+        gameManager.addGame(gameID);
+        gameManager.addPlayerToGame(playerID, gameID);
+
+        Executable addHalfMapToGame = ()-> gameManager.addHalfMapToGame(halfMap, playerID, gameID);
+        Assertions.assertDoesNotThrow(addHalfMapToGame);
     }
 }

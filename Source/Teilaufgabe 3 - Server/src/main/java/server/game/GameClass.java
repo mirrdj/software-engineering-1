@@ -12,12 +12,12 @@ import java.util.Set;
 public class GameClass {
     private final GameID gameID;
     private int round;
-    private Set<PlayerManager> players;
+    private PlayerManager playerManager;
     private MapClass map = null;
 
     public GameClass(GameID gameID) {
         this.gameID = gameID;
-        this.players = new HashSet<>();
+        this.playerManager = new PlayerManager();
     }
     public GameID getGameID() {
         return gameID;
@@ -27,32 +27,13 @@ public class GameClass {
     }
     public void updateRound(){ round += 1;}
     public void registerPlayer(Player player){
-        int maximumPlayerNumber = 2;
-
-        if(players.size() == maximumPlayerNumber)
-            throw new TwoPlayersAlreadyRegisteredExeception();
-
-        PlayerManager playerManager = new PlayerManager(player.getPlayerID());
-        players.add(playerManager);
+        playerManager.addPlayer(player);
     }
     //TODO: check this - add a test to see if it returns the right player
     //TODO: do I really need the player.isEmpty()?
-    public PlayerManager getPlayerWithID(String ID){
-        if(players.isEmpty())
-            throw new NoPlayerRegisteredException();
-
-        PlayerManager playerWithID = players
-                .stream()
-                .filter(p -> p.getPlayerID().equals(ID))
-                .findFirst()
-                .orElse(null);
-
-        if(playerWithID == null)
-            throw new NoSuchPlayerException("No such player registered");
-
-        return playerWithID;
+    public Player getPlayerWithID(String playerID){
+        return playerManager.getPlayerWithID(playerID);
     }
-    public Set<PlayerManager> getPlayers(){return players;}
     public void setFullMap(MapClass map){
         if(this.map != null)
             throw new MapAlreadySetException("Full map has already been set");

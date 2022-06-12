@@ -10,8 +10,12 @@ public class MapManager {
     public Map<PlayerID, MapClass> getMaps() {
         return maps;
     }
-    public void addHalfMap(PlayerID playerID, MapClass halfMap){}
+    public void addHalfMap(PlayerID playerID, MapClass halfMap){
+        maps.put(playerID, halfMap);
+    }
 
-    public boolean fullMapComplete(){return false;}
+    public boolean fullMapComplete(){
+        return maps.size() == 2;
+    }
 
 }
