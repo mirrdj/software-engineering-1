@@ -53,15 +53,14 @@ public class GameManager {
 
         gameWithID.registerPlayer(player);
     }
-    public void addHalfMapToGame(MapClass halfMap, PlayerID playerID, GameID gameID){
+    public void addHalfMapToGame(MapClass halfMap, String playerID, GameID gameID){
         GameClass gameWithID = getGameWithID(gameID);
 
         //TODO: change this so that I dont get the playManager just to check that the player exists
-        Player playerWithID = gameWithID.getPlayerWithID(playerID.getID());
+        Player playerWithID = gameWithID.getPlayerWithID(playerID);
 
         mapManagers.putIfAbsent(gameID, new MapManager());
         mapManagers.get(gameID).addHalfMap(playerID, halfMap);
-
     }
     // applyMoveToGame
     // setFullMaps

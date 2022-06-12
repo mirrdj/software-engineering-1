@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="server.game.GameClassTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2022-06-12T17:19:21" hostname="DESKTOP-LV4HIIH" time="0.597">
+  <properties/>
+  <testcase name="setFullMap_fullMapAlreadySet_throwException()" classname="server.game.GameClassTest" time="0.579"/>
+  <testcase name="updateRound_updateOnce_roundEqualInitValuePlusOne()" classname="server.game.GameClassTest" time="0.001"/>
+  <testcase name="registerPlayer_twoPlayersAlreadyRegistered_throwException()" classname="server.game.GameClassTest" time="0.012"/>
+  <testcase name="getRound_updateRoundCalledOnce_roundEqualToOne()" classname="server.game.GameClassTest" time="0.001"/>
+  <testcase name="getPlayerWithID_idOfPlayerNotRegistered_throwException()" classname="server.game.GameClassTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

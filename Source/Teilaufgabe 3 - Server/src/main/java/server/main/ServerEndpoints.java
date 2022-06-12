@@ -19,6 +19,8 @@ import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
 import MessagesBase.MessagesFromClient.PlayerRegistration;
 import server.exceptions.GenericExampleException;
+import server.map.MapClass;
+import server.player.Player;
 import server.uniqueID.GameID;
 import server.uniqueID.GameIDGenerator;
 import server.game.GameManager;
@@ -44,7 +46,6 @@ public class ServerEndpoints {
 		return converter.convertGameID(gameID);
 	}
 
-	// example for a POST endpoint based on games/{gameID}/players
 	@RequestMapping(value = "/{gameID}/players", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
 	public @ResponseBody ResponseEnvelope<UniquePlayerIdentifier> registerPlayer(
 			@Validated @PathVariable UniqueGameIdentifier gameID,
@@ -68,7 +69,13 @@ public class ServerEndpoints {
 			@Validated @PathVariable UniqueGameIdentifier gameID,
 			@Validated @RequestBody HalfMap halfMap) {
 
+		MapClass map = converter.convertHalfMap(halfMap);
+		GameID convertedGameID = converter.convertUniqueGameIdentifier(gameID);
+		String playerID = halfMap.getUniquePlayerID();
+		gameManager.addHalfMapToGame(map, playerID, convertedGameID);
+
 		ResponseEnvelope<HalfMap> response = new ResponseEnvelope();
+
 		return response;
 	}
 

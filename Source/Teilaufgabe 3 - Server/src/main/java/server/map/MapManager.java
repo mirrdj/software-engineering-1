@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MapManager {
-    Map<PlayerID, MapClass> maps = new HashMap<>();
-    public Map<PlayerID, MapClass> getMaps() {
+    Map<String, MapClass> maps = new HashMap<>();
+    public Map<String, MapClass> getMaps() {
         return maps;
     }
-    public void addHalfMap(PlayerID playerID, MapClass halfMap){
+    public void addHalfMap(String playerID, MapClass halfMap){
         maps.put(playerID, halfMap);
     }
 
