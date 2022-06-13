@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="server.game.GameManagerTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2022-06-12T17:19:21" hostname="DESKTOP-LV4HIIH" time="0.03">
+<testsuite name="server.game.GameManagerTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2022-06-13T14:31:34" hostname="DESKTOP-LV4HIIH" time="0.782">
   <properties/>
-  <testcase name="addHalfMapToGame_gameDoesNotExist_throwsNoSuchGameException()" classname="server.game.GameManagerTest" time="0.018"/>
+  <testcase name="addHalfMapToGame_gameDoesNotExist_throwsNoSuchGameException()" classname="server.game.GameManagerTest" time="0.769"/>
   <testcase name="addPlayerToGame_gameExists_noException()" classname="server.game.GameManagerTest" time="0.002"/>
   <testcase name="addHalfMapToGame_playerDoesNotExist_throwsNoSuchPlayerException()" classname="server.game.GameManagerTest" time="0.002"/>
-  <testcase name="addHalfMapToGame_bothPlayerAndGameExist_noThrow()" classname="server.game.GameManagerTest" time="0.001"/>
-  <testcase name="addPlayerToGame_gameDoesNotExist_throwsNoSuchGameException()" classname="server.game.GameManagerTest" time="0.002"/>
+  <testcase name="addHalfMapToGame_bothPlayerAndGameExist_noThrow()" classname="server.game.GameManagerTest" time="0.002"/>
+  <testcase name="addPlayerToGame_gameDoesNotExist_throwsNoSuchGameException()" classname="server.game.GameManagerTest" time="0.001"/>
   <testcase name="addGame_gameAlreadyExists_throwGameAlreadyExistsException()" classname="server.game.GameManagerTest" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

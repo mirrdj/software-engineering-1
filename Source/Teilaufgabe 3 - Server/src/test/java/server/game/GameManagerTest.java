@@ -2,6 +2,7 @@ package server.game;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
@@ -26,6 +27,7 @@ class GameManagerTest {
 
         Assertions.assertThrows(GameAlreadyExistsException.class, addGame);
     }
+
     @Test
     public void addPlayerToGame_gameDoesNotExist_throwsNoSuchGameException(){
         GameID gameID = new GameID("id123");

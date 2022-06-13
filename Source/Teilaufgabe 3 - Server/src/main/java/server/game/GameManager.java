@@ -15,12 +15,16 @@ import java.util.Map;
 import java.util.Set;
 
 public class GameManager {
-    private Map<GameID, MapManager> mapManagers;
-    private Map<GameID, GameClass> games;
+    private Map<String, MapManager> mapManagers;
+    private Map<String, GameClass> games;
 
     public GameManager(){
         games = new HashMap<>();
         mapManagers = new HashMap<>();
+    }
+
+    public Map<String, GameClass> getGames() {
+        return games;
     }
 
     public void addGame(GameID gameID){
@@ -33,36 +37,24 @@ public class GameManager {
             throw new GameAlreadyExistsException("This game id is already registered");
 
         GameClass game = new GameClass(gameID);
-        games.put(gameID, game);
+        games.put(gameID.getID(), game);
     };
 
-    private GameClass getGameWithID(GameID gameID) {
-        GameClass gameWithID = games
-                .values()
-                .stream()
-                .filter(g -> g.getGameID().equals(gameID))
-                .findFirst()
-                .orElse(null);
 
-        if(gameWithID == null)
-            throw new NoSuchGameException("Game with given ID does not exist");
-
-        return gameWithID;
-    }
     public void addPlayerToGame(PlayerID playerID, GameID gameID) {
-        GameClass gameWithID = getGameWithID(gameID);
+        GameClass gameWithID = games.get(gameID.getID());
         Player player = new Player(playerID);
 
         gameWithID.registerPlayer(player);
     }
     public void addHalfMapToGame(MapClass halfMap, String playerID, GameID gameID){
-        GameClass gameWithID = getGameWithID(gameID);
+        GameClass gameWithID = games.get(gameID.getID());
 
         //TODO: change this so that I dont get the playManager just to check that the player exists
         Player playerWithID = gameWithID.getPlayerWithID(playerID);
 
-        mapManagers.putIfAbsent(gameID, new MapManager());
-        mapManagers.get(gameID).addHalfMap(playerID, halfMap);
+        mapManagers.putIfAbsent(gameID.toString(), new MapManager());
+        mapManagers.get(gameID.toString()).addHalfMap(playerID, halfMap);
     }
     // applyMoveToGame
     // setFullMaps

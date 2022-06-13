@@ -3,6 +3,7 @@ package server.main;
 import javax.servlet.http.HttpServletResponse;
 
 import MessagesBase.MessagesFromClient.HalfMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,6 +22,8 @@ import MessagesBase.MessagesFromClient.PlayerRegistration;
 import server.exceptions.GenericExampleException;
 import server.map.MapClass;
 import server.player.Player;
+import server.rules.IRule;
+import server.rules.RGameExists;
 import server.uniqueID.GameID;
 import server.uniqueID.GameIDGenerator;
 import server.game.GameManager;
@@ -28,11 +31,22 @@ import server.network.NetworkConverter;
 import server.uniqueID.PlayerID;
 import server.uniqueID.PlayerIDGenerator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/games")
 public class ServerEndpoints {
-	GameManager gameManager = new GameManager();
-	NetworkConverter converter = new NetworkConverter();
+	private GameManager gameManager = new GameManager();
+	private NetworkConverter converter = new NetworkConverter();
+	private List<IRule> rules = List.of(new RGameExists(gameManager));;
+
+//	@Autowired
+//	public ServerEndpoints(GameManager gameManager) {
+//		this.gameManager = gameManager;
+//
+//		rules = List.of(new RGameExists(gameManager));
+//	}
 
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
 	public @ResponseBody UniqueGameIdentifier newGame(
@@ -55,6 +69,9 @@ public class ServerEndpoints {
 		PlayerID playerID = generator.generateID();
 		GameID ownGameID = converter.convertUniqueGameIdentifier(gameID);
 
+		for(IRule rule : rules)
+			rule.validateRegisterPlayer(ownGameID);
+
 		gameManager.addPlayerToGame(playerID, ownGameID);
 
 		UniquePlayerIdentifier playerIdentifier = converter.convertPlayerID(playerID);
@@ -72,8 +89,11 @@ public class ServerEndpoints {
 		MapClass map = converter.convertHalfMap(halfMap);
 		GameID convertedGameID = converter.convertUniqueGameIdentifier(gameID);
 		String playerID = halfMap.getUniquePlayerID();
-		gameManager.addHalfMapToGame(map, playerID, convertedGameID);
 
+		for(IRule rule : rules)
+			rule.validateHalfMap(convertedGameID, map);
+
+		gameManager.addHalfMapToGame(map, playerID, convertedGameID);
 		ResponseEnvelope<HalfMap> response = new ResponseEnvelope();
 
 		return response;
