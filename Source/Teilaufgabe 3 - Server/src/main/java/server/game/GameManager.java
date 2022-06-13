@@ -16,27 +16,29 @@ import java.util.Set;
 
 public class GameManager {
     private Map<GameID, MapManager> mapManagers;
-    private Set<GameClass> games;
+    private Map<GameID, GameClass> games;
 
     public GameManager(){
-        games = new HashSet<>();
+        games = new HashMap<>();
         mapManagers = new HashMap<>();
     }
 
     public void addGame(GameID gameID){
         boolean gameExists = games
+                .keySet()
                 .stream()
-                .anyMatch(g -> g.getGameID().equals(gameID));
+                .anyMatch(g -> g.equals(gameID));
 
         if(gameExists)
             throw new GameAlreadyExistsException("This game id is already registered");
 
         GameClass game = new GameClass(gameID);
-        games.add(game);
+        games.put(gameID, game);
     };
 
     private GameClass getGameWithID(GameID gameID) {
         GameClass gameWithID = games
+                .values()
                 .stream()
                 .filter(g -> g.getGameID().equals(gameID))
                 .findFirst()
