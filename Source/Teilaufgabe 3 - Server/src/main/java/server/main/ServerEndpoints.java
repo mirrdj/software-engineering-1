@@ -3,6 +3,7 @@ package server.main;
 import javax.servlet.http.HttpServletResponse;
 
 import MessagesBase.MessagesFromClient.HalfMap;
+import MessagesBase.MessagesFromServer.GameState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -44,13 +45,6 @@ public class ServerEndpoints {
 			new RGameExists(gameManager),
 			new RPlayerExists(gameManager)
 	);
-
-//	@Autowired
-//	public ServerEndpoints(GameManager gameManager) {
-//		this.gameManager = gameManager;
-//
-//		rules = List.of(new RGameExists(gameManager));
-//	}
 
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
 	public @ResponseBody UniqueGameIdentifier newGame(
@@ -101,6 +95,22 @@ public class ServerEndpoints {
 		ResponseEnvelope<HalfMap> response = new ResponseEnvelope();
 
 		return response;
+	}
+
+	@RequestMapping(value = "{gameID}/states/{playerID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
+	public @ResponseBody ResponseEnvelope<GameState> getState(
+			@Validated @PathVariable UniqueGameIdentifier gameID,
+			@Validated @PathVariable UniquePlayerIdentifier playerID) {
+
+		GameID convertedGameID = converter.convertUniqueGameIdentifier(gameID);
+		PlayerID convertedPlayerID = converter.convertUniquePlayerIdentifier(playerID);
+
+		for(IRule rule : rules)
+			rule.validateGetState(convertedGameID, convertedPlayerID);
+
+		GameState gameState = new GameState();
+		ResponseEnvelope<GameState> gameStateMessage = new ResponseEnvelope<>(gameState);
+		return gameStateMessage;
 	}
 
 

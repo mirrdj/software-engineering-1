@@ -8,6 +8,7 @@ import MessagesBase.UniquePlayerIdentifier;
 import server.map.MapClass;
 import server.map.MapNodeClass;
 import server.map.EnumTerrain;
+import server.player.Player;
 import server.uniqueID.GameID;
 import server.uniqueID.PlayerID;
 
@@ -33,6 +34,12 @@ public class NetworkConverter {
     public UniquePlayerIdentifier convertPlayerID(PlayerID playerID){
         String id = playerID.getID();
         return new UniquePlayerIdentifier(id);
+    }
+
+    // convert from UniqueGameIdentifier to my own GameID
+    public PlayerID convertUniquePlayerIdentifier(UniquePlayerIdentifier playerIdentifier){
+        String id = playerIdentifier.getUniquePlayerID();
+        return new PlayerID(id);
     }
 
     // convert from the network ETerrain to my own EnumTerrain
