@@ -19,6 +19,11 @@ public class GameClass {
         this.gameID = gameID;
         this.playerManager = new PlayerManager();
     }
+
+    public PlayerManager getPlayerManager() {
+        return playerManager;
+    }
+
     public GameID getGameID() {
         return gameID;
     }
@@ -29,8 +34,6 @@ public class GameClass {
     public void registerPlayer(Player player){
         playerManager.addPlayer(player);
     }
-    //TODO: check this - add a test to see if it returns the right player
-    //TODO: do I really need the player.isEmpty()?
     public Player getPlayerWithID(String playerID){
         return playerManager.getPlayerWithID(playerID);
     }

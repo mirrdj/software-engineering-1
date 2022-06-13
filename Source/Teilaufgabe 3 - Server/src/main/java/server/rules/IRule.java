@@ -8,6 +8,6 @@ import server.uniqueID.PlayerID;
 
 public interface IRule {
     public void validateRegisterPlayer(GameID gameID);
-    public void validateHalfMap(GameID gameID, MapClass map);
+    public void validateHalfMap(GameID gameID, MapClass map, String playerID);
     public void validateGetState(GameID gameID, PlayerID playerID);
 }

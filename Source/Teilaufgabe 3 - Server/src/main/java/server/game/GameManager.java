@@ -40,7 +40,6 @@ public class GameManager {
         games.put(gameID.getID(), game);
     };
 
-
     public void addPlayerToGame(PlayerID playerID, GameID gameID) {
         GameClass gameWithID = games.get(gameID.getID());
         Player player = new Player(playerID);
@@ -55,6 +54,11 @@ public class GameManager {
 
         mapManagers.putIfAbsent(gameID.toString(), new MapManager());
         mapManagers.get(gameID.toString()).addHalfMap(playerID, halfMap);
+    }
+    public void playerLost(GameID gameID, String playerID){
+        GameClass gameWithID = games.get(gameID.getID());
+        Player playerWithID = gameWithID.getPlayerWithID(playerID);
+
     }
     // applyMoveToGame
     // setFullMaps

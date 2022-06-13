@@ -24,6 +24,7 @@ import server.map.MapClass;
 import server.player.Player;
 import server.rules.IRule;
 import server.rules.RGameExists;
+import server.rules.RPlayerExists;
 import server.uniqueID.GameID;
 import server.uniqueID.GameIDGenerator;
 import server.game.GameManager;
@@ -39,7 +40,10 @@ import java.util.List;
 public class ServerEndpoints {
 	private GameManager gameManager = new GameManager();
 	private NetworkConverter converter = new NetworkConverter();
-	private List<IRule> rules = List.of(new RGameExists(gameManager));;
+	private List<IRule> rules = List.of(
+			new RGameExists(gameManager),
+			new RPlayerExists(gameManager)
+	);
 
 //	@Autowired
 //	public ServerEndpoints(GameManager gameManager) {
@@ -91,7 +95,7 @@ public class ServerEndpoints {
 		String playerID = halfMap.getUniquePlayerID();
 
 		for(IRule rule : rules)
-			rule.validateHalfMap(convertedGameID, map);
+			rule.validateHalfMap(convertedGameID, map, playerID);
 
 		gameManager.addHalfMapToGame(map, playerID, convertedGameID);
 		ResponseEnvelope<HalfMap> response = new ResponseEnvelope();

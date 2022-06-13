@@ -23,7 +23,7 @@ public class RGameExists implements IRule {
     }
 
     @Override
-    public void validateHalfMap(GameID gameID, MapClass map) {
+    public void validateHalfMap(GameID gameID, MapClass map, String playerID) {
         checkGameExists(gameID);
     }
 
