@@ -1,29 +1,20 @@
 package server.rules;
 
-import MessagesBase.MessagesFromClient.ETerrain;
 import MessagesBase.MessagesFromClient.HalfMap;
-import MessagesBase.MessagesFromClient.HalfMapNode;
 import MessagesBase.UniqueGameIdentifier;
-import MessagesBase.UniquePlayerIdentifier;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
-import org.mockito.Mockito;
 import server.exceptions.MapHasWrongSizeException;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class RHalfMapHasCorrectSizeTest {
     private MapCreator mapCreator = new MapCreator();
-    private RHalfMapHasCorrectSize rule;
+    private RMapHasCorrectSize rule;
 
     @BeforeEach
     private void setUpBeforeClass(){
-        rule = new RHalfMapHasCorrectSize();
+        rule = new RMapHasCorrectSize();
     }
 
     @Test

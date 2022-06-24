@@ -11,8 +11,8 @@ import server.exceptions.MapHasWrongSizeException;
 
 import java.util.Comparator;
 
-public class RHalfMapHasCorrectSize implements IRule{
-    private static Logger logger = LoggerFactory.getLogger(RHalfMapHasCorrectSize.class);
+public class RMapHasCorrectSize implements IRule{
+    private static Logger logger = LoggerFactory.getLogger(RMapHasCorrectSize.class);
     private void checkCorrectSize(HalfMap map){
         int minY = map.getMapNodes()
                 .stream()
@@ -41,9 +41,9 @@ public class RHalfMapHasCorrectSize implements IRule{
                 .get()
                 .getX();
         logger.debug("maxX={}", maxX);
-        System.out.println("max x " + maxX);
 
         int nodeNumber = map.getMapNodes().size();
+        logger.debug("There are {} nodes", nodeNumber);
 
         if(minY != 0)
             throw new MapHasWrongSizeException("Smallest Y is not 0");

@@ -1,4 +1,2 @@
-%UniquePlayerIdentifier=id0123456789
-%UniquePlayerIdentifier=id0123456789
-%UniquePlayerIdentifier=id0123456789
-%UniquePlayerIdentifier=id0123456789
+`21:37:06.055 [Test worker] DEBUG server.rules.RMapHasOneFort - There number of fortresses is 0
+`21:37:06.067 [Test worker] DEBUG server.rules.RMapHasOneFort - There number of fortresses is 0

@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import MessagesBase.MessagesFromClient.HalfMap;
 import MessagesBase.MessagesFromServer.GameState;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,19 +22,14 @@ import MessagesBase.MessagesFromClient.PlayerRegistration;
 import server.exceptions.GenericExampleException;
 import server.game.GameClass;
 import server.map.MapClass;
-import server.player.Player;
 import server.player.PlayerInformation;
-import server.rules.IRule;
-import server.rules.RGameExists;
-import server.rules.RPlayerExists;
+import server.rules.*;
 import server.uniqueID.GameID;
 import server.uniqueID.GameIDGenerator;
 import server.game.GameManager;
 import server.network.NetworkConverter;
 import server.uniqueID.PlayerID;
 import server.uniqueID.PlayerIDGenerator;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -45,7 +39,10 @@ public class ServerEndpoints {
 	private NetworkConverter converter = new NetworkConverter();
 	private List<IRule> rules = List.of(
 			new RGameExists(gameManager),
-			new RPlayerExists(gameManager)
+			new RPlayerExists(gameManager),
+			new RMapHasCorrectSize(),
+			new RMapHasEnoughTerrainsOfEachType(),
+			new RMapHasOneFort()
 	);
 
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
