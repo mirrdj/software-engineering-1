@@ -1,13 +1,13 @@
 package server.rules;
 
+import MessagesBase.MessagesFromClient.HalfMap;
 import MessagesBase.MessagesFromClient.PlayerRegistration;
-import server.map.MapClass;
-import server.player.Player;
-import server.uniqueID.GameID;
-import server.uniqueID.PlayerID;
+import MessagesBase.UniqueGameIdentifier;
+import MessagesBase.UniquePlayerIdentifier;
+
 
 public interface IRule {
-    public void validateRegisterPlayer(GameID gameID);
-    public void validateHalfMap(GameID gameID, MapClass map, String playerID);
-    public void validateGetState(GameID gameID, PlayerID playerID);
+    public void validateRegisterPlayer(UniqueGameIdentifier gameID, PlayerRegistration playerRegistration);
+    public void validateHalfMap(UniqueGameIdentifier gameID, HalfMap map);
+    public void validateGetState(UniqueGameIdentifier gameID, UniquePlayerIdentifier playerID);
 }

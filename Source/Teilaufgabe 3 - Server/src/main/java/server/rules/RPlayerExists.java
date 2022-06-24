@@ -1,12 +1,14 @@
 package server.rules;
 
-import server.exceptions.NoSuchGameException;
+import MessagesBase.MessagesFromClient.HalfMap;
+import MessagesBase.MessagesFromClient.PlayerRegistration;
+import MessagesBase.UniqueGameIdentifier;
+import MessagesBase.UniquePlayerIdentifier;
 import server.exceptions.NoSuchPlayerException;
 import server.game.GameClass;
 import server.game.GameManager;
-import server.map.MapClass;
-import server.uniqueID.GameID;
-import server.uniqueID.PlayerID;
+import server.player.Player;
+import java.util.Map;
 
 public class RPlayerExists implements IRule {
     private GameManager manager;
@@ -15,25 +17,27 @@ public class RPlayerExists implements IRule {
         this.manager = manager;
     }
 
-    private void checkPlayerExists(GameID gameID, String playerID) {
-        GameClass gameWithID = manager.getGames().get(gameID.getID());
-        if(gameWithID.getPlayerManager().getPlayers().get(playerID) == null)
+    private void checkPlayerExists(UniqueGameIdentifier gameID, String playerID) {
+        Map<String, GameClass> games = manager.getGames();
+        GameClass gameWithID = games.get(gameID.getUniqueGameID());
+
+        Map<String, Player> players = gameWithID.getPlayerManager().getPlayers();
+        if(players.get(playerID) == null)
             throw new NoSuchPlayerException("Player with given ID does not exist");
     }
 
     @Override
-    public void validateRegisterPlayer(GameID gameID) {
+    public void validateRegisterPlayer(UniqueGameIdentifier gameID, PlayerRegistration playerRegistration) {
 
     }
 
     @Override
-    public void validateHalfMap(GameID gameID, MapClass map, String playerID) {
-        checkPlayerExists(gameID, playerID);
+    public void validateHalfMap(UniqueGameIdentifier gameID, HalfMap map) {
+        checkPlayerExists(gameID, map.getUniquePlayerID());
     }
 
     @Override
-    public void validateGetState(GameID gameID, PlayerID playerID) {
-        checkPlayerExists(gameID, playerID.getID());
+    public void validateGetState(UniqueGameIdentifier gameID, UniquePlayerIdentifier playerID) {
+        checkPlayerExists(gameID, playerID.getUniquePlayerID());
     }
-
 }
