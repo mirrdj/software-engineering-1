@@ -53,4 +53,20 @@ class RMapHasEnoughTerrainsOfEachTypeTest {
         Executable checkFields = () -> rule.validateHalfMap(gameID, halfMap);
         Assertions.assertThrows(WrongNumberOfFieldsException.class, checkFields);
     }
+
+    @Test
+    public void validateHalfMap_notEnoughGrassFields_throwWrongNumberOfFieldsException() {
+        char[][] nodes = {
+                {'M', 'M', 'G', 'G', 'G', 'G', 'G', 'G'},
+                {'M', 'M', 'W', 'W', 'W', 'W', 'G', 'G'},
+                {'M', 'M', 'M', 'M', 'G', 'G', 'G', 'G'},
+                {'M', 'M', 'M', 'M', 'M', 'M', 'M', 'M'},
+        };
+
+        UniqueGameIdentifier gameID = new UniqueGameIdentifier("game1");
+        HalfMap halfMap = mapCreator.createMap(nodes);
+
+        Executable checkFields = () -> rule.validateHalfMap(gameID, halfMap);
+        Assertions.assertThrows(WrongNumberOfFieldsException.class, checkFields);
+    }
 }
