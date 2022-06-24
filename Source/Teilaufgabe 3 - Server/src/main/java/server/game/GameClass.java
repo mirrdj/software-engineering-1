@@ -22,6 +22,7 @@ public class GameClass {
     public GameClass(GameID gameID) {
         this.gameID = gameID;
         this.playerManager = new PlayerManager();
+        this.mapManager = new MapManager();
     }
 
     public Optional<MapClass> getFullMap() {
@@ -55,5 +56,6 @@ public class GameClass {
     }
     public void addHalfMap(String playerID, MapClass halfMap){
         mapManager.addHalfMap(playerID, halfMap);
+        playerManager.updateTurn();
     }
 }

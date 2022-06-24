@@ -21,7 +21,7 @@ public class RPlayerExists implements IRule {
         Map<String, GameClass> games = manager.getGames();
         GameClass gameWithID = games.get(gameID.getUniqueGameID());
 
-        Map<String, Player> players = gameWithID.getPlayerManager().getPlayers();
+        Map<String, Player> players = gameWithID.getPlayerManager().getPlayers(playerID);
         if(players.get(playerID) == null)
             throw new NoSuchPlayerException("Player with given ID does not exist");
     }

@@ -21,8 +21,10 @@ import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
 import MessagesBase.MessagesFromClient.PlayerRegistration;
 import server.exceptions.GenericExampleException;
+import server.game.GameClass;
 import server.map.MapClass;
 import server.player.Player;
+import server.player.PlayerInformation;
 import server.rules.IRule;
 import server.rules.RGameExists;
 import server.rules.RPlayerExists;
@@ -63,14 +65,17 @@ public class ServerEndpoints {
 			@Validated @PathVariable UniqueGameIdentifier gameID,
 			@Validated @RequestBody PlayerRegistration playerRegistration) {
 
+		for(IRule eachRule : rules)
+			eachRule.validateRegisterPlayer(gameID, playerRegistration);
+
+		PlayerInformation playerInformation = converter.convertPlayerRegistration(playerRegistration);
+
 		PlayerIDGenerator generator = new PlayerIDGenerator();
 		PlayerID playerID = generator.generateID();
-		GameID ownGameID = converter.convertUniqueGameIdentifier(gameID);
 
-		for(IRule rule : rules)
-			rule.validateRegisterPlayer(ownGameID);
+		GameID convertedGameID = converter.convertUniqueGameIdentifier(gameID);
 
-		gameManager.addPlayerToGame(playerID, ownGameID);
+		gameManager.addPlayerToGame(playerID, playerInformation, convertedGameID);
 
 		UniquePlayerIdentifier playerIdentifier = converter.convertPlayerID(playerID);
 		ResponseEnvelope<UniquePlayerIdentifier> playerIDMessage = new ResponseEnvelope<>(playerIdentifier);
@@ -84,12 +89,13 @@ public class ServerEndpoints {
 			@Validated @PathVariable UniqueGameIdentifier gameID,
 			@Validated @RequestBody HalfMap halfMap) {
 
+		for(IRule eachRule : rules)
+			eachRule.validateHalfMap(gameID, halfMap);
+
 		MapClass map = converter.convertHalfMap(halfMap);
 		GameID convertedGameID = converter.convertUniqueGameIdentifier(gameID);
 		String playerID = halfMap.getUniquePlayerID();
 
-		for(IRule rule : rules)
-			rule.validateHalfMap(convertedGameID, map, playerID);
 
 		gameManager.addHalfMapToGame(map, playerID, convertedGameID);
 		ResponseEnvelope<HalfMap> response = new ResponseEnvelope();
@@ -102,13 +108,14 @@ public class ServerEndpoints {
 			@Validated @PathVariable UniqueGameIdentifier gameID,
 			@Validated @PathVariable UniquePlayerIdentifier playerID) {
 
+		for(IRule eachRule : rules)
+			eachRule.validateGetState(gameID, playerID);
+
 		GameID convertedGameID = converter.convertUniqueGameIdentifier(gameID);
 		PlayerID convertedPlayerID = converter.convertUniquePlayerIdentifier(playerID);
+		GameClass game = gameManager.getGameWithID(convertedGameID.getID()).get();
 
-		for(IRule rule : rules)
-			rule.validateGetState(convertedGameID, convertedPlayerID);
-
-		GameState gameState = new GameState();
+		GameState gameState = converter.convertGameClass(game, convertedPlayerID.getID());
 		ResponseEnvelope<GameState> gameStateMessage = new ResponseEnvelope<>(gameState);
 		return gameStateMessage;
 	}

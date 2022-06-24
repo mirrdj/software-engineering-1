@@ -12,6 +12,7 @@ import server.uniqueID.PlayerID;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class GameManager {
     private Map<String, GameClass> games = new HashMap<>();
@@ -20,7 +21,12 @@ public class GameManager {
         return games;
     }
 
+    public Optional<GameClass> getGameWithID(String gameID){
+        return Optional.of(games.get(gameID));
+    }
+
     public void addGame(GameID gameID){
+        //TODO check why according to IntelliJ this is always false
         boolean gameExists = games
                 .keySet()
                 .stream()
