@@ -63,4 +63,8 @@ public class GameClass {
 
         playerManager.updateTurn();
     }
+
+    public void playerLost(String playerID){
+        playerManager.playerLost(playerID);
+    }
 }

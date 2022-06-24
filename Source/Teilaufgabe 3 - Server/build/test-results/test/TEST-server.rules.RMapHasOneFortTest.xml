@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="server.rules.RMapHasOneFortTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2022-06-24T19:37:06" hostname="DESKTOP-LV4HIIH" time="0.059">
+  <properties/>
+  <testcase name="validateHalfMap_halfMapHasMoreThanOneFort_throwWrongFortNumberException()" classname="server.rules.RMapHasOneFortTest" time="0.058"/>
+  <testcase name="validateHalfMap_halfMapHasNoFort_throwWrongFortNumberException()" classname="server.rules.RMapHasOneFortTest" time="0.001"/>
+  <system-out><![CDATA[21:37:06.055 [Test worker] DEBUG server.rules.RMapHasOneFort - There number of fortresses is 0
+21:37:06.067 [Test worker] DEBUG server.rules.RMapHasOneFort - There number of fortresses is 0
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

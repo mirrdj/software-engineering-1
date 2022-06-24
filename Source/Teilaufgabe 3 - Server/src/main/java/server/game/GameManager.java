@@ -3,10 +3,8 @@ package server.game;
 import server.map.MapClass;
 import server.player.Player;
 import server.player.PlayerInformation;
-import server.player.PlayerManager;
 import server.uniqueID.GameID;
 import server.exceptions.GameAlreadyExistsException;
-import server.map.MapManager;
 import server.uniqueID.PlayerID;
 
 
@@ -39,19 +37,18 @@ public class GameManager {
         games.put(gameID.getID(), game);
     };
 
-    public void addPlayerToGame(PlayerID playerID, PlayerInformation playerInformation, GameID gameID) {
+    public void addPlayerToGame(GameID gameID, PlayerID playerID, PlayerInformation playerInformation) {
         GameClass gameWithID = games.get(gameID.getID());
         Player player = new Player(playerID, playerInformation);
 
         gameWithID.registerPlayer(player);
     }
-    public void addHalfMapToGame(MapClass halfMap, String playerID, GameID gameID){
+    public void addHalfMapToGame(GameID gameID, String playerID, MapClass halfMap){
         GameClass gameWithID = games.get(gameID.getID());
         gameWithID.addHalfMap(playerID, halfMap);
     }
-    public void playerLost(GameID gameID, String playerID){
-        GameClass gameWithID = games.get(gameID.getID());
-        Player playerWithID = gameWithID.getPlayerWithID(playerID);
-
+    public void playerLost(String gameID, String playerID){
+        GameClass gameWithID = games.get(gameID);
+        gameWithID.playerLost(playerID);
     }
 }

@@ -6,9 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
-import server.exceptions.WrongNumberOfFieldsException;
-
-import static org.junit.jupiter.api.Assertions.*;
+import server.exceptions.WrongFieldNumberException;
 
 class RMapHasEnoughTerrainsOfEachTypeTest {
     private RMapHasEnoughTerrainsOfEachType rule;
@@ -35,7 +33,7 @@ class RMapHasEnoughTerrainsOfEachTypeTest {
         HalfMap halfMap = mapCreator.createMap(nodes);
 
         Executable checkFields = () -> rule.validateHalfMap(gameID, halfMap);
-        Assertions.assertThrows(WrongNumberOfFieldsException.class, checkFields);
+        Assertions.assertThrows(WrongFieldNumberException.class, checkFields);
     }
 
     @Test
@@ -51,7 +49,7 @@ class RMapHasEnoughTerrainsOfEachTypeTest {
         HalfMap halfMap = mapCreator.createMap(nodes);
 
         Executable checkFields = () -> rule.validateHalfMap(gameID, halfMap);
-        Assertions.assertThrows(WrongNumberOfFieldsException.class, checkFields);
+        Assertions.assertThrows(WrongFieldNumberException.class, checkFields);
     }
 
     @Test
@@ -67,6 +65,6 @@ class RMapHasEnoughTerrainsOfEachTypeTest {
         HalfMap halfMap = mapCreator.createMap(nodes);
 
         Executable checkFields = () -> rule.validateHalfMap(gameID, halfMap);
-        Assertions.assertThrows(WrongNumberOfFieldsException.class, checkFields);
+        Assertions.assertThrows(WrongFieldNumberException.class, checkFields);
     }
 }

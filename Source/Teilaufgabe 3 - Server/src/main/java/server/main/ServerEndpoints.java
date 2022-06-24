@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import MessagesBase.MessagesFromClient.HalfMap;
 import MessagesBase.MessagesFromServer.GameState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,7 +21,7 @@ import MessagesBase.ResponseEnvelope;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
 import MessagesBase.MessagesFromClient.PlayerRegistration;
-import server.exceptions.GenericExampleException;
+import server.exceptions.*;
 import server.game.GameClass;
 import server.map.MapClass;
 import server.player.PlayerInformation;
@@ -35,6 +37,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/games")
 public class ServerEndpoints {
+	private static Logger logger = LoggerFactory.getLogger(ServerEndpoints.class);
 	private GameManager gameManager = new GameManager();
 	private NetworkConverter converter = new NetworkConverter();
 	private List<IRule> rules = List.of(
@@ -62,8 +65,14 @@ public class ServerEndpoints {
 			@Validated @PathVariable UniqueGameIdentifier gameID,
 			@Validated @RequestBody PlayerRegistration playerRegistration) {
 
-		for(IRule eachRule : rules)
-			eachRule.validateRegisterPlayer(gameID, playerRegistration);
+		try {
+			for (IRule eachRule : rules)
+				eachRule.validateRegisterPlayer(gameID, playerRegistration);
+		} catch (NoSuchGameException e){
+			logger.error("Error while checking gameID {} {}", gameID.toString(), e.getMessage());
+			throw e;
+		}
+
 
 		PlayerInformation playerInformation = converter.convertPlayerRegistration(playerRegistration);
 
@@ -72,7 +81,7 @@ public class ServerEndpoints {
 
 		GameID convertedGameID = converter.convertUniqueGameIdentifier(gameID);
 
-		gameManager.addPlayerToGame(playerID, playerInformation, convertedGameID);
+		gameManager.addPlayerToGame(convertedGameID, playerID, playerInformation);
 
 		UniquePlayerIdentifier playerIdentifier = converter.convertPlayerID(playerID);
 		ResponseEnvelope<UniquePlayerIdentifier> playerIDMessage = new ResponseEnvelope<>(playerIdentifier);
@@ -86,15 +95,36 @@ public class ServerEndpoints {
 			@Validated @PathVariable UniqueGameIdentifier gameID,
 			@Validated @RequestBody HalfMap halfMap) {
 
-		for(IRule eachRule : rules)
-			eachRule.validateHalfMap(gameID, halfMap);
+		try {
+			for (IRule eachRule : rules)
+				eachRule.validateHalfMap(gameID, halfMap);
+		} catch (NoSuchGameException e){
+			logger.error("Error while checking gameID {} {}", gameID.toString(), e.getMessage());
+			throw e;
+		} catch (NoSuchPlayerException e){
+			logger.error("Error while checking playerID {} {}", halfMap.getUniquePlayerID(), e.getMessage());
+			throw e;
+		} catch (WrongFieldNumberException e){
+			logger.error("Error while checking field numbers {}", e.getMessage());
+			gameManager.playerLost(gameID.getUniqueGameID(), halfMap.getUniquePlayerID());
+			throw e;
+		} catch(WrongFortNumberException e) {
+			logger.error("Error while checking fort numbers {}", e.getMessage());
+			gameManager.playerLost(gameID.getUniqueGameID(), halfMap.getUniquePlayerID());
+			throw e;
+		} catch(MapHasWrongSizeException e) {
+			logger.error("Error while checking size of the map {}", e.getMessage());
+			gameManager.playerLost(gameID.getUniqueGameID(), halfMap.getUniquePlayerID());
+			throw e;
+		}
+
+
 
 		MapClass map = converter.convertHalfMap(halfMap);
 		GameID convertedGameID = converter.convertUniqueGameIdentifier(gameID);
 		String playerID = halfMap.getUniquePlayerID();
 
-
-		gameManager.addHalfMapToGame(map, playerID, convertedGameID);
+		gameManager.addHalfMapToGame(convertedGameID, playerID, map);
 		ResponseEnvelope<HalfMap> response = new ResponseEnvelope();
 
 		return response;

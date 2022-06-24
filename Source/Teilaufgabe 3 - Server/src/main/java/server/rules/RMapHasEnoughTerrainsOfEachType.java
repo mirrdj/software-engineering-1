@@ -7,7 +7,7 @@ import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import server.exceptions.WrongNumberOfFieldsException;
+import server.exceptions.WrongFieldNumberException;
 
 public class RMapHasEnoughTerrainsOfEachType implements IRule{
     private static Logger logger = LoggerFactory.getLogger(RMapHasEnoughTerrainsOfEachType.class);
@@ -20,7 +20,7 @@ public class RMapHasEnoughTerrainsOfEachType implements IRule{
         logger.debug("There are {} nodes of type {}", terrainNumber, terrainType);
 
         if(terrainNumber < desiredNumber)
-            throw new WrongNumberOfFieldsException("There are not enough nodes of type " + terrainType);
+            throw new WrongFieldNumberException("There are not enough nodes of type " + terrainType);
     }
     private void checkTerrains(HalfMap halfMap){
         int minimumWaterFields = 4;

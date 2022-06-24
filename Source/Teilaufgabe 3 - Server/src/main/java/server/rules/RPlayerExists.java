@@ -4,6 +4,8 @@ import MessagesBase.MessagesFromClient.HalfMap;
 import MessagesBase.MessagesFromClient.PlayerRegistration;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import server.exceptions.NoSuchPlayerException;
 import server.game.GameClass;
 import server.game.GameManager;

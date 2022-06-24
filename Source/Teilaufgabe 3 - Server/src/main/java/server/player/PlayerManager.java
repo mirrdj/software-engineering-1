@@ -116,4 +116,16 @@ public class PlayerManager {
         }
     }
 
+    public void playerLost(String playerID){
+        Player loser = players.get(playerID);
+        loser.setPlayerGameState(EnumPlayerGameState.LOST);
+
+        Map<String, Player> otherPlayers = getOtherPlayers(playerID);
+        for(Player eachOtherPlayer : otherPlayers.values()){
+            eachOtherPlayer.setPlayerGameState(EnumPlayerGameState.WON);
+        }
+
+        turnOrder.clear();
+    }
+
 }
