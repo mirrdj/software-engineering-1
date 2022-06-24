@@ -6,10 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
 import server.uniqueID.GameID;
-import server.exceptions.MapAlreadySetException;
 import server.exceptions.NoPlayerRegisteredException;
-import server.exceptions.TwoPlayersAlreadyRegisteredExeception;
-import server.map.MapClass;
+import server.exceptions.MaximumOfPlayersAlreadyRegisteredExeception;
 import server.player.Player;
 
 class GameClassTest {
@@ -48,20 +46,11 @@ class GameClassTest {
         game.registerPlayer(player2);
 
         Executable registerPlayer = () -> game.registerPlayer(player3);
-        Assertions.assertThrows(TwoPlayersAlreadyRegisteredExeception.class, registerPlayer);
+        Assertions.assertThrows(MaximumOfPlayersAlreadyRegisteredExeception.class, registerPlayer);
     }
     @Test
     public void getPlayerWithID_idOfPlayerNotRegistered_throwException(){
         Executable getPlayer = () -> game.getPlayerWithID("id0123456789");
         Assertions.assertThrows(NoPlayerRegisteredException.class, getPlayer);
-    }
-
-    @Test
-    public void setFullMap_fullMapAlreadySet_throwException() {
-        MapClass map = Mockito.mock(MapClass.class);
-        game.setFullMap(map);
-        Executable setMap = () -> game.setFullMap(map);
-
-        Assertions.assertThrows(MapAlreadySetException.class, setMap);
     }
 }
