@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import server.exceptions.MapHasWrongSizeException;
+import server.exceptions.WrongFortNumberException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +28,7 @@ class RMapHasOneFortTest {
         UniqueGameIdentifier gameID = new UniqueGameIdentifier("game1");
 
         Executable validateSize = () -> rule.validateHalfMap(gameID, halfMap);
-        Assertions.assertThrows(MapHasWrongSizeException.class, validateSize);
+        Assertions.assertThrows(WrongFortNumberException.class, validateSize);
     }
 
     @Test
@@ -37,6 +38,6 @@ class RMapHasOneFortTest {
         UniqueGameIdentifier gameID = new UniqueGameIdentifier("game1");
 
         Executable validateSize = () -> rule.validateHalfMap(gameID, halfMap);
-        Assertions.assertThrows(MapHasWrongSizeException.class, validateSize);
+        Assertions.assertThrows(WrongFortNumberException.class, validateSize);
     }
 }
