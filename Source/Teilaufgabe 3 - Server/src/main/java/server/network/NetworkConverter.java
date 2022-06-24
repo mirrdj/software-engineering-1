@@ -4,15 +4,11 @@ import MessagesBase.MessagesFromClient.ETerrain;
 import MessagesBase.MessagesFromClient.HalfMap;
 import MessagesBase.MessagesFromClient.HalfMapNode;
 import MessagesBase.MessagesFromClient.PlayerRegistration;
-import MessagesBase.MessagesFromServer.EPlayerGameState;
-import MessagesBase.MessagesFromServer.GameState;
-import MessagesBase.MessagesFromServer.PlayerState;
+import MessagesBase.MessagesFromServer.*;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
 import server.game.GameClass;
-import server.map.MapClass;
-import server.map.MapNodeClass;
-import server.map.EnumTerrain;
+import server.map.*;
 import server.player.EnumPlayerGameState;
 import server.player.Player;
 import server.player.PlayerInformation;
@@ -108,11 +104,88 @@ public class NetworkConverter {
         return new PlayerState(firstName, lastName, uaccount, playerGameState, playerID, treasureCollected);
     }
 
+    // convert from  my own EnumFortState to network EFortState
+    private EFortState convertEnumFortState(EnumFortState fortState) {
+        switch (fortState){
+            case ENEMY_FORT_PRESENT:
+                return EFortState.EnemyFortPresent;
+            case MY_FORT_PRESENT:
+                return EFortState.MyFortPresent;
+            case NO_OR_UNKNOWN_FORT_STATE:
+                return EFortState.NoOrUnknownFortState;
+        }
+
+        return null;
+    }
+
+    // convert from my own EnumTerrain to the network ETerrain
+    private ETerrain convertEnumTerrain(EnumTerrain terrain) {
+        switch (terrain){
+            case WATER:
+                return ETerrain.Water;
+            case GRASS:
+                return ETerrain.Grass;
+            case MOUNTAIN:
+                return ETerrain.Mountain;
+        }
+        return null;
+    }
+
+    // convert from my own EnumPlayerPositionState to network EPlayerPositionState
+    private EPlayerPositionState convertEnumPlayerPositionState(EnumPlayerPositionState positionState) {
+        switch (positionState){
+            case BOTH_PLAYER_POSITION:
+                return EPlayerPositionState.BothPlayerPosition;
+            case ENEMY_PLAYER_POSITION:
+                return EPlayerPositionState.EnemyPlayerPosition;
+            case MY_POSITION:
+                return EPlayerPositionState.MyPlayerPosition;
+            case NO_PLAYER_PRESENT:
+                return EPlayerPositionState.NoPlayerPresent;
+        }
+
+        return null;
+    }
+
+    // convert from my own EnumTreasureState to network ETreasureState
+    private ETreasureState convertEnumTreasureState(EnumTreasureState treasureState) {
+        switch (treasureState){
+            case MY_TREASURE_IS_PRESENT:
+                return ETreasureState.MyTreasureIsPresent;
+            case NO_OR_UNKNOWN_TREASURE_STATE:
+                return ETreasureState.NoOrUnknownTreasureState;
+        }
+
+        return null;
+    }
+
+
+    // convert my own MapNodeClass to network mapNode
+    private FullMapNode convertMapNodeClass(MapNodeClass mapNode){
+        int x = mapNode.getX();
+        int y = mapNode.getY();
+
+        EFortState fort = convertEnumFortState(mapNode.getFort());
+        ETerrain terrain = convertEnumTerrain(mapNode.getTerrain());
+        EPlayerPositionState playerPos = convertEnumPlayerPositionState(mapNode.getPlayerPosition());
+        ETreasureState treasure = convertEnumTreasureState(mapNode.getTreasure());
+
+        return new FullMapNode(terrain, playerPos, treasure, fort, x, y);
+    }
+
+    // convert my own MapClass to the network FullMap
+    private FullMap convertMapClass(MapClass map){
+        List<MapNodeClass> mapNodes = new ArrayList<>(map.getNodes());
+        List<FullMapNode> fullMapNodes = new ArrayList<>();
+
+        for(MapNodeClass eachNode : mapNodes)
+            fullMapNodes.add(convertMapNodeClass(eachNode));
+
+        return new FullMap(fullMapNodes);
+    }
 
     // create the network GameState with the information provided by my classes
     public GameState convertGameClass(GameClass game, String playerID) {
-        Optional<MapClass> fullMap = game.getFullMap();
-
         Map<String, Player>  players = game
                 .getPlayerManager()
                 .getPlayers(playerID);
@@ -123,19 +196,13 @@ public class NetworkConverter {
             playerStates.add(playerState);
         }
 
-        //
-        // PlayerState convertedPlayer = convertPlayer(eachPlayer, treasureCollected);
-        //playerStates.add();
+        Optional<FullMap> fullMap = Optional.empty();
+        if(game.getFullMap().isPresent()){
+            FullMap convertedMap = convertMapClass(game.getFullMap().get());
+            fullMap = Optional.of(convertedMap);
+        }
 
-        /*
-        if(fullMap.isPresent()) {
-            MapClass mapClass = convertFullMap(fullMap.get());
-            return new GameStateClass(mapClass, myPlayer, enemyPlayer);
-        }*/
-
-        // GameState(Optional<FullMap> map, Collection<PlayerState> players, String gameStateID)
-        //return new GameState(fullMap, players, String gameStateID);
         GameState gs = new GameState();
-        return new GameState(playerStates, gs.getGameStateId());
+        return new GameState(fullMap, playerStates, gs.getGameStateId());
     }
 }

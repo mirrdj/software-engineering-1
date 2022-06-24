@@ -7,6 +7,7 @@ import server.map.MapClass;
 import server.player.Player;
 import server.player.PlayerManager;
 
+import javax.crypto.spec.OAEPParameterSpec;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
@@ -17,7 +18,7 @@ public class GameClass {
     private int round;
     private PlayerManager playerManager;
     private MapManager mapManager;
-    private Optional<MapClass> fullMap;
+    private Optional<MapClass> fullMap = Optional.empty();
 
     public GameClass(GameID gameID) {
         this.gameID = gameID;
@@ -25,12 +26,13 @@ public class GameClass {
         this.mapManager = new MapManager();
     }
 
+    //TODO check all these optionals
     public Optional<MapClass> getFullMap() {
         return fullMap;
     }
 
-    public void setFullMap(MapClass map){
-        fullMap = Optional.of(map);
+    public void setFullMap(Optional<MapClass> fullMap) {
+        this.fullMap = fullMap;
     }
 
     public MapManager getMapManager() {
@@ -56,6 +58,9 @@ public class GameClass {
     }
     public void addHalfMap(String playerID, MapClass halfMap){
         mapManager.addHalfMap(playerID, halfMap);
+
+        fullMap = mapManager.getFullMap();
+
         playerManager.updateTurn();
     }
 }
