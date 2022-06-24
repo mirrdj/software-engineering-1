@@ -21,7 +21,6 @@ class RHalfMapHasCorrectSizeTest {
     private MapCreator mapCreator = new MapCreator();
     private RHalfMapHasCorrectSize rule;
 
-
     @BeforeEach
     private void setUpBeforeClass(){
         rule = new RHalfMapHasCorrectSize();
@@ -29,21 +28,8 @@ class RHalfMapHasCorrectSizeTest {
 
     @Test
     void validateHalfMap_highestXValueOfNode6_throwMapWrongSizeException() {
-        char[][] nodes = {
-                {'G', 'G', 'G', 'M'},
-                {'G', 'W', 'G', 'M'},
-                {'G', 'W', 'G', 'M'},
-                {'G', 'W', 'G', 'M'},
-                {'G', 'W', 'G', 'G'},
-                {'G', 'G', 'G', 'G'},
-                {'G', 'G', 'G', 'G'}
-        };
-
-        UniqueGameIdentifier gameID = new UniqueGameIdentifier("game1");
-        String playerID = "id0123456789";
-        HalfMap halfMap = mapCreator.createHalfMap(nodes, playerID);
-
-        System.out.println(halfMap.toString());
+       HalfMap halfMap = mapCreator.createMap(0, 4, 0, 7);
+       UniqueGameIdentifier gameID = new UniqueGameIdentifier("game1");
 
        Executable validateSize = () -> rule.validateHalfMap(gameID, halfMap);
        Assertions.assertThrows(MapHasWrongSizeException.class, validateSize);
@@ -51,23 +37,8 @@ class RHalfMapHasCorrectSizeTest {
 
     @Test
     void validateHalfMap_highestXValueOfNode8_throwMapWrongSizeException() {
-        char[][] nodes = {
-                {'G', 'G', 'G', 'M'},
-                {'G', 'W', 'G', 'M'},
-                {'G', 'W', 'G', 'M'},
-                {'G', 'W', 'G', 'M'},
-                {'G', 'W', 'G', 'G'},
-                {'G', 'G', 'G', 'G'},
-                {'G', 'G', 'G', 'G'},
-                {'G', 'G', 'G', 'G'},
-                {'G', 'G', 'G', 'G'},
-        };
-
+        HalfMap halfMap = mapCreator.createMap(0, 4, 1, 9);
         UniqueGameIdentifier gameID = new UniqueGameIdentifier("game1");
-        String playerID = "id0123456789";
-        HalfMap halfMap = mapCreator.createHalfMap(nodes, playerID);
-
-        System.out.println(halfMap.toString());
 
         Executable validateSize = () -> rule.validateHalfMap(gameID, halfMap);
         Assertions.assertThrows(MapHasWrongSizeException.class, validateSize);
@@ -75,22 +46,8 @@ class RHalfMapHasCorrectSizeTest {
 
     @Test
     void validateHalfMap_highestYValueOfNode2_throwMapWrongSizeException() {
-        char[][] nodes = {
-                {'G', 'G', 'G'},
-                {'G', 'W', 'M'},
-                {'G', 'W', 'M'},
-                {'G', 'W', 'M'},
-                {'G', 'W', 'G'},
-                {'G', 'G', 'G'},
-                {'G', 'G', 'G'},
-                {'G', 'G', 'G'}
-        };
-
+        HalfMap halfMap = mapCreator.createMap(0, 3, 0, 8);
         UniqueGameIdentifier gameID = new UniqueGameIdentifier("game1");
-        String playerID = "id0123456789";
-        HalfMap halfMap = mapCreator.createHalfMap(nodes, playerID);
-
-        System.out.println(halfMap.toString());
 
         Executable validateSize = () -> rule.validateHalfMap(gameID, halfMap);
         Assertions.assertThrows(MapHasWrongSizeException.class, validateSize);
@@ -98,23 +55,17 @@ class RHalfMapHasCorrectSizeTest {
 
     @Test
     void validateHalfMap_highestYValueOfNode4_throwMapWrongSizeException() {
-        char[][] nodes = {
-                {'G', 'G', 'G', 'M', 'G'},
-                {'G', 'W', 'G', 'M', 'G'},
-                {'G', 'W', 'G', 'M', 'G'},
-                {'G', 'W', 'G', 'M', 'G'},
-                {'G', 'W', 'G', 'G', 'G'},
-                {'G', 'G', 'G', 'G', 'G'},
-                {'G', 'G', 'G', 'G', 'G'},
-                {'G', 'G', 'G', 'G', 'G'},
-                {'G', 'G', 'G', 'G', 'G'},
-        };
-
+        HalfMap halfMap = mapCreator.createMap(1, 5, 0, 7);
         UniqueGameIdentifier gameID = new UniqueGameIdentifier("game1");
-        String playerID = "id0123456789";
-        HalfMap halfMap = mapCreator.createHalfMap(nodes, playerID);
 
-        System.out.println(halfMap.toString());
+        Executable validateSize = () -> rule.validateHalfMap(gameID, halfMap);
+        Assertions.assertThrows(MapHasWrongSizeException.class, validateSize);
+    }
+
+    @Test
+    void validateHalfMap_wrongSize_throwMapWrongSizeException() {
+        HalfMap halfMap = mapCreator.createMap(0, 4, 0, 7);
+        UniqueGameIdentifier gameID = new UniqueGameIdentifier("game1");
 
         Executable validateSize = () -> rule.validateHalfMap(gameID, halfMap);
         Assertions.assertThrows(MapHasWrongSizeException.class, validateSize);
