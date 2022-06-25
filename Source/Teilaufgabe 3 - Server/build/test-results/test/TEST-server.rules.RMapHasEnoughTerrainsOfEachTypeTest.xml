@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="server.rules.RMapHasEnoughTerrainsOfEachTypeTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-06-25T11:51:29" hostname="DESKTOP-LV4HIIH" time="0.007">
+  <properties/>
+  <testcase name="validateHalfMap_notEnoughMountainFields_throwWrongNumberOfFieldsException()" classname="server.rules.RMapHasEnoughTerrainsOfEachTypeTest" time="0.003"/>
+  <testcase name="validateHalfMap_notEnoughWaterFields_throwWrongNumberOfFieldsException()" classname="server.rules.RMapHasEnoughTerrainsOfEachTypeTest" time="0.001"/>
+  <testcase name="validateHalfMap_notEnoughGrassFields_throwWrongNumberOfFieldsException()" classname="server.rules.RMapHasEnoughTerrainsOfEachTypeTest" time="0.001"/>
+  <system-out><![CDATA[13:51:29.259 [Test worker] DEBUG server.rules.RMapHasEnoughTerrainsOfEachType - There are 26 nodes of type Grass
+13:51:29.259 [Test worker] DEBUG server.rules.RMapHasEnoughTerrainsOfEachType - There are 4 nodes of type Water
+13:51:29.259 [Test worker] DEBUG server.rules.RMapHasEnoughTerrainsOfEachType - There are 2 nodes of type Mountain
+13:51:29.259 [Test worker] DEBUG server.rules.RMapHasEnoughTerrainsOfEachType - There are 25 nodes of type Grass
+13:51:29.259 [Test worker] DEBUG server.rules.RMapHasEnoughTerrainsOfEachType - There are 3 nodes of type Water
+13:51:29.259 [Test worker] DEBUG server.rules.RMapHasEnoughTerrainsOfEachType - There are 12 nodes of type Grass
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
