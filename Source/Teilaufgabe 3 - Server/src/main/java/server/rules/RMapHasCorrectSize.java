@@ -67,8 +67,8 @@ public class RMapHasCorrectSize implements IRule{
     }
 
     @Override
-    public void validateHalfMap(UniqueGameIdentifier gameID, HalfMap map) {
-        checkCorrectSize(map);
+    public void validateHalfMap(UniqueGameIdentifier gameID, HalfMap halfMap) {
+        checkCorrectSize(halfMap);
     }
 
     @Override

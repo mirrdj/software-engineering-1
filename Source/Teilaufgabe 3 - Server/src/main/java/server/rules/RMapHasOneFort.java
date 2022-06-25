@@ -29,8 +29,8 @@ public class RMapHasOneFort implements IRule {
     }
 
     @Override
-    public void validateHalfMap(UniqueGameIdentifier gameID, HalfMap map) {
-        checkFortNumber(map);
+    public void validateHalfMap(UniqueGameIdentifier gameID, HalfMap halfMap) {
+        checkFortNumber(halfMap);
     }
 
     @Override

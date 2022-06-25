@@ -34,8 +34,8 @@ public class RPlayerExists implements IRule {
     }
 
     @Override
-    public void validateHalfMap(UniqueGameIdentifier gameID, HalfMap map) {
-        checkPlayerExists(gameID, map.getUniquePlayerID());
+    public void validateHalfMap(UniqueGameIdentifier gameID, HalfMap halfMap) {
+        checkPlayerExists(gameID, halfMap.getUniquePlayerID());
     }
 
     @Override

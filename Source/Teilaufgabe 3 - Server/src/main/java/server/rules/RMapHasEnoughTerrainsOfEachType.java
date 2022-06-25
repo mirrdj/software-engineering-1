@@ -37,8 +37,8 @@ public class RMapHasEnoughTerrainsOfEachType implements IRule{
     }
 
     @Override
-    public void validateHalfMap(UniqueGameIdentifier gameID, HalfMap map) {
-        checkTerrains(map);
+    public void validateHalfMap(UniqueGameIdentifier gameID, HalfMap halfMap) {
+        checkTerrains(halfMap);
     }
 
     @Override

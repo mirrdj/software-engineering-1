@@ -8,6 +8,6 @@ import MessagesBase.UniquePlayerIdentifier;
 
 public interface IRule {
     public void validateRegisterPlayer(UniqueGameIdentifier gameID, PlayerRegistration playerRegistration);
-    public void validateHalfMap(UniqueGameIdentifier gameID, HalfMap map);
+    public void validateHalfMap(UniqueGameIdentifier gameID, HalfMap halfMap);
     public void validateGetState(UniqueGameIdentifier gameID, UniquePlayerIdentifier playerID);
 }

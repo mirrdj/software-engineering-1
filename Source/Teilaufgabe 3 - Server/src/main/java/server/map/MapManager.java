@@ -27,6 +27,7 @@ public class MapManager {
             MapClass firstMap = (MapClass) maps.values().toArray()[0];
             MapClass secondMap = (MapClass) maps.values().toArray()[1];
 
+            //TODO hide my fort if enemy asks for it
             fullMap = Optional.of(MapClassCombiner.combineMaps(firstMap, secondMap));
             fullMap = Optional.of(placeEnemyPosition(fullMap.get()));
         }
