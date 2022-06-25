@@ -1,14 +1,12 @@
 package server.network;
 
-import MessagesBase.MessagesFromClient.ETerrain;
-import MessagesBase.MessagesFromClient.HalfMap;
-import MessagesBase.MessagesFromClient.HalfMapNode;
-import MessagesBase.MessagesFromClient.PlayerRegistration;
+import MessagesBase.MessagesFromClient.*;
 import MessagesBase.MessagesFromServer.*;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
 import server.game.GameClass;
 import server.map.*;
+import server.move.EnumMove;
 import server.player.EnumPlayerGameState;
 import server.player.Player;
 import server.player.PlayerInformation;
@@ -54,13 +52,20 @@ public class NetworkConverter {
 
     // convert from the network HalfMapNode class to my own MapNodeClass
     private MapNodeClass convertHalfMapNode(HalfMapNode halfMapNode) {
+        EnumTreasureState treasureState = EnumTreasureState.NO_OR_UNKNOWN_TREASURE_STATE;
+        EnumTerrain terrain = convertETerrain(halfMapNode.getTerrain());
+
         int x = halfMapNode.getX();
         int y = halfMapNode.getY();
 
-        boolean fort = halfMapNode.isFortPresent();
-        EnumTerrain terrain = convertETerrain(halfMapNode.getTerrain());
+        EnumFortState fortState = EnumFortState.NO_OR_UNKNOWN_FORT_STATE;
+        EnumPlayerPositionState playerPosition = EnumPlayerPositionState.NO_PLAYER_PRESENT;
+        if(halfMapNode.isFortPresent()){
+            fortState = EnumFortState.MY_FORT_PRESENT;
+            playerPosition = EnumPlayerPositionState.MY_POSITION;
+        }
 
-        return new MapNodeClass(x, y, terrain, fort);
+        return new MapNodeClass(x, y, terrain, fortState, playerPosition, treasureState);
     }
 
     public MapClass convertHalfMap(HalfMap halfMap) {
@@ -178,13 +183,23 @@ public class NetworkConverter {
         }
 
         Optional<FullMap> fullMap = Optional.empty();
-        if(game.getFullMap().isPresent()){
-            FullMap convertedMap = convertMapClass(game.getFullMap().get());
+        if(game.getFullMap(playerID).isPresent()){
+            FullMap convertedMap = convertMapClass(game.getFullMap(playerID).get());
             fullMap = Optional.of(convertedMap);
         }
 
         //TODO add own GameStateID not like this lol
         GameState gs = new GameState();
         return new GameState(fullMap, playerStates, gs.getGameStateId());
+    }
+
+    // convert network PlayerMove to my own EnumMove
+    public EnumMove convertPlayerMove(PlayerMove playerMove){
+        return switch (playerMove.getMove()) {
+            case Up -> EnumMove.UP;
+            case Down -> EnumMove.DOWN;
+            case Left -> EnumMove.LEFT;
+            case Right -> EnumMove.RIGHT;
+        };
     }
 }

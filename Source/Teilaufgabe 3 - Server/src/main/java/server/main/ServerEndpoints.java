@@ -25,6 +25,7 @@ import MessagesBase.MessagesFromClient.PlayerRegistration;
 import server.exceptions.*;
 import server.game.GameClass;
 import server.map.MapClass;
+import server.move.EnumMove;
 import server.player.PlayerInformation;
 import server.rules.*;
 import server.uniqueID.GameID;
@@ -46,7 +47,8 @@ public class ServerEndpoints {
 			new RPlayerExists(gameManager),
 			new RMapHasCorrectSize(),
 			new RMapHasEnoughTerrainsOfEachType(),
-			new RMapHasOneFort()
+			new RMapHasOneFort(),
+			new RFortIsOnGrass()
 	);
 
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
@@ -155,6 +157,11 @@ public class ServerEndpoints {
 
 		for(IRule eachRule : rules)
 			eachRule.validateMove(gameID, playerMove);
+
+		GameID convertedGameID = converter.convertUniqueGameIdentifier(gameID);
+		String playerID = playerMove.getUniquePlayerID();
+		EnumMove move = converter.convertPlayerMove(playerMove);
+		gameManager.addMoveToGame(convertedGameID, playerID, move);
 
 		return new ResponseEnvelope();
 	}

@@ -6,7 +6,7 @@ public class MapNodeClass {
     private final EnumTerrain terrain;
     private  EnumPlayerPositionState playerPosition;
     private  EnumTreasureState treasure;
-    private final EnumFortState fort;
+    private  EnumFortState fort;
 
     public MapNodeClass(int x, int y, EnumTerrain terrain, boolean fortPresent) {
         this.x = x;
@@ -47,6 +47,18 @@ public class MapNodeClass {
     }
 
     public boolean isFortPresent(){return fort == EnumFortState.MY_FORT_PRESENT;}
+
+    public void setPlayerPosition(EnumPlayerPositionState playerPosition) {
+        this.playerPosition = playerPosition;
+    }
+
+    public void setTreasure(EnumTreasureState treasure) {
+        this.treasure = treasure;
+    }
+
+    public void setFort(EnumFortState fort) {
+        this.fort = fort;
+    }
 
     @Override
     public String toString() {

@@ -1,6 +1,7 @@
 package server.game;
 
 import server.map.MapManager;
+import server.move.EnumMove;
 import server.uniqueID.GameID;
 import server.map.MapClass;
 import server.player.Player;
@@ -12,7 +13,7 @@ public class GameClass {
     private int round;
     private PlayerManager playerManager;
     private MapManager mapManager;
-    private Optional<MapClass> fullMap = Optional.empty();
+    // private Optional<MapClass> fullMap = Optional.empty();
 
     public GameClass(GameID gameID) {
         this.gameID = gameID;
@@ -20,42 +21,36 @@ public class GameClass {
         this.mapManager = new MapManager();
     }
 
-    //TODO check all these optionals
-    public Optional<MapClass> getFullMap() {
-        return fullMap;
-    }
+    public Optional<MapClass> getFullMap(String requesterID) {
+        int firstNRounds = 10;
 
-    public void setFullMap(Optional<MapClass> fullMap) {
-        this.fullMap = fullMap;
-    }
-
-    public MapManager getMapManager() {
-        return mapManager;
+        if(round < firstNRounds)
+            return mapManager.getFullMap(requesterID, true);
+        else
+            return mapManager.getFullMap(requesterID, false);
     }
 
     public PlayerManager getPlayerManager() {
         return playerManager;
     }
-
     public GameID getGameID() {
         return gameID;
-    }
-    public int getRound() {
-        return round;
     }
     public void updateRound(){ round += 1;}
     public void registerPlayer(Player player){
         playerManager.addPlayer(player);
     }
-    public Player getPlayerWithID(String playerID){
-        return playerManager.getPlayerWithID(playerID);
-    }
+
     public void addHalfMap(String playerID, MapClass halfMap){
         mapManager.addHalfMap(playerID, halfMap);
 
-        fullMap = mapManager.getFullMap();
-
         playerManager.updateTurn();
+        updateRound();
+    }
+
+    public void addMove(String playerID, EnumMove move){
+        playerManager.updateTurn();
+        updateRound();
     }
 
     public void playerLost(String playerID){

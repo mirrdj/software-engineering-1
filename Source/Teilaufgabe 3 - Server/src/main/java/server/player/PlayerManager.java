@@ -19,9 +19,11 @@ public class PlayerManager {
         PlayerIDGenerator generator = new PlayerIDGenerator();
         Map<String, Player> result = new HashMap<>();
 
+        // Add player who made the request
         Player requestPlayer = players.get(requesterID);
         result.put(requesterID, requestPlayer);
 
+        // Add the other player(s) who did not make the request - hide playerID
         Map<String, Player> otherPlayers = getOtherPlayers(requesterID);
         for(Player eachOtherPlayer : otherPlayers.values()){
             String eOFirstName = eachOtherPlayer.getFirstName();
@@ -49,27 +51,23 @@ public class PlayerManager {
         }
     }
     private void initializeTurnQueue(){
-        //TODO should I move totatlActions to GameManager - initialize turn from there??
         int totalActions = 200;
         double random = Math.random();
 
-        Iterator<String> itr;
 
         // Start with the first player that registered
         if(random < 0.5){
-            itr = players.keySet().iterator();
+            Iterator<String> itr = players.keySet().iterator();
             addPlayersToQueue(itr, totalActions);
         }
 
         // Start with the last player that registered
         else {
             LinkedList<String> playerList = new LinkedList<>(players.keySet());
-            itr = playerList.descendingIterator();
+            Iterator<String> itr = playerList.descendingIterator();
             addPlayersToQueue(itr, totalActions);
         }
 
-        //TODO check if it's correct that it removes two elements from the
-        // queue before sending any action
         updateTurn();
     }
 
@@ -85,13 +83,6 @@ public class PlayerManager {
         if(players.size() == maximumPlayerNumber){
             initializeTurnQueue();
         }
-    }
-
-    public Player getPlayerWithID(String playerID) {
-        if(players.isEmpty())
-            throw new NoPlayerRegisteredException();
-
-        return players.get(playerID);
     }
 
     private Map<String, Player> getOtherPlayers(String playerID){

@@ -1,6 +1,7 @@
 package server.game;
 
 import server.map.MapClass;
+import server.move.EnumMove;
 import server.player.Player;
 import server.player.PlayerInformation;
 import server.uniqueID.GameID;
@@ -45,8 +46,9 @@ public class GameManager {
         gameWithID.addHalfMap(playerID, halfMap);
     }
 
-    public void addMoveToGame(){
-
+    public void addMoveToGame(GameID gameID, String playerID, EnumMove move){
+        GameClass gameWithID = games.get(gameID.getID());
+        gameWithID.addMove(playerID, move);
     }
 
     public void playerLost(String gameID, String playerID){
