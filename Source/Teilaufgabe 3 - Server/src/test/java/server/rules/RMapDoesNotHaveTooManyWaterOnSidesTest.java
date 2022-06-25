@@ -7,17 +7,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import server.exceptions.WaterFieldsOnSidesExceededException;
-import server.exceptions.WrongFieldNumberException;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class RMapHasTooManyWaterOnSidesTest {
+class RMapDoesNotHaveTooManyWaterOnSidesTest {
     MapCreator mapCreator = new MapCreator();
-    RMapHasTooManyWaterOnSides rule;
+    RMapDoesNotHaveTooManyWaterOnSides rule;
 
     @BeforeEach
     private void setUp(){
-        rule = new RMapHasTooManyWaterOnSides();
+        rule = new RMapDoesNotHaveTooManyWaterOnSides();
     }
 
     @Test

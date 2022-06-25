@@ -8,11 +8,9 @@ import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
 import server.exceptions.WaterFieldsOnSidesExceededException;
 
-public class RMapHasTooManyWaterOnSides implements IRule {
+public class RMapDoesNotHaveTooManyWaterOnSides implements IRule {
 
     private boolean shortLineCheck(HalfMap halfMap, int x){
-        System.out.println(halfMap.getMapNodes());
-        System.out.println("x check "  + x);
         int maxWaterShortSide = 1;
         long waterNumber = halfMap
                 .getMapNodes()
@@ -21,7 +19,6 @@ public class RMapHasTooManyWaterOnSides implements IRule {
                 .filter(n -> n.getTerrain() == ETerrain.Water)
                 .count();
 
-        System.out.println("on short side is " + waterNumber);
         if(waterNumber > maxWaterShortSide){
             return false;
         }

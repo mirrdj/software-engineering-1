@@ -26,6 +26,7 @@ import server.exceptions.*;
 import server.game.GameClass;
 import server.map.MapClass;
 import server.move.EnumMove;
+import server.player.Player;
 import server.player.PlayerInformation;
 import server.rules.*;
 import server.uniqueID.GameID;
@@ -50,7 +51,8 @@ public class ServerEndpoints {
 			new RMapHasEnoughTerrainsOfEachType(),
 			new RMapHasOneFort(),
 			new RFortIsOnGrass(),
-			new RMapAlreadySet(gameManager)
+			new RMapNotSet(gameManager),
+			new RPlayerMustAct(gameManager)
 	);
 
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
@@ -75,6 +77,9 @@ public class ServerEndpoints {
 				eachRule.validateRegisterPlayer(gameID, playerRegistration);
 		} catch (NoSuchGameException e){
 			logger.error("Error while checking gameID {} {}", gameID.toString(), e.getMessage());
+			throw e;
+		} catch (MaximumOfPlayersAlreadyRegisteredExeception e){
+			logger.error("Error while trying to register another player {} {}", gameID.toString(), e.getMessage());
 			throw e;
 		}
 
@@ -129,6 +134,10 @@ public class ServerEndpoints {
 			logger.error("Error while checking fort terrain {}", e.getMessage());
 			gameManager.playerLost(gameID.getUniqueGameID(), halfMap.getUniquePlayerID());
 			throw e;
+		} catch(PlayerMisbehavedException e) {
+			logger.error("Error while trying to perform action {}", e.getMessage());
+			gameManager.playerLost(gameID.getUniqueGameID(), halfMap.getUniquePlayerID());
+			throw e;
 		}
 
 		MapClass map = converter.convertHalfMap(halfMap);
@@ -146,8 +155,16 @@ public class ServerEndpoints {
 			@Validated @PathVariable UniqueGameIdentifier gameID,
 			@Validated @PathVariable UniquePlayerIdentifier playerID) {
 
-		for(IRule eachRule : rules)
-			eachRule.validateGetState(gameID, playerID);
+		try {
+			for (IRule eachRule : rules)
+				eachRule.validateGetState(gameID, playerID);
+		} catch (NoSuchGameException e){
+			logger.error("Error while checking gameID {} {}", gameID.toString(), e.getMessage());
+			throw e;
+		} catch (NoSuchPlayerException e){
+			logger.error("Error while checking playerID {} {}", playerID.getUniquePlayerID(), e.getMessage());
+			throw e;
+		}
 
 		GameID convertedGameID = converter.convertUniqueGameIdentifier(gameID);
 		PlayerID convertedPlayerID = converter.convertUniquePlayerIdentifier(playerID);
@@ -163,8 +180,20 @@ public class ServerEndpoints {
 			@Validated @PathVariable UniqueGameIdentifier gameID,
 			@Validated @RequestBody PlayerMove playerMove) {
 
-		for(IRule eachRule : rules)
-			eachRule.validateMove(gameID, playerMove);
+		try {
+			for (IRule eachRule : rules)
+				eachRule.validateMove(gameID, playerMove);
+		} catch (NoSuchGameException e){
+			logger.error("Error while checking gameID {} {}", gameID.toString(), e.getMessage());
+			throw e;
+		} catch (NoSuchPlayerException e){
+			logger.error("Error while checking playerID {} {}", playerMove.getUniquePlayerID(), e.getMessage());
+			throw e;
+		} catch(PlayerMisbehavedException e) {
+			logger.error("Error while trying to perform action {}", e.getMessage());
+			gameManager.playerLost(gameID.getUniqueGameID(), playerMove.getUniquePlayerID());
+			throw e;
+		}
 
 		GameID convertedGameID = converter.convertUniqueGameIdentifier(gameID);
 		String playerID = playerMove.getUniquePlayerID();

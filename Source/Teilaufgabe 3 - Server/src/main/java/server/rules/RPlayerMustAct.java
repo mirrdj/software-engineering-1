@@ -5,28 +5,30 @@ import MessagesBase.MessagesFromClient.PlayerMove;
 import MessagesBase.MessagesFromClient.PlayerRegistration;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
-import server.exceptions.MapAlreadySetException;
+import server.exceptions.PlayerMisbehavedException;
 import server.game.GameClass;
 import server.game.GameManager;
-import server.map.MapClass;
+import server.player.EnumPlayerGameState;
+import server.player.Player;
 
 import java.util.Map;
 
-public class RMapAlreadySet implements IRule {
-    private GameManager manager;
+public class RPlayerMustAct implements IRule {
+    private final GameManager manager;
 
-    public RMapAlreadySet(GameManager manager){
-        this.manager = manager;
-    }
-
-    private void checkMapAlreadySet(UniqueGameIdentifier gameID, HalfMap halfMap){
+    private void checkPlayerMustAct(UniqueGameIdentifier gameID, String playerID){
         Map<String, GameClass> games = manager.getGames();
         GameClass gameWithID = games.get(gameID.getUniqueGameID());
 
-        Map<String, MapClass> halfMaps = gameWithID.getMapManager().getMaps();
-        if(halfMaps.containsKey(halfMap.getUniquePlayerID())){
-            throw new MapAlreadySetException("This player has already sent a map");
-        }
+        Map<String, Player> players = gameWithID.getPlayerManager().getPlayers(playerID);
+        EnumPlayerGameState playerState = players.get(playerID).getPlayerGameState();
+
+        if(playerState != EnumPlayerGameState.MUST_ACT)
+            throw new PlayerMisbehavedException("Player was not allowed to perform action but it did");
+    }
+
+    public RPlayerMustAct(GameManager manager) {
+        this.manager = manager;
     }
 
     @Override
@@ -36,7 +38,7 @@ public class RMapAlreadySet implements IRule {
 
     @Override
     public void validateHalfMap(UniqueGameIdentifier gameID, HalfMap halfMap) {
-        checkMapAlreadySet(gameID, halfMap);
+        checkPlayerMustAct(gameID, halfMap.getUniquePlayerID());
     }
 
     @Override
@@ -46,6 +48,6 @@ public class RMapAlreadySet implements IRule {
 
     @Override
     public void validateMove(UniqueGameIdentifier gameID, PlayerMove playerMove) {
-
+        checkPlayerMustAct(gameID, playerMove.getUniquePlayerID());
     }
 }
