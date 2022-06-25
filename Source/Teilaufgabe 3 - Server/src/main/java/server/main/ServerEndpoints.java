@@ -45,6 +45,7 @@ public class ServerEndpoints {
 	private final List<IRule> rules = List.of(
 			new RGameExists(gameManager),
 			new RPlayerExists(gameManager),
+			new RMaximumNumberOfPlayersReached(gameManager),
 			new RMapHasCorrectSize(),
 			new RMapHasEnoughTerrainsOfEachType(),
 			new RMapHasOneFort(),

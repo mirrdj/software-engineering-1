@@ -36,6 +36,10 @@ public class PlayerManager {
         return result;
     }
 
+    public int getPlayersNumber(){
+        return players.size();
+    }
+
     private void addPlayersToQueue(Iterator<String> receivedItr, int totalActions){
         // Save iterators to collection in order to make them reusable
         Collection<String> cache = new ArrayList<>();
@@ -68,12 +72,9 @@ public class PlayerManager {
     }
 
     public void addPlayer(Player player){
-        int maximumPlayerNumber = 2;
-        if(players.size() == maximumPlayerNumber)
-            throw new MaximumOfPlayersAlreadyRegisteredExeception();
-
         players.put(player.getPlayerID(), player);
 
+        int maximumPlayerNumber = 2;
         if(players.size() == maximumPlayerNumber){
             initializeTurnQueue();
         }
