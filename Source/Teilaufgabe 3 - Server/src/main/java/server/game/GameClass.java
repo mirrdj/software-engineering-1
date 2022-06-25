@@ -10,10 +10,9 @@ import java.util.Optional;
 
 public class GameClass {
     private final GameID gameID;
-    private int round;
+    private int round = 0;
     private PlayerManager playerManager;
     private MapManager mapManager;
-    // private Optional<MapClass> fullMap = Optional.empty();
 
     public GameClass(GameID gameID) {
         this.gameID = gameID;
@@ -22,7 +21,7 @@ public class GameClass {
     }
 
     public Optional<MapClass> getFullMap(String requesterID) {
-        int firstNRounds = 10;
+        int firstNRounds = 20;
 
         if(round < firstNRounds)
             return mapManager.getFullMap(requesterID, true);
