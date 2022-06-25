@@ -3,6 +3,7 @@ package server.main;
 import javax.servlet.http.HttpServletResponse;
 
 import MessagesBase.MessagesFromClient.HalfMap;
+import MessagesBase.MessagesFromClient.PlayerMove;
 import MessagesBase.MessagesFromServer.GameState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,7 +92,7 @@ public class ServerEndpoints {
 
 
 	@RequestMapping(value = "/{gameID}/halfmaps", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
-	public @ResponseBody ResponseEnvelope<HalfMap> sendHalfMap(
+	public @ResponseBody ResponseEnvelope<HalfMap> receiveHalfMap(
 			@Validated @PathVariable UniqueGameIdentifier gameID,
 			@Validated @RequestBody HalfMap halfMap) {
 
@@ -131,7 +132,7 @@ public class ServerEndpoints {
 	}
 
 	@RequestMapping(value = "{gameID}/states/{playerID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
-	public @ResponseBody ResponseEnvelope<GameState> getState(
+	public @ResponseBody ResponseEnvelope<GameState> sendState(
 			@Validated @PathVariable UniqueGameIdentifier gameID,
 			@Validated @PathVariable UniquePlayerIdentifier playerID) {
 
@@ -147,8 +148,19 @@ public class ServerEndpoints {
 		return gameStateMessage;
 	}
 
+	@RequestMapping(value = "/{gameID}/moves", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
+	public @ResponseBody ResponseEnvelope receiveMove(
+			@Validated @PathVariable UniqueGameIdentifier gameID,
+			@Validated @RequestBody PlayerMove playerMove) {
 
-	@ExceptionHandler({ GenericExampleException.class })
+		for(IRule eachRule : rules)
+			eachRule.validateMove(gameID, playerMove);
+
+		return new ResponseEnvelope();
+	}
+
+
+		@ExceptionHandler({ GenericExampleException.class })
 	public @ResponseBody ResponseEnvelope<?> handleException(GenericExampleException ex, HttpServletResponse response) {
 		ResponseEnvelope<?> result = new ResponseEnvelope<>(ex.getErrorName(), ex.getMessage());
 

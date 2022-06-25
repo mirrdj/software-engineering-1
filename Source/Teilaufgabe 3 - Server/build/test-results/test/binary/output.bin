@@ -1,37 +1,0 @@
-K13:51:29.227 [Test worker] DEBUG server.rules.RMapHasCorrectSize - minY=0
-K13:51:29.235 [Test worker] DEBUG server.rules.RMapHasCorrectSize - maxY=3
-K13:51:29.235 [Test worker] DEBUG server.rules.RMapHasCorrectSize - minX=0
-K13:51:29.235 [Test worker] DEBUG server.rules.RMapHasCorrectSize - maxX=6
-W13:51:29.235 [Test worker] DEBUG server.rules.RMapHasCorrectSize - There are 28 nodes
-K13:51:29.243 [Test worker] DEBUG server.rules.RMapHasCorrectSize - minY=1
-K13:51:29.243 [Test worker] DEBUG server.rules.RMapHasCorrectSize - maxY=4
-K13:51:29.243 [Test worker] DEBUG server.rules.RMapHasCorrectSize - minX=0
-K13:51:29.243 [Test worker] DEBUG server.rules.RMapHasCorrectSize - maxX=6
-W13:51:29.243 [Test worker] DEBUG server.rules.RMapHasCorrectSize - There are 28 nodes
-K13:51:29.243 [Test worker] DEBUG server.rules.RMapHasCorrectSize - minY=0
-K13:51:29.243 [Test worker] DEBUG server.rules.RMapHasCorrectSize - maxY=2
-K13:51:29.243 [Test worker] DEBUG server.rules.RMapHasCorrectSize - minX=0
-K13:51:29.243 [Test worker] DEBUG server.rules.RMapHasCorrectSize - maxX=7
-W13:51:29.243 [Test worker] DEBUG server.rules.RMapHasCorrectSize - There are 24 nodes
-K13:51:29.251 [Test worker] DEBUG server.rules.RMapHasCorrectSize - minY=0
-K13:51:29.251 [Test worker] DEBUG server.rules.RMapHasCorrectSize - maxY=3
-K13:51:29.251 [Test worker] DEBUG server.rules.RMapHasCorrectSize - minX=1
-K13:51:29.251 [Test worker] DEBUG server.rules.RMapHasCorrectSize - maxX=8
-W13:51:29.251 [Test worker] DEBUG server.rules.RMapHasCorrectSize - There are 32 nodes
-K13:51:29.251 [Test worker] DEBUG server.rules.RMapHasCorrectSize - minY=0
-K13:51:29.251 [Test worker] DEBUG server.rules.RMapHasCorrectSize - maxY=3
-K13:51:29.251 [Test worker] DEBUG server.rules.RMapHasCorrectSize - minX=0
-K13:51:29.251 [Test worker] DEBUG server.rules.RMapHasCorrectSize - maxX=6
-W13:51:29.251 [Test worker] DEBUG server.rules.RMapHasCorrectSize - There are 28 nodes
-r13:51:29.259 [Test worker] DEBUG server.rules.RMapHasEnoughTerrainsOfEachType - There are 26 nodes of type Grass
-q13:51:29.259 [Test worker] DEBUG server.rules.RMapHasEnoughTerrainsOfEachType - There are 4 nodes of type Water
-t13:51:29.259 [Test worker] DEBUG server.rules.RMapHasEnoughTerrainsOfEachType - There are 2 nodes of type Mountain
-	r13:51:29.259 [Test worker] DEBUG server.rules.RMapHasEnoughTerrainsOfEachType - There are 25 nodes of type Grass
-	q13:51:29.259 [Test worker] DEBUG server.rules.RMapHasEnoughTerrainsOfEachType - There are 3 nodes of type Water
-
-r13:51:29.259 [Test worker] DEBUG server.rules.RMapHasEnoughTerrainsOfEachType - There are 12 nodes of type Grass
-`13:51:29.267 [Test worker] DEBUG server.rules.RMapHasOneFort - There number of fortresses is 0
-`13:51:29.275 [Test worker] DEBUG server.rules.RMapHasOneFort - There number of fortresses is 0
-ð[HMN [FP=false, T=Mountain, X=6, Y=2], HMN [FP=false, T=Water, X=4, Y=1], HMN [FP=false, T=Mountain, X=2, Y=1], HMN [FP=false, T=Grass, X=1, Y=2], HMN [FP=false, T=Grass, X=1, Y=3], HMN [FP=false, T=Grass, X=7, Y=2], HMN [FP=false, T=Grass, X=7, Y=3], HMN [FP=false, T=Grass, X=7, Y=0], HMN [FP=false, T=Grass, X=5, Y=0], HMN [FP=false, T=Grass, X=7, Y=1], HMN [FP=false, T=Grass, X=3, Y=0], HMN [FP=false, T=Grass, X=1, Y=0], HMN [FP=false, T=Grass, X=1, Y=1], HMN [FP=false, T=Grass, X=3, Y=2], HMN [FP=false, T=Grass, X=5, Y=3], HMN [FP=false, T=Water, X=5, Y=1], HMN [FP=false, T=Water, X=3, Y=1], HMN [FP=false, T=Mountain, X=5, Y=2], HMN [FP=false, T=Mountain, X=3, Y=3], HMN [FP=false, T=Grass, X=6, Y=1], HMN [FP=false, T=Water, X=0, Y=2], HMN [FP=false, T=Water, X=0, Y=1], HMN [FP=false, T=Mountain, X=2, Y=3], HMN [FP=true, T=Grass, X=0, Y=0], HMN [FP=false, T=Grass, X=4, Y=0], HMN [FP=false, T=Grass, X=6, Y=0], HMN [FP=false, T=Grass, X=4, Y=2], HMN [FP=false, T=Grass, X=2, Y=0], HMN [FP=false, T=Grass, X=0, Y=3], HMN [FP=false, T=Grass, X=6, Y=3], HMN [FP=false, T=Grass, X=2, Y=2], HMN [FP=false, T=Grass, X=4, Y=3]]
-x check 0
-on short side is 2

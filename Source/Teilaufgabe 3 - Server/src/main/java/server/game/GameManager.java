@@ -44,6 +44,11 @@ public class GameManager {
         GameClass gameWithID = games.get(gameID.getID());
         gameWithID.addHalfMap(playerID, halfMap);
     }
+
+    public void addMoveToGame(){
+
+    }
+
     public void playerLost(String gameID, String playerID){
         GameClass gameWithID = games.get(gameID);
         gameWithID.playerLost(playerID);
