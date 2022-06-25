@@ -21,12 +21,12 @@ class RMapHasTooManyWaterOnSidesTest {
     }
 
     @Test
-    public void validateHalfMap_waterFieldsOnShortSideEqualTo3_throwWaterFieldsOnSidesExceededException() {
+    public void validateHalfMap_waterFieldsOnShortSideEqualTo2_throwWaterFieldsOnSidesExceededException() {
         char[][] nodes = {
                 {'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'},
                 {'W', 'G', 'M', 'W', 'W', 'W', 'G', 'G'},
                 {'W', 'G', 'G', 'G', 'G', 'M', 'M', 'G'},
-                {'W', 'G', 'M', 'M', 'G', 'G', 'G', 'G'},
+                {'G', 'G', 'M', 'M', 'G', 'G', 'G', 'G'},
         };
 
         UniqueGameIdentifier gameID = new UniqueGameIdentifier("game1");

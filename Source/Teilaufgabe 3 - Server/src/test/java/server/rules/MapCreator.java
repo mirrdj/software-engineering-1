@@ -12,12 +12,12 @@ public class MapCreator {
         boolean fortressPlaced = false;
         List<HalfMapNode> nodeList = new ArrayList<>();
 
-        for(int i = 0; i < nodes.length; i++) {
-            for (int j = 0; j < nodes[i].length; j++) {
+        for(int y = 0; y < nodes.length; y++) {
+            for (int x = 0; x < nodes[0].length; x++) {
                 ETerrain terrain;
                 boolean fortPresent = false;
 
-                switch (nodes[i][j]) {
+                switch (nodes[y][x]) {
                     case 'W' -> terrain = ETerrain.Water;
                     case 'M' -> terrain = ETerrain.Mountain;
                     default -> {
@@ -28,7 +28,7 @@ public class MapCreator {
                         }
                     }
                 }
-                nodeList.add(new HalfMapNode(i, j, fortPresent, terrain));
+                nodeList.add(new HalfMapNode(x, y, fortPresent, terrain));
             }
         }
 
