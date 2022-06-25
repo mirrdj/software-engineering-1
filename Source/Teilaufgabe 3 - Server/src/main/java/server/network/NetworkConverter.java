@@ -106,59 +106,40 @@ public class NetworkConverter {
 
     // convert from  my own EnumFortState to network EFortState
     private EFortState convertEnumFortState(EnumFortState fortState) {
-        switch (fortState){
-            case ENEMY_FORT_PRESENT:
-                return EFortState.EnemyFortPresent;
-            case MY_FORT_PRESENT:
-                return EFortState.MyFortPresent;
-            case NO_OR_UNKNOWN_FORT_STATE:
-                return EFortState.NoOrUnknownFortState;
-        }
+        return switch (fortState) {
+            case ENEMY_FORT_PRESENT -> EFortState.EnemyFortPresent;
+            case MY_FORT_PRESENT -> EFortState.MyFortPresent;
+            case NO_OR_UNKNOWN_FORT_STATE -> EFortState.NoOrUnknownFortState;
+        };
 
-        return null;
     }
 
     // convert from my own EnumTerrain to the network ETerrain
     private ETerrain convertEnumTerrain(EnumTerrain terrain) {
-        switch (terrain){
-            case WATER:
-                return ETerrain.Water;
-            case GRASS:
-                return ETerrain.Grass;
-            case MOUNTAIN:
-                return ETerrain.Mountain;
-        }
-        return null;
+        return switch (terrain) {
+            case WATER -> ETerrain.Water;
+            case MOUNTAIN -> ETerrain.Mountain;
+            case GRASS -> ETerrain.Grass;
+        };
     }
 
     // convert from my own EnumPlayerPositionState to network EPlayerPositionState
     private EPlayerPositionState convertEnumPlayerPositionState(EnumPlayerPositionState positionState) {
-        switch (positionState){
-            case BOTH_PLAYER_POSITION:
-                return EPlayerPositionState.BothPlayerPosition;
-            case ENEMY_PLAYER_POSITION:
-                return EPlayerPositionState.EnemyPlayerPosition;
-            case MY_POSITION:
-                return EPlayerPositionState.MyPlayerPosition;
-            case NO_PLAYER_PRESENT:
-                return EPlayerPositionState.NoPlayerPresent;
-        }
-
-        return null;
+        return switch (positionState) {
+            case BOTH_PLAYER_POSITION -> EPlayerPositionState.BothPlayerPosition;
+            case ENEMY_PLAYER_POSITION -> EPlayerPositionState.EnemyPlayerPosition;
+            case MY_POSITION -> EPlayerPositionState.MyPlayerPosition;
+            case NO_PLAYER_PRESENT -> EPlayerPositionState.NoPlayerPresent;
+        };
     }
 
     // convert from my own EnumTreasureState to network ETreasureState
     private ETreasureState convertEnumTreasureState(EnumTreasureState treasureState) {
-        switch (treasureState){
-            case MY_TREASURE_IS_PRESENT:
-                return ETreasureState.MyTreasureIsPresent;
-            case NO_OR_UNKNOWN_TREASURE_STATE:
-                return ETreasureState.NoOrUnknownTreasureState;
+        if (treasureState == EnumTreasureState.MY_TREASURE_IS_PRESENT) {
+            return ETreasureState.MyTreasureIsPresent;
         }
-
-        return null;
+        return ETreasureState.NoOrUnknownTreasureState;
     }
-
 
     // convert my own MapNodeClass to network mapNode
     private FullMapNode convertMapNodeClass(MapNodeClass mapNode){
@@ -170,14 +151,11 @@ public class NetworkConverter {
         EPlayerPositionState playerPos = convertEnumPlayerPositionState(mapNode.getPlayerPosition());
         ETreasureState treasure = convertEnumTreasureState(mapNode.getTreasure());
 
-        FullMapNode fmNode = new FullMapNode(terrain, playerPos, treasure, fort, x, y);
-//        System.out.println(fmNode);
-        return fmNode;
+        return new FullMapNode(terrain, playerPos, treasure, fort, x, y);
     }
 
     // convert my own MapClass to the network FullMap
     private FullMap convertMapClass(MapClass map){
-//        System.out.println("Do we get into conver map class");
         List<MapNodeClass> mapNodes = new ArrayList<>(map.getNodes());
         List<FullMapNode> fullMapNodes = new ArrayList<>();
 
@@ -199,10 +177,8 @@ public class NetworkConverter {
             playerStates.add(playerState);
         }
 
-//        System.out.println("Do we ever get here");
         Optional<FullMap> fullMap = Optional.empty();
         if(game.getFullMap().isPresent()){
-//            System.out.println("Or do we ever get here");
             FullMap convertedMap = convertMapClass(game.getFullMap().get());
             fullMap = Optional.of(convertedMap);
         }
