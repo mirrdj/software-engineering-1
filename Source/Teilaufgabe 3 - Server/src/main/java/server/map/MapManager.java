@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import server.exceptions.MapAlreadySetException;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class MapManager {
     private static Logger logger = LoggerFactory.getLogger(MapManager.class);
@@ -44,7 +43,7 @@ public class MapManager {
         return map.getNodeAtPosition(xCoord, yCoord).get();
     }
 
-    private MapClass addEnemyPosition(MapClass map){
+    private MapClass addRandomEnemyPosition(MapClass map){
         int width = 8, height = 4;
         MapNodeClass grassNode = findRandomGrassNode(map, width, height);
         map.getNodeAtPosition(grassNode.getX(), grassNode.getY())
@@ -117,6 +116,37 @@ public class MapManager {
         }
     }
 
+    // emMinX, emMaxX, emMinY, emMaxY - the coordinates of the enemy (non-requester) half
+    // mmMinX, mmMaxX, mmMinY, mmMaxY - the coordinates of my own (requester) half
+    private void filterMap(MapClass map, String requesterID, boolean firstRounds, int emMinX, int emMaxX, int emMinY, int emMaxY,
+                           int mmMinX, int mmMaxX, int mmMinY, int mmMaxY){
+
+        // If these are the first 10 rounds, remove the MY_PLAYER_PRESENT from the non-requester half
+        // and add ENEMY_PLAYER_POSITION on random grass field
+        if(firstRounds){
+            filterPosition(map, EnumPlayerPositionState.NO_PLAYER_PRESENT, emMinX, emMaxX, emMinY, emMaxY);
+            addRandomEnemyPosition(map);
+        }
+        // If these are not the first 10 rounds, remove the MY_PLAYER_PRESENT from the non-requester half
+        // and replace with the enemy position
+        else{
+            filterPosition(map, EnumPlayerPositionState.ENEMY_PLAYER_POSITION, emMinX, emMaxX, emMinY, emMaxY);
+        }
+
+        // If the requester has not yet found the enemy fort
+        // remove the fort information from the non-requester half
+        if(!enemyFortFound.containsKey(requesterID))
+            filterFort(map,  emMinX, emMaxX, emMinY, emMaxY);
+
+        // If the requester has not yet found the treasure fort
+        // remove the fort information from the requester half
+        if(!treasureFound.containsKey(requesterID))
+            filterTreasure(map, mmMinX, mmMaxX, mmMinY, mmMaxY);
+
+        // Remove treasure information from non-requester half
+        filterTreasure(map, emMinX, emMaxX, emMinY, emMaxY);
+    }
+
     public Optional<MapClass> getFullMap(String requesterID, boolean firstRounds){
         if(maps.size() != 2)
             return Optional.empty();
@@ -132,54 +162,33 @@ public class MapManager {
         // Check if the requester sent the first half map -> second half is enemy half
         if(maps.keySet().iterator().next().equals(requesterID)){
             if(layout.get() == EnumLayout.HORIZONTAL) {
-                if(firstRounds){
-                    filterPosition(fullMapCombined, EnumPlayerPositionState.NO_PLAYER_PRESENT, 8, 16, 0, 4);
-                    addEnemyPosition(fullMapCombined);
-                }
-                else{
-                     filterPosition(fullMapCombined, EnumPlayerPositionState.ENEMY_PLAYER_POSITION, 8, 16, 0, 4);
-                }
-
-                if(!enemyFortFound.containsKey(requesterID))
-                    filterFort(fullMapCombined, 8, 16, 0, 4);
-                if(!treasureFound.containsKey(requesterID))
-                    filterTreasure(fullMapCombined, 0, 8, 0, 4);
-
-                filterTreasure(fullMapCombined, 8, 16, 0, 4);
+                int emMinX = 8, emMaxX = 16, emMinY = 0, emMaxY = 4;
+                int mmMinX = 0, mmMaxX =  8, mmMinY = 0, mmMaxY = 4;
+                filterMap(fullMapCombined, requesterID, firstRounds, emMinX, emMaxX, emMinY, emMaxY,
+                mmMinX, mmMaxX, mmMinY, mmMaxY);
             }
             else {
-                if(firstRounds){
-                    filterPosition(fullMapCombined, EnumPlayerPositionState.NO_PLAYER_PRESENT, 0, 8, 4, 8);
-                    addEnemyPosition(fullMapCombined);
-                }
-                else{
-                     filterPosition(fullMapCombined, EnumPlayerPositionState.ENEMY_PLAYER_POSITION, 0, 8, 4, 8);
-                }
-
-                if(!enemyFortFound.containsKey(requesterID))
-                    filterFort(fullMapCombined, 0, 8, 4, 8);
-                if(!treasureFound.containsKey(requesterID))
-                    filterTreasure(fullMapCombined, 0, 8, 0, 4);
-
-                filterTreasure(fullMapCombined, 0, 8, 0, 8);
+                int emMinX = 0, emMaxX = 8, emMinY = 4, emMaxY = 8;
+                int mmMinX = 0, mmMaxX = 8, mmMinY = 0, mmMaxY = 4;
+                filterMap(fullMapCombined, requesterID, firstRounds, emMinX, emMaxX, emMinY, emMaxY,
+                        mmMinX, mmMaxX, mmMinY, mmMaxY);
             }
 
             return Optional.of(fullMapCombined);
         }
         // Requester sent the second half -> first half is enemy half
         else{
-            if(firstRounds){
-                filterPosition(fullMapCombined, EnumPlayerPositionState.NO_PLAYER_PRESENT, 0, 8, 0, 4);
-                addEnemyPosition(fullMapCombined);
-            }
-            filterFort(fullMapCombined, 0, 8, 0, 4);
             if(layout.get() == EnumLayout.HORIZONTAL) {
-                filterTreasure(fullMapCombined, 0, 16, 0, 4);
-                filterTreasure(fullMapCombined, 0, 16, 0, 4);
+                int emMinX = 0, emMaxX =  8, emMinY = 0, emMaxY = 4;
+                int mmMinX = 8, mmMaxX = 16, mmMinY = 0, mmMaxY = 4;
+                filterMap(fullMapCombined, requesterID, firstRounds, emMinX, emMaxX, emMinY, emMaxY,
+                        mmMinX, mmMaxX, mmMinY, mmMaxY);
             }
             else {
-                filterTreasure(fullMapCombined, 0, 8, 0, 8);
-                filterTreasure(fullMapCombined, 0, 8, 0, 8);
+                int emMinX = 0, emMaxX = 8, emMinY = 0, emMaxY = 4;
+                int mmMinX = 0, mmMaxX = 8, mmMinY = 4, mmMaxY = 8;
+                filterMap(fullMapCombined, requesterID, firstRounds, emMinX, emMaxX, emMinY, emMaxY,
+                        mmMinX, mmMaxX, mmMinY, mmMaxY);
             }
             return Optional.of(fullMapCombined);
         }
