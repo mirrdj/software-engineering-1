@@ -202,6 +202,7 @@ public class NetworkConverter {
             fullMap = Optional.of(convertedMap);
         }
 
+        //TODO add own GameStateID not like this lol
         GameState gs = new GameState();
         return new GameState(fullMap, playerStates, gs.getGameStateId());
     }
