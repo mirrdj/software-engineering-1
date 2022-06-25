@@ -13,16 +13,11 @@ public class MapManager {
     Map<String, Boolean> enemyFortFound = new HashMap<>();
     Optional<EnumLayout> layout = Optional.empty();
 
-
     public Map<String, MapClass> getMaps() {
         return maps;
     }
 
     public void addHalfMap(String playerID, MapClass halfMap){
-        if(maps.containsKey(playerID)){
-            throw new MapAlreadySetException("This player has already sent a map");
-        }
-
         addTreasure(halfMap);
         maps.put(playerID, halfMap);
     }
@@ -43,25 +38,21 @@ public class MapManager {
         return map.getNodeAtPosition(xCoord, yCoord).get();
     }
 
-    private MapClass addRandomEnemyPosition(MapClass map){
+    private void addRandomEnemyPosition(MapClass map){
         int width = 8, height = 4;
         MapNodeClass grassNode = findRandomGrassNode(map, width, height);
         map.getNodeAtPosition(grassNode.getX(), grassNode.getY())
                 .get()
                 .setPlayerPosition(EnumPlayerPositionState.ENEMY_PLAYER_POSITION);
-
-        return map;
     }
 
-    private MapClass addTreasure(MapClass map){
+    private void addTreasure(MapClass map){
         int width = 8, height = 4;
         MapNodeClass grassNode = findRandomGrassNode(map, width, height);
 
         map.getNodeAtPosition(grassNode.getX(), grassNode.getY())
                 .get()
                 .setTreasure(EnumTreasureState.MY_TREASURE_IS_PRESENT);
-
-        return map;
     }
 
     private void filterPosition(MapClass map, EnumPlayerPositionState playerPositionToSet, int minX, int maxX, int minY, int maxY){
@@ -148,9 +139,11 @@ public class MapManager {
     }
 
     public Optional<MapClass> getFullMap(String requesterID, boolean firstRounds){
+        // There are not two save half maps yet
         if(maps.size() != 2)
             return Optional.empty();
 
+        // The layout of the map has not been decided yet
         if(layout.isEmpty())
             layout = Optional.of(calculateLayout());
 
@@ -159,39 +152,37 @@ public class MapManager {
 
         MapClass fullMapCombined = MapClassCombiner.combineMaps(layout.get(), firstMap, secondMap);
 
+        int emMinX, emMaxX, emMinY, emMaxY, mmMinX, mmMaxX, mmMinY, mmMaxY;
         // Check if the requester sent the first half map -> second half is enemy half
         if(maps.keySet().iterator().next().equals(requesterID)){
             if(layout.get() == EnumLayout.HORIZONTAL) {
-                int emMinX = 8, emMaxX = 16, emMinY = 0, emMaxY = 4;
-                int mmMinX = 0, mmMaxX =  8, mmMinY = 0, mmMaxY = 4;
-                filterMap(fullMapCombined, requesterID, firstRounds, emMinX, emMaxX, emMinY, emMaxY,
-                mmMinX, mmMaxX, mmMinY, mmMaxY);
+                 emMinX = 8; emMaxX = 16; emMinY = 0; emMaxY = 4;
+                 mmMinX = 0; mmMaxX =  8; mmMinY = 0; mmMaxY = 4;
             }
             else {
-                int emMinX = 0, emMaxX = 8, emMinY = 4, emMaxY = 8;
-                int mmMinX = 0, mmMaxX = 8, mmMinY = 0, mmMaxY = 4;
-                filterMap(fullMapCombined, requesterID, firstRounds, emMinX, emMaxX, emMinY, emMaxY,
-                        mmMinX, mmMaxX, mmMinY, mmMaxY);
+                 emMinX = 0; emMaxX = 8; emMinY = 4; emMaxY = 8;
+                 mmMinX = 0; mmMaxX = 8; mmMinY = 0; mmMaxY = 4;
             }
 
-            return Optional.of(fullMapCombined);
         }
         // Requester sent the second half -> first half is enemy half
         else{
             if(layout.get() == EnumLayout.HORIZONTAL) {
-                int emMinX = 0, emMaxX =  8, emMinY = 0, emMaxY = 4;
-                int mmMinX = 8, mmMaxX = 16, mmMinY = 0, mmMaxY = 4;
-                filterMap(fullMapCombined, requesterID, firstRounds, emMinX, emMaxX, emMinY, emMaxY,
-                        mmMinX, mmMaxX, mmMinY, mmMaxY);
+                 emMinX = 0; emMaxX =  8; emMinY = 0; emMaxY = 4;
+                 mmMinX = 8; mmMaxX = 16; mmMinY = 0; mmMaxY = 4;
             }
             else {
-                int emMinX = 0, emMaxX = 8, emMinY = 0, emMaxY = 4;
-                int mmMinX = 0, mmMaxX = 8, mmMinY = 4, mmMaxY = 8;
-                filterMap(fullMapCombined, requesterID, firstRounds, emMinX, emMaxX, emMinY, emMaxY,
-                        mmMinX, mmMaxX, mmMinY, mmMaxY);
+                 emMinX = 0; emMaxX = 8; emMinY = 0; emMaxY = 4;
+                 mmMinX = 0; mmMaxX = 8; mmMinY = 4; mmMaxY = 8;
             }
-            return Optional.of(fullMapCombined);
         }
+
+        // Remove information that should be hidden from the client
+        filterMap(fullMapCombined, requesterID, firstRounds,
+                emMinX, emMaxX, emMinY, emMaxY,
+                mmMinX, mmMaxX, mmMinY, mmMaxY);
+
+        return Optional.of(fullMapCombined);
     }
 
 

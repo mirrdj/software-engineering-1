@@ -1,6 +1,5 @@
 package server.player;
 
-import server.exceptions.NoPlayerRegisteredException;
 import server.exceptions.MaximumOfPlayersAlreadyRegisteredExeception;
 import server.uniqueID.PlayerID;
 import server.uniqueID.PlayerIDGenerator;
@@ -9,12 +8,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class PlayerManager {
-    private Map<String, Player> players = new HashMap<>();
-    private Queue<String> turnOrder = new ArrayDeque<>();
+    private final Map<String, Player> players = new HashMap<>();
+    private final Queue<String> turnOrder = new ArrayDeque<>();
 
-    // Return map containing
-    //TODO maybe still return List??
-    //TODO write better comment
     public Map<String, Player> getPlayers(String requesterID) {
         PlayerIDGenerator generator = new PlayerIDGenerator();
         Map<String, Player> result = new HashMap<>();
@@ -45,7 +41,8 @@ public class PlayerManager {
         Collection<String> cache = new ArrayList<>();
         while (receivedItr.hasNext()) cache.add(receivedItr.next());
 
-        // TODO add a comment here
+        // Add all the existing players a number of times equal
+        // to how many actions they perform
         for(int i = 0; i < totalActions / players.size(); i++){
             turnOrder.addAll(cache);
         }
@@ -53,7 +50,6 @@ public class PlayerManager {
     private void initializeTurnQueue(){
         int totalActions = 200;
         double random = Math.random();
-
 
         // Start with the first player that registered
         if(random < 0.5){
@@ -70,8 +66,6 @@ public class PlayerManager {
 
         updateTurn();
     }
-
-
 
     public void addPlayer(Player player){
         int maximumPlayerNumber = 2;
@@ -94,9 +88,6 @@ public class PlayerManager {
     }
 
     public void updateTurn(){
-        if(turnOrder.isEmpty());
-            //TODO throw game has already ended exception or smth
-
         String nextPlayer = turnOrder.poll();
         players.get(nextPlayer).setPlayerGameState(EnumPlayerGameState.MUST_ACT);
 

@@ -39,16 +39,17 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/games")
 public class ServerEndpoints {
-	private static Logger logger = LoggerFactory.getLogger(ServerEndpoints.class);
-	private GameManager gameManager = new GameManager();
-	private NetworkConverter converter = new NetworkConverter();
-	private List<IRule> rules = List.of(
+	private final static Logger logger = LoggerFactory.getLogger(ServerEndpoints.class);
+	private final GameManager gameManager = new GameManager();
+	private final NetworkConverter converter = new NetworkConverter();
+	private final List<IRule> rules = List.of(
 			new RGameExists(gameManager),
 			new RPlayerExists(gameManager),
 			new RMapHasCorrectSize(),
 			new RMapHasEnoughTerrainsOfEachType(),
 			new RMapHasOneFort(),
-			new RFortIsOnGrass()
+			new RFortIsOnGrass(),
+			new RMapAlreadySet(gameManager)
 	);
 
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
@@ -119,9 +120,15 @@ public class ServerEndpoints {
 			logger.error("Error while checking size of the map {}", e.getMessage());
 			gameManager.playerLost(gameID.getUniqueGameID(), halfMap.getUniquePlayerID());
 			throw e;
+		} catch (MapAlreadySetException e){
+			logger.error("Error while trying to resent the map once {}", e.getMessage());
+			gameManager.playerLost(gameID.getUniqueGameID(), halfMap.getUniquePlayerID());
+			throw e;
+		} catch(WrongFortTerrainException e) {
+			logger.error("Error while checking fort terrain {}", e.getMessage());
+			gameManager.playerLost(gameID.getUniqueGameID(), halfMap.getUniquePlayerID());
+			throw e;
 		}
-
-
 
 		MapClass map = converter.convertHalfMap(halfMap);
 		GameID convertedGameID = converter.convertUniqueGameIdentifier(gameID);

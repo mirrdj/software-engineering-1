@@ -14,13 +14,11 @@ public class MapClass {
     }
 
     public Optional<MapNodeClass> getNodeAtPosition(int x, int y){
-        Optional<MapNodeClass> node = getNodes()
+        return getNodes()
                 .stream()
                 .filter(n -> n.getX() == x)
                 .filter(n -> n.getY() == y)
                 .findFirst();
-
-        return node;
     }
 
     public int getHeight(){
@@ -63,7 +61,7 @@ public class MapClass {
 
         for(int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                if(getNodeAtPosition(x, y) != null)
+                if(getNodeAtPosition(x, y).isPresent())
                     string.append(getNodeAtPosition(x, y)).append("   ");
             }
             string.append('\n');

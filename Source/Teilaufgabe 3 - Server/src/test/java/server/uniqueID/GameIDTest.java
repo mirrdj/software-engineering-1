@@ -5,15 +5,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import server.uniqueID.GameID;
-import server.exceptions.IDHasWrongLengthException;
+import server.exceptions.WrongIDFormatException;
 
 class GameIDTest {
     @ParameterizedTest
     @CsvSource({"id1y", "id34c8"})
     void GameID_wrongLength_throwException(String id){
         Executable generateGameID = () -> new GameID(id);
-        Assertions.assertThrows(IDHasWrongLengthException.class, generateGameID);
+        Assertions.assertThrows(WrongIDFormatException.class, generateGameID);
     }
 
     @Test

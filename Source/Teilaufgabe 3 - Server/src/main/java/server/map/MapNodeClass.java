@@ -8,16 +8,6 @@ public class MapNodeClass {
     private  EnumTreasureState treasure;
     private  EnumFortState fort;
 
-    public MapNodeClass(int x, int y, EnumTerrain terrain, boolean fortPresent) {
-        this.x = x;
-        this.y = y;
-        this.terrain = terrain;
-
-        if(fortPresent)
-            this.fort = EnumFortState.MY_FORT_PRESENT;
-        else
-            this.fort = EnumFortState.NO_OR_UNKNOWN_FORT_STATE;
-    }
     public MapNodeClass(int x, int y, EnumTerrain terrain, EnumFortState fort, EnumPlayerPositionState playerPosition, EnumTreasureState treasure) {
         this.x = x;
         this.y = y;

@@ -1,6 +1,6 @@
 package server.uniqueID;
 
-import server.exceptions.IDHasWrongLengthException;
+import server.exceptions.WrongIDFormatException;
 
 public class PlayerID extends AbstractUniqueID {
     public PlayerID(String playerID) {
@@ -8,7 +8,7 @@ public class PlayerID extends AbstractUniqueID {
 
         int neededLength = 12;
         if(playerID.length() != neededLength)
-            throw new IDHasWrongLengthException();
+            throw new WrongIDFormatException("ID has wrong length");
     }
 
     @Override

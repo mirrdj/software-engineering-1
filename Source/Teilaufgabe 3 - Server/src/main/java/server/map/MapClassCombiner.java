@@ -14,6 +14,7 @@ public class MapClassCombiner {
         return new MapNodeClass(x, y, terrain, fortState, playerPosition, treasureState);
     }
 
+    //TODO change this??
  private static MapClass combineVertically(MapClass firstMap, MapClass secondMap){
         int height = 8, width = 8;
 

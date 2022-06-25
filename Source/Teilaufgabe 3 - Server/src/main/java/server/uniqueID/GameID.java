@@ -1,5 +1,5 @@
 package server.uniqueID;
-import server.exceptions.IDHasWrongLengthException;
+import server.exceptions.WrongIDFormatException;
 
 
 public class GameID extends AbstractUniqueID {
@@ -8,7 +8,7 @@ public class GameID extends AbstractUniqueID {
 
         int neededLength = 5;
         if(gameID.length() != neededLength)
-            throw new IDHasWrongLengthException();
+            throw new WrongIDFormatException("ID has wrong length");
     }
 
     @Override

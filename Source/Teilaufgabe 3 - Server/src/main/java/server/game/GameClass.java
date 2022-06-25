@@ -11,8 +11,8 @@ import java.util.Optional;
 public class GameClass {
     private final GameID gameID;
     private int round = 0;
-    private PlayerManager playerManager;
-    private MapManager mapManager;
+    private final PlayerManager playerManager;
+    private final MapManager mapManager;
 
     public GameClass(GameID gameID) {
         this.gameID = gameID;
@@ -32,6 +32,11 @@ public class GameClass {
     public PlayerManager getPlayerManager() {
         return playerManager;
     }
+
+    public MapManager getMapManager() {
+        return mapManager;
+    }
+
     public GameID getGameID() {
         return gameID;
     }

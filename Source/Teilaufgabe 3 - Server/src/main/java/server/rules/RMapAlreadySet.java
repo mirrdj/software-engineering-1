@@ -5,26 +5,28 @@ import MessagesBase.MessagesFromClient.PlayerMove;
 import MessagesBase.MessagesFromClient.PlayerRegistration;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
-import server.exceptions.NoSuchPlayerException;
+import server.exceptions.MapAlreadySetException;
 import server.game.GameClass;
 import server.game.GameManager;
-import server.player.Player;
+import server.map.MapClass;
+
 import java.util.Map;
 
-public class RPlayerExists implements IRule {
-    private final GameManager manager;
+public class RMapAlreadySet implements IRule {
+    private GameManager manager;
 
-    public RPlayerExists(GameManager manager) {
+    public RMapAlreadySet(GameManager manager){
         this.manager = manager;
     }
 
-    private void checkPlayerExists(UniqueGameIdentifier gameID, String playerID) {
+    private void checkMapAlreadySet(UniqueGameIdentifier gameID, HalfMap halfMap){
         Map<String, GameClass> games = manager.getGames();
         GameClass gameWithID = games.get(gameID.getUniqueGameID());
 
-        Map<String, Player> players = gameWithID.getPlayerManager().getPlayers(playerID);
-        if(!players.containsKey(playerID))
-            throw new NoSuchPlayerException("Player with given ID does not exist");
+        Map<String, MapClass> halfMaps = gameWithID.getMapManager().getMaps();
+        if(halfMaps.containsKey(halfMap.getUniquePlayerID())){
+            throw new MapAlreadySetException("This player has already sent a map");
+        }
     }
 
     @Override
@@ -34,16 +36,16 @@ public class RPlayerExists implements IRule {
 
     @Override
     public void validateHalfMap(UniqueGameIdentifier gameID, HalfMap halfMap) {
-        checkPlayerExists(gameID, halfMap.getUniquePlayerID());
+        checkMapAlreadySet(gameID, halfMap);
     }
 
     @Override
     public void validateGetState(UniqueGameIdentifier gameID, UniquePlayerIdentifier playerID) {
-        checkPlayerExists(gameID, playerID.getUniquePlayerID());
+
     }
 
     @Override
     public void validateMove(UniqueGameIdentifier gameID, PlayerMove playerMove) {
-        checkPlayerExists(gameID, playerMove.getUniquePlayerID());
+
     }
 }

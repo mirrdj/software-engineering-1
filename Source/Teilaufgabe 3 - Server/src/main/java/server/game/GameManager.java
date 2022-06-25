@@ -5,17 +5,14 @@ import server.move.EnumMove;
 import server.player.Player;
 import server.player.PlayerInformation;
 import server.uniqueID.GameID;
-import server.exceptions.GameAlreadyExistsException;
 import server.uniqueID.PlayerID;
 
-
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
 public class GameManager {
-    private Map<String, GameClass> games = new LinkedHashMap<>();
+    private final Map<String, GameClass> games = new LinkedHashMap<>();
 
     public Map<String, GameClass> getGames() {
         return games;
@@ -33,7 +30,7 @@ public class GameManager {
 
         GameClass game = new GameClass(gameID);
         games.put(gameID.getID(), game);
-    };
+    }
 
     public void addPlayerToGame(GameID gameID, PlayerID playerID, PlayerInformation playerInformation) {
         GameClass gameWithID = games.get(gameID.getID());
