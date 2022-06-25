@@ -9,9 +9,11 @@ import MessagesBase.UniquePlayerIdentifier;
 public class RMapHasTooManyWaterOnSides implements IRule {
 
     private boolean shortLineCheck(HalfMap halfMap, int x){
+        return false;
     }
 
     private boolean longLineCheck(HalfMap halfMap, int y){
+        return false;
     }
 
 
