@@ -188,9 +188,8 @@ public class NetworkConverter {
             fullMap = Optional.of(convertedMap);
         }
 
-        //TODO add own GameStateID not like this lol
-        GameState gs = new GameState();
-        return new GameState(fullMap, playerStates, gs.getGameStateId());
+       String gameStateID = game.getModificationID();
+        return new GameState(fullMap, playerStates, gameStateID);
     }
 
     // convert network PlayerMove to my own EnumMove

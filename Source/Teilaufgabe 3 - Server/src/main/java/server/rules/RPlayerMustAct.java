@@ -5,6 +5,7 @@ import MessagesBase.MessagesFromClient.PlayerMove;
 import MessagesBase.MessagesFromClient.PlayerRegistration;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
+import server.exceptions.NoSuchPlayerException;
 import server.exceptions.PlayerMisbehavedException;
 import server.game.GameClass;
 import server.game.GameManager;
@@ -21,10 +22,16 @@ public class RPlayerMustAct implements IRule {
         GameClass gameWithID = games.get(gameID.getUniqueGameID());
 
         Map<String, Player> players = gameWithID.getPlayerManager().getPlayers(playerID);
-        EnumPlayerGameState playerState = players.get(playerID).getPlayerGameState();
 
-        if(playerState != EnumPlayerGameState.MUST_ACT)
-            throw new PlayerMisbehavedException("Player was not allowed to perform action but it did");
+        EnumPlayerGameState playerState;
+        if(players.get(playerID) != null){
+            playerState = players.get(playerID).getPlayerGameState();
+
+            if(playerState != EnumPlayerGameState.MUST_ACT)
+                throw new PlayerMisbehavedException("Player was not allowed to perform action but it did");
+        }
+        else
+            throw new NoSuchPlayerException("Player with given ID does not exist");
     }
 
     public RPlayerMustAct(GameManager manager) {
