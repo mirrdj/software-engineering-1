@@ -9,11 +9,12 @@ import server.uniqueID.PlayerID;
 
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
 public class GameManager {
-    private Map<String, GameClass> games = new HashMap<>();
+    private Map<String, GameClass> games = new LinkedHashMap<>();
 
     public Map<String, GameClass> getGames() {
         return games;
@@ -24,14 +25,10 @@ public class GameManager {
     }
 
     public void addGame(GameID gameID){
-        //TODO check why according to IntelliJ this is always false
-        boolean gameExists = games
-                .keySet()
-                .stream()
-                .anyMatch(eachGameId -> eachGameId.equals(gameID));
-
-        if(gameExists)
-            throw new GameAlreadyExistsException("This game id is already registered");
+        if(games.size() == 999) {
+            String firstGameID = games.keySet().iterator().next();
+            games.remove(firstGameID);
+        }
 
         GameClass game = new GameClass(gameID);
         games.put(gameID.getID(), game);

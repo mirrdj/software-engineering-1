@@ -26,42 +26,12 @@ public class MapClassCombiner {
 
         return new MapNodeClass(x, y, terrain, fortState, playerPosition, treasureState);
     }
-    private static MapClass placeEnemyPosition(MapClass enemyMap) {
-        EnumFortState fortState = EnumFortState.NO_OR_UNKNOWN_FORT_STATE;
-        EnumTreasureState treasureState = EnumTreasureState.NO_OR_UNKNOWN_TREASURE_STATE;
-        EnumPlayerPositionState enemyPosition = EnumPlayerPositionState.ENEMY_PLAYER_POSITION;
-        EnumTerrain desiredTerrain = EnumTerrain.GRASS;
 
-        int width = 8, height = 4;
-        int x, y; //TODO make variable name longer
-        boolean fortPresent, isGrass;
-        do{
-            x = (int)(Math.random() * width);
-            y = (int)(Math.random() * height);
-
-            fortPresent = enemyMap.getNodeAtPosition(x, y).get().isFortPresent();
-            isGrass = enemyMap.getNodeAtPosition(x, y).get().getTerrain() == EnumTerrain.GRASS;
-        } while(fortPresent || !isGrass);
-
-        MapNodeClass enemyPositionNode = new MapNodeClass(x, y, desiredTerrain, fortState, enemyPosition, treasureState);
-
-        final int finalX = x;
-        final int finalY = y;
-        ArrayList<MapNodeClass> nodeList = (ArrayList<MapNodeClass>) enemyMap
-                .getNodes()
-                .stream()
-                .filter(eachNode-> !(eachNode.getX() == finalX && eachNode.getY() == finalY))
-                .collect(Collectors.toList());
-        nodeList.add(enemyPositionNode);
-
-        return new MapClass(nodeList);
-    }
-
-
-    private static MapClass combineVertically(MapClass myMap, MapClass enemyMap){
+ private static MapClass combineVertically(MapClass myMap, MapClass enemyMap){
+        MapClass result;
         int height = 8, width = 8;
 
-        enemyMap = placeEnemyPosition(enemyMap);
+        //enemyMap = placeEnemyPosition(enemyMap);
 
         Collection<MapNodeClass> nodeList = new ArrayList<>();
 
@@ -77,15 +47,15 @@ public class MapClassCombiner {
                 }
             }
 
-        System.out.println(nodeList);
-        System.out.println("Size is " + nodeList.size());
-        return new MapClass(nodeList);
+        result = new MapClass(nodeList);
+        return result;
     }
 
     private static MapClass combineHorizontally(MapClass myMap, MapClass enemyMap){
+        MapClass result;
         int width = 16, height = 4;
 
-        enemyMap = placeEnemyPosition(enemyMap);
+        //enemyMap = placeEnemyPosition(enemyMap);
 
         Collection<MapNodeClass> nodeList = new ArrayList<>();
         for(int x = 0; x < width; x++) {
@@ -100,9 +70,15 @@ public class MapClassCombiner {
             }
         }
 
-        System.out.println(nodeList);
+        System.out.println("First half");
+        System.out.println(myMap);
+        System.out.println("Second half");
+        System.out.println(enemyMap);
+        result = new MapClass(nodeList);
+        System.out.println(result);
         System.out.println("Size is " + nodeList.size());
-        return new MapClass(nodeList);
+        System.out.println(result);
+        return result;
     }
 
     public static MapClass combineMaps(MapClass myMap, MapClass enemyMap) {

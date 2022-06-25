@@ -170,11 +170,14 @@ public class NetworkConverter {
         EPlayerPositionState playerPos = convertEnumPlayerPositionState(mapNode.getPlayerPosition());
         ETreasureState treasure = convertEnumTreasureState(mapNode.getTreasure());
 
-        return new FullMapNode(terrain, playerPos, treasure, fort, x, y);
+        FullMapNode fmNode = new FullMapNode(terrain, playerPos, treasure, fort, x, y);
+//        System.out.println(fmNode);
+        return fmNode;
     }
 
     // convert my own MapClass to the network FullMap
     private FullMap convertMapClass(MapClass map){
+//        System.out.println("Do we get into conver map class");
         List<MapNodeClass> mapNodes = new ArrayList<>(map.getNodes());
         List<FullMapNode> fullMapNodes = new ArrayList<>();
 
@@ -196,8 +199,10 @@ public class NetworkConverter {
             playerStates.add(playerState);
         }
 
+//        System.out.println("Do we ever get here");
         Optional<FullMap> fullMap = Optional.empty();
         if(game.getFullMap().isPresent()){
+//            System.out.println("Or do we ever get here");
             FullMap convertedMap = convertMapClass(game.getFullMap().get());
             fullMap = Optional.of(convertedMap);
         }
